@@ -23,6 +23,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: <Widget>[
             Text(
               'You have pushed the button this many times:',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+              ),
+            ),
+            Text(
+              'You have pushed the button this many times:',
+              style: TextStyle(
+                fontFamily: 'Inter',
+              ),
             ),
           ],
         ),
