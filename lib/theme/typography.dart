@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+const textTheme = TextTheme(
+  displayLarge: displayLarge,
+  displayMedium: displayMedium,
+  displaySmall: displaySmall,
+  headlineLarge: headlineLarge,
+  headlineMedium: headlineMedium,
+  headlineSmall: headlineSmall,
+  titleLarge: titleLarge,
+  titleMedium: titleMedium,
+  titleSmall: titleSmall,
+  labelLarge: labelLarge,
+  labelMedium: labelMedium,
+  labelSmall: labelSmall,
+  bodyLarge: bodyLarge,
+  bodyMedium: bodyMedium,
+  bodySmall: bodySmall,
+);
+
 const displayLarge = TextStyle(
   fontSize: 57,
   fontFamily: 'Roboto',
