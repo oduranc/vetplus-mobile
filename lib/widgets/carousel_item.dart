@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
 
 class CarouselItem extends StatelessWidget {
   const CarouselItem({
@@ -13,26 +13,25 @@ class CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = Responsive.isMobile(context);
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(image),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 34),
-              child: Text(title,
-                  style: titleCarousel, textAlign: TextAlign.center),
-            ),
-            Text(
-              description,
-              style: bodyCarousel.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+        SvgPicture.asset(image, height: isMobile ? null : 337),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: isMobile ? 34 : 44),
+          child: Text(
+            title,
+            style: textTheme.titleSmall,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Text(
+          description,
+          style: textTheme.bodySmall,
+          textAlign: TextAlign.center,
         ),
       ],
     );

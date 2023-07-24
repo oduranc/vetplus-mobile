@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:vetplus/dto/carousel_item_dto.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/widgets/carousel_item.dart';
 
 class WelcomeCarousel extends StatefulWidget {
@@ -34,7 +35,7 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             viewportFraction: 1,
-            height: 390,
+            height: Responsive.isMobile(context) ? 395 : 615,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;
