@@ -19,9 +19,11 @@ class CarouselItem extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SvgPicture.asset(image, height: isMobile ? null : 337),
+        SvgPicture.asset(image,
+            height: MediaQuery.of(context).size.height * 0.2612),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: isMobile ? 34 : 44),
+          padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.0361),
           child: Text(
             title,
             style: textTheme.titleSmall,

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/theme/colors.dart';
 
-TextTheme textTheme(bool isMobile) => TextTheme(
-      titleSmall: _getTitleCarouselStyle(isMobile),
-      bodySmall: _getBodyCarouselStyle(isMobile),
-      labelMedium: _getBodyButtonStyle(isMobile),
+TextTheme textTheme(bool isTablet) => TextTheme(
+      titleSmall: _getTitleCarouselStyle(isTablet),
+      bodySmall: _getBodyCarouselStyle(isTablet),
+      labelMedium: _getBodyButtonStyle(isTablet),
     );
 
-TextStyle _getTitleCarouselStyle(bool isMobile) {
-  const baseTitleCarousel = TextStyle(
+TextStyle _getTitleCarouselStyle(bool isTablet) {
+  final baseTitleCarousel = TextStyle(
     color: Colors.black,
-    fontSize: 28,
+    fontSize: 25.sp,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
     height: 1,
@@ -18,15 +19,15 @@ TextStyle _getTitleCarouselStyle(bool isMobile) {
   );
 
   return baseTitleCarousel.copyWith(
-    fontSize: isMobile ? null : 33.60,
-    letterSpacing: isMobile ? null : -0.34,
+    fontSize: isTablet ? 33.60 : null,
+    letterSpacing: isTablet ? -0.34 : null,
   );
 }
 
-TextStyle _getBodyCarouselStyle(bool isMobile) {
+TextStyle _getBodyCarouselStyle(bool isTablet) {
   final baseBodyCarousel = TextStyle(
     color: lightColorScheme.onSurfaceVariant,
-    fontSize: 16,
+    fontSize: 15.sp,
     fontFamily: 'Inter',
     fontWeight: FontWeight.w300,
     height: 1.5,
@@ -34,15 +35,15 @@ TextStyle _getBodyCarouselStyle(bool isMobile) {
   );
 
   return baseBodyCarousel.copyWith(
-    fontSize: isMobile ? null : 22,
-    height: isMobile ? null : 30 / 22,
-    letterSpacing: isMobile ? null : 0.33,
+    fontSize: isTablet ? 22 : null,
+    height: isTablet ? 30 / 22 : null,
+    letterSpacing: isTablet ? 0.33 : null,
   );
 }
 
-TextStyle _getBodyButtonStyle(bool isMobile) {
-  const baseBodyButton = TextStyle(
-    fontSize: 16,
+TextStyle _getBodyButtonStyle(bool isTablet) {
+  final baseBodyButton = TextStyle(
+    fontSize: 16.sp,
     fontFamily: 'Inter',
     fontWeight: FontWeight.w600,
     height: 1.25,
@@ -50,8 +51,8 @@ TextStyle _getBodyButtonStyle(bool isMobile) {
   );
 
   return baseBodyButton.copyWith(
-    fontSize: isMobile ? null : 22,
-    height: isMobile ? null : 20 / 22,
-    letterSpacing: isMobile ? null : 0.33,
+    fontSize: isTablet ? 22 : null,
+    height: isTablet ? 20 / 22 : null,
+    letterSpacing: isTablet ? 0.33 : null,
   );
 }
