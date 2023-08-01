@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vetplus/responsive/responsive_layout.dart';
 
 class CarouselItem extends StatelessWidget {
   const CarouselItem({
@@ -13,7 +12,6 @@ class CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = Responsive.isMobile(context);
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Column(
