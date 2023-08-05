@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/login_screen.dart';
+import 'package:vetplus/screens/register_screen.dart';
 import 'package:vetplus/screens/welcome_screen.dart';
 import 'package:vetplus/theme/colors.dart';
 import 'package:vetplus/theme/shapes.dart';
@@ -28,8 +30,20 @@ class MyApp extends StatelessWidget {
         colorScheme: lightColorScheme,
         textTheme: textTheme(isTablet),
         elevatedButtonTheme: elevatedButtonTheme(isTablet),
+        inputDecorationTheme: inputDecorationTheme(isTablet),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: lightColorScheme.primary,
+        ),
+        appBarTheme: const AppBarTheme(
+          scrolledUnderElevation: 0,
+          centerTitle: true,
+        ),
       ),
-      home: const WelcomeScreen(),
+      routes: {
+        WelcomeScreen.route: (context) => const WelcomeScreen(),
+        RegisterScreen.route: (context) => RegisterScreen(),
+        LoginScreen.route: (context) => const LoginScreen(),
+      },
     );
   }
 }

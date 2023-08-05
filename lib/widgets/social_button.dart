@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/theme/typography.dart';
 
 class SocialButton extends StatelessWidget {
@@ -10,7 +11,6 @@ class SocialButton extends StatelessWidget {
     required this.backgroundColor,
     this.textColor,
     this.hasBorder,
-    required this.isTablet,
   });
   final Widget iconData;
   final String text;
@@ -18,10 +18,11 @@ class SocialButton extends StatelessWidget {
   final Color backgroundColor;
   final Color? textColor;
   final bool? hasBorder;
-  final bool isTablet;
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = Responsive.isTablet(context);
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(

@@ -30,7 +30,7 @@ class CarouselItem extends StatelessWidget {
         ),
         Text(
           description,
-          style: textTheme.bodySmall,
+          style: textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       ],

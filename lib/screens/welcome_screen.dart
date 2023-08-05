@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/login_screen.dart';
+import 'package:vetplus/screens/register_screen.dart';
 import 'package:vetplus/widgets/skeleton_screen.dart';
 import 'package:vetplus/widgets/social_button.dart';
 import 'package:vetplus/widgets/welcome_carousel.dart';
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
+  static const String route = '/';
 
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
@@ -32,7 +30,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    buildSignInModal(context, isTablet);
+                    buildSignInModal(context, isTablet, false);
                   },
                   child: const Text('Iniciar sesión'),
                 ),
@@ -43,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    buildSignInModal(context, isTablet);
+                    buildSignInModal(context, isTablet, true);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor:
@@ -61,7 +59,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  Future<dynamic> buildSignInModal(BuildContext context, bool isTablet) {
+  Future<dynamic> buildSignInModal(
+      BuildContext context, bool isTablet, bool isRegister) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
@@ -72,7 +71,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Wrap(
             runSpacing: 22,
             children: <Widget>[
-              const Divider(indent: 100, endIndent: 100),
+              const Divider(
+                indent: 100,
+                endIndent: 100,
+                thickness: 4,
+              ),
               SocialButton(
                 iconData: Icon(
                   FontAwesomeIcons.facebookF,
@@ -81,7 +84,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 text: 'Continuar con Facebook',
                 backgroundColor: Theme.of(context).colorScheme.surfaceTint,
                 onPressed: () {},
-                isTablet: isTablet,
               ),
               SocialButton(
                 iconData: Image.asset(
@@ -89,10 +91,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   width: isTablet ? 20 : 20.sp,
                 ),
                 text: 'Continuar con Google',
-                onPressed: () {},
                 backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
                 textColor: Theme.of(context).colorScheme.outline,
-                isTablet: isTablet,
+                onPressed: () {},
               ),
               SocialButton(
                 iconData: Icon(
@@ -103,8 +104,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 backgroundColor: Colors.white,
                 textColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 hasBorder: true,
-                onPressed: () {},
-                isTablet: isTablet,
+                onPressed: () {
+                  Navigator.pushNamed(context,
+                      isRegister ? RegisterScreen.route : LoginScreen.route);
+                },
               ),
             ],
           ),
