@@ -2,17 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/theme/colors.dart';
 
-TextTheme textTheme(bool isTablet) => TextTheme(
-      titleLarge: _getAppbarTitleStyle(isTablet),
-      titleSmall: _getCarouselTitleStyle(isTablet),
-      displaySmall: _getBottomSheetTitleStyle(isTablet),
-      bodyMedium: _getCarouselBodyStyle(isTablet),
-      labelMedium: _getButtonBodyStyle(isTablet),
-      labelSmall: _getFieldTextStyle(isTablet),
-    );
-
-TextStyle _getAppbarTitleStyle(bool isTablet) {
+TextStyle getAppbarTitleStyle(bool isTablet) {
   final baseTitleButton = TextStyle(
+    color: Colors.black,
     fontSize: 22.sp,
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w600,
@@ -27,7 +19,7 @@ TextStyle _getAppbarTitleStyle(bool isTablet) {
   );
 }
 
-TextStyle _getCarouselTitleStyle(bool isTablet) {
+TextStyle getCarouselTitleStyle(bool isTablet) {
   final baseTitleCarousel = TextStyle(
     color: Colors.black,
     fontSize: 25.sp,
@@ -43,7 +35,7 @@ TextStyle _getCarouselTitleStyle(bool isTablet) {
   );
 }
 
-TextStyle _getCarouselBodyStyle(bool isTablet) {
+TextStyle getCarouselBodyStyle(bool isTablet) {
   final baseBodyCarousel = TextStyle(
     color: lightColorScheme.onSurfaceVariant,
     fontSize: 14.sp,
@@ -60,7 +52,7 @@ TextStyle _getCarouselBodyStyle(bool isTablet) {
   );
 }
 
-TextStyle _getButtonBodyStyle(bool isTablet) {
+TextStyle getButtonBodyStyle(bool isTablet) {
   final baseBodyButton = TextStyle(
     fontSize: 16.sp,
     fontFamily: 'Inter',
@@ -76,7 +68,7 @@ TextStyle _getButtonBodyStyle(bool isTablet) {
   );
 }
 
-TextStyle _getFieldTextStyle(bool isTablet) {
+TextStyle getFieldTextStyle(bool isTablet) {
   final baseFieldText = TextStyle(
     fontSize: 16.sp,
     fontFamily: 'Inter',
@@ -88,7 +80,7 @@ TextStyle _getFieldTextStyle(bool isTablet) {
   );
 }
 
-TextStyle _getBottomSheetTitleStyle(bool isTablet) {
+TextStyle getBottomSheetTitleStyle(bool isTablet) {
   final baseSheetTitle = TextStyle(
     fontSize: 16.sp,
     fontFamily: 'Inter',
@@ -98,8 +90,64 @@ TextStyle _getBottomSheetTitleStyle(bool isTablet) {
   );
 
   return baseSheetTitle.copyWith(
-    fontSize: isTablet ? 24 : null,
+    fontSize: isTablet ? 22 : null,
     height: isTablet ? 1 : null,
     letterSpacing: isTablet ? -0.24 : null,
   );
+}
+
+TextStyle getBottomSheetBodyStyle(bool isTablet) {
+  final baseSheetBody = TextStyle(
+    color: const Color(0xFF666666),
+    fontSize: 13.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 1.14,
+    letterSpacing: 0.14,
+  );
+
+  return baseSheetBody.copyWith(fontSize: isTablet ? 21 : null);
+}
+
+TextStyle getLinkTextStyle(bool isTablet) {
+  final baseLinkText = TextStyle(
+    color: lightColorScheme.primary,
+    fontSize: 14.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+    letterSpacing: 0.21,
+  );
+
+  return baseLinkText.copyWith(
+    fontSize: isTablet ? 16 : null,
+    height: isTablet ? 1.25 : null,
+    letterSpacing: isTablet ? 0.24 : null,
+  );
+}
+
+TextStyle getSnackBarTitleStyle(bool isTablet) {
+  final baseSnackBarTitle = TextStyle(
+    color: Colors.black,
+    fontSize: 14.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    height: 1.14,
+    letterSpacing: 0.50,
+  );
+
+  return baseSnackBarTitle.copyWith(fontSize: isTablet ? 22 : null);
+}
+
+TextStyle getSnackBarBodyStyle(bool isTablet) {
+  final baseSnackBarBody = TextStyle(
+    color: const Color(0xFF666666),
+    fontSize: 12.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w300,
+    height: 1.33,
+    letterSpacing: 0.50,
+  );
+
+  return baseSnackBarBody.copyWith(fontSize: isTablet ? 20 : null);
 }

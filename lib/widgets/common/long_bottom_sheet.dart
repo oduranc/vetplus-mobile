@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/widgets/form_template.dart';
+import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/widgets/common/form_template.dart';
 
 class LongBottomSheet extends StatelessWidget {
   const LongBottomSheet({
@@ -48,7 +49,7 @@ class LongBottomSheet extends StatelessWidget {
                       Center(
                         child: Text(
                           title,
-                          style: Theme.of(context).textTheme.displaySmall,
+                          style: getBottomSheetTitleStyle(isTablet),
                         ),
                       ),
                     ],

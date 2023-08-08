@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/theme/typography.dart';
 
 class CustomFormField extends StatefulWidget {
   const CustomFormField({
@@ -24,9 +26,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = Responsive.isTablet(context);
+
     return TextFormField(
       controller: widget.controller,
-      style: Theme.of(context).textTheme.labelSmall,
+      style: getFieldTextStyle(isTablet),
       keyboardType: widget.keyboardType,
       obscureText: widget.isPasswordField ? _obscuredText : false,
       decoration: InputDecoration(

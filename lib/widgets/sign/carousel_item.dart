@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/theme/typography.dart';
 
 class CarouselItem extends StatelessWidget {
   const CarouselItem({
@@ -12,7 +14,7 @@ class CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final bool isTablet = Responsive.isTablet(context);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -24,13 +26,13 @@ class CarouselItem extends StatelessWidget {
               vertical: MediaQuery.of(context).size.height * 0.0361),
           child: Text(
             title,
-            style: textTheme.titleSmall,
+            style: getCarouselTitleStyle(isTablet),
             textAlign: TextAlign.center,
           ),
         ),
         Text(
           description,
-          style: textTheme.bodyMedium,
+          style: getCarouselBodyStyle(isTablet),
           textAlign: TextAlign.center,
         ),
       ],

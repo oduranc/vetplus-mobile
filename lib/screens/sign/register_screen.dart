@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/login_screen.dart';
-import 'package:vetplus/widgets/custom_form_field.dart';
-import 'package:vetplus/widgets/form_template.dart';
-import 'package:vetplus/widgets/skeleton_screen.dart';
+import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/utils/password_utils.dart';
+import 'package:vetplus/widgets/common/custom_form_field.dart';
+import 'package:vetplus/widgets/common/form_template.dart';
+import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
@@ -51,50 +52,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
             isPasswordField: true,
-            validator: _validatePassword,
+            validator: validatePassword,
           ),
           CustomFormField(
             labelText: 'Confirmar contraseña',
             keyboardType: TextInputType.visiblePassword,
             isPasswordField: true,
-            validator: _validatePasswordConfirmation,
+            validator: (value) {
+              return validatePasswordConfirmation(value, _passwordController);
+            },
           ),
         ],
       ),
     );
-  }
-
-  String? _validatePassword(value) {
-    String response = '';
-    if (value == null || value.isEmpty) {
-      response += 'Contraseña es requerida\n';
-    }
-    if (!RegExp(r'[A-Z]').hasMatch(value!)) {
-      response += 'Debe tener al menos una letra mayúscula\n';
-    }
-    if (!RegExp(r'[a-z]').hasMatch(value)) {
-      response += 'Debe tener al menos una letra minúscula\n';
-    }
-    if (!RegExp(r'[0-9]').hasMatch(value)) {
-      response += 'Debe tener al menos un número\n';
-    }
-    if (!RegExp(r'[!@#\\$&*~]').hasMatch(value)) {
-      response += 'Debe tener al menos un caracter especial\n';
-    }
-    if (value.length < 12) {
-      response += 'Debe tener al menos 12 caracteres';
-    }
-    if (response != '') {
-      return response;
-    }
-    return null;
-  }
-
-  String? _validatePasswordConfirmation(value) {
-    if (value != _passwordController.text) {
-      return 'Las contraseñas no coinciden';
-    }
-    return null;
   }
 
   String? _validateEmail(value) {

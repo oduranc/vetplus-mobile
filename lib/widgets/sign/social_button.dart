@@ -26,7 +26,7 @@ class SocialButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        textStyle: textTheme(isTablet).labelMedium,
+        textStyle: getButtonBodyStyle(isTablet),
         padding: EdgeInsets.all(isTablet ? 18 : 15),
         foregroundColor: textColor,
         backgroundColor: backgroundColor,

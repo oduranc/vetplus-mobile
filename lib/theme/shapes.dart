@@ -14,20 +14,20 @@ final InputBorder _textFieldBorder = OutlineInputBorder(
 ElevatedButtonThemeData elevatedButtonTheme(bool isTablet) =>
     ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(0),
         foregroundColor: Colors.white,
         backgroundColor: lightColorScheme.primary,
         padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        textStyle: textTheme(isTablet).labelMedium,
+        textStyle: getButtonBodyStyle(isTablet),
       ),
     );
 
 InputDecorationTheme inputDecorationTheme(bool isTablet) =>
     InputDecorationTheme(
-      labelStyle: textTheme(isTablet)
-          .labelSmall!
+      labelStyle: getFieldTextStyle(isTablet)
           .copyWith(color: lightColorScheme.onInverseSurface),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       contentPadding: const EdgeInsets.fromLTRB(17, 0, 17, 0),

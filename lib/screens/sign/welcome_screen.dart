@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/login_screen.dart';
-import 'package:vetplus/screens/register_screen.dart';
-import 'package:vetplus/widgets/skeleton_screen.dart';
-import 'package:vetplus/widgets/social_button.dart';
-import 'package:vetplus/widgets/welcome_carousel.dart';
+import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/screens/sign/register_screen.dart';
+import 'package:vetplus/widgets/common/skeleton_screen.dart';
+import 'package:vetplus/widgets/sign/social_button.dart';
+import 'package:vetplus/widgets/sign/welcome_carousel.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/login_screen.dart';
-import 'package:vetplus/screens/register_screen.dart';
-import 'package:vetplus/screens/welcome_screen.dart';
+import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/screens/sign/register_screen.dart';
+import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/theme/colors.dart';
 import 'package:vetplus/theme/shapes.dart';
 import 'package:vetplus/theme/typography.dart';
@@ -28,16 +28,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
-        textTheme: textTheme(isTablet),
         elevatedButtonTheme: elevatedButtonTheme(isTablet),
         inputDecorationTheme: inputDecorationTheme(isTablet),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: lightColorScheme.primary,
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           scrolledUnderElevation: 0,
           centerTitle: true,
+          titleTextStyle: getAppbarTitleStyle(isTablet),
         ),
+        dividerColor: Theme.of(context).colorScheme.outlineVariant,
       ),
       routes: {
         WelcomeScreen.route: (context) => const WelcomeScreen(),
