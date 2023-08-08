@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/login_screen.dart';
 import 'package:vetplus/widgets/custom_form_field.dart';
 import 'package:vetplus/widgets/form_template.dart';
@@ -17,12 +18,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = Responsive.isTablet(context);
+
     return SkeletonScreen(
       appBar: AppBar(
         title: const Text('Crear cuenta'),
       ),
       body: FormTemplate(
         buttonText: 'Continuar',
+        padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
         onSubmit: () {
           Navigator.pushNamed(context, LoginScreen.route);
         },

@@ -8,10 +8,12 @@ class FormTemplate extends StatefulWidget {
     required this.children,
     required this.onSubmit,
     required this.buttonText,
+    this.padding = const EdgeInsets.symmetric(vertical: 15),
   });
   final List<Widget> children;
   final VoidCallback onSubmit;
   final String buttonText;
+  final EdgeInsetsGeometry padding;
 
   @override
   State<FormTemplate> createState() => _FormTemplateState();
@@ -29,14 +31,12 @@ class _FormTemplateState extends State<FormTemplate> {
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: () {
-        if (_formKey.currentState!.validate()) {
-          setState(() {
-            _btnActive = true;
-          });
-        }
+        setState(() {
+          _btnActive = _formKey.currentState!.validate();
+        });
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
+        padding: widget.padding,
         child: Wrap(
           runSpacing: isTablet ? 46 : 45.sp,
           children: [
@@ -44,7 +44,6 @@ class _FormTemplateState extends State<FormTemplate> {
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: SizedBox(
-                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _btnActive ? widget.onSubmit : null,
                   child: Text(widget.buttonText),
