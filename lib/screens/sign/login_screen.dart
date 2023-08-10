@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/restore_password_screen.dart';
 import 'package:vetplus/theme/typography.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   static const String route = '/login';
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
@@ -28,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
           FormTemplate(
             buttonText: 'Continuar',
             onSubmit: () {
-              //Navigator.pushNamed(context, LoginScreen.route);
+              Navigator.pushNamedAndRemoveUntil(context,
+                  NavigationBarTemplate.route, (Route<dynamic> route) => false);
             },
             padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
             children: [

@@ -6,15 +6,10 @@ import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
   static const String route = '/register';
 
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override

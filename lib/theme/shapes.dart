@@ -44,3 +44,35 @@ InputDecorationTheme inputDecorationTheme(bool isTablet) =>
       enabledBorder: _textFieldBorder,
       focusedErrorBorder: _textFieldBorder,
     );
+
+AppBarTheme appBarTheme(bool isTablet) => AppBarTheme(
+      scrolledUnderElevation: 0,
+      centerTitle: true,
+      titleTextStyle: getAppbarTitleStyle(isTablet),
+    );
+
+NavigationBarThemeData navigationBarTheme(bool isTablet) {
+  return NavigationBarThemeData(
+    height: isTablet ? 96 : 97.sp,
+    surfaceTintColor: Colors.white,
+    shadowColor: Colors.black,
+    indicatorColor: Colors.transparent,
+    iconTheme: MaterialStateProperty.resolveWith((states) {
+      double size = isTablet ? 34 : 28.sp;
+      if (states.contains(MaterialState.selected)) {
+        return IconThemeData(color: const Color(0xFF27AAE1), size: size);
+      } else {
+        return IconThemeData(color: const Color(0xFFACACAD), size: size);
+      }
+    }),
+    labelTextStyle: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.selected)) {
+        return getNavBarTextStyle(isTablet).copyWith(
+          color: const Color(0xFF27AAE1),
+        );
+      } else {
+        return getNavBarTextStyle(isTablet);
+      }
+    }),
+  );
+}

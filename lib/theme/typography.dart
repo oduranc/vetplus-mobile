@@ -151,3 +151,31 @@ TextStyle getSnackBarBodyStyle(bool isTablet) {
 
   return baseSnackBarBody.copyWith(fontSize: isTablet ? 20 : null);
 }
+
+TextStyle getNavBarTextStyle(bool isTablet) {
+  final baseSnackBarBody = TextStyle(
+    color: lightColorScheme.onInverseSurface,
+    fontSize: 10.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.bold,
+    height: 1.33,
+    letterSpacing: 0.5,
+  );
+
+  return baseSnackBarBody.copyWith(fontSize: isTablet ? 14 : null);
+}
+
+TextStyle getSectionTitle(bool isTablet) {
+  final baseSnackBarBody = TextStyle(
+    color: Color(0xFF010E16),
+    fontSize: 18.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.27,
+  );
+
+  return baseSnackBarBody.copyWith(
+    fontSize: isTablet ? 22 : null,
+    letterSpacing: isTablet ? 0.33 : null,
+  );
+}

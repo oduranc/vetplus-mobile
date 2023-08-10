@@ -100,7 +100,9 @@ class RestorePasswordScreen extends StatelessWidget {
         return LongBottomSheet(
           title: 'Restaurar Contraseña',
           buttonText: 'Actualizar',
-          onSubmit: () {},
+          onSubmit: () {
+            Navigator.pop(context);
+          },
           children: <Widget>[
             Text(
               'Debe incluir al menos 12 dígitos, un carácter especial, una letra mayúscula, una minúscula y un número.',
