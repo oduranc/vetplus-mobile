@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:vetplus/config/firebase_config.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
@@ -19,7 +21,18 @@ void main() async {
   initializeFirebase();
   await ScreenUtil.ensureScreenSize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+      .then(
+    (value) => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => UserProvider(),
+          )
+        ],
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +43,8 @@ class MyApp extends StatelessWidget {
     final bool isTablet = Responsive.isTablet(context);
     ScreenUtil.init(context, designSize: const Size(392.7, 826.9));
 
-    final HttpLink httpLink = HttpLink('http://10.0.2.2:3000/graphql');
+    final HttpLink httpLink = HttpLink(dotenv.env['API_LINK']!);
+
     initializeGraphQLClient(httpLink);
 
     return GraphQLProvider(

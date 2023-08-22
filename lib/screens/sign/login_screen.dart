@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/restore_password_screen.dart';
 import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
@@ -33,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _submitForm() async {
+  Future<void> _tryLogin() async {
     setState(() {
       _isLoading = true;
     });
@@ -50,7 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
           Icons.error_outline_outlined,
         );
       } else {
+        final user = await getUserProfile(result);
+
         if (context.mounted) {
+          final userProvider =
+              Provider.of<UserProvider>(context, listen: false);
+          userProvider.setUser(user);
+
           Navigator.pushNamedAndRemoveUntil(context,
               NavigationBarTemplate.route, (Route<dynamic> route) => false);
         }
@@ -82,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
             buttonChild: _isLoading
                 ? const CircularProgressIndicator(color: Colors.white)
                 : const Text('Continuar'),
-            onSubmit: _submitForm,
+            onSubmit: _tryLogin,
             padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
             children: [
               Center(

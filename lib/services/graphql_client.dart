@@ -3,9 +3,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 late ValueNotifier<GraphQLClient> globalGraphQLClient;
 
-void initializeGraphQLClient(HttpLink httpLink) {
+void initializeGraphQLClient(Link link) {
   final client = GraphQLClient(
-    link: httpLink,
+    link: link,
     cache: GraphQLCache(),
   );
 

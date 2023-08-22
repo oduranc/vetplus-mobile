@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:vetplus/models/user_model.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/themes/typography.dart';
@@ -12,6 +15,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isTablet = Responsive.isTablet(context);
+    final UserModel user = Provider.of<UserProvider>(context).user!;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -19,6 +23,10 @@ class Header extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
+            backgroundImage: user.image != null
+                ? NetworkImage(user.image!)
+                : const AssetImage('assets/images/user.png') as ImageProvider,
+            backgroundColor: Colors.white,
             radius: (isTablet ? 66 : 55.sp) / 2,
           ),
           SizedBox(width: isTablet ? 6 : 6.sp),
@@ -27,12 +35,12 @@ class Header extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Juan Pérez',
+                  '${user.names} ${user.surnames}',
                   style: getButtonBodyStyle(isTablet),
                 ),
                 SizedBox(height: isTablet ? 4 : 4.sp),
                 Text(
-                  'Dueño de mascota',
+                  user.role == 'PET_OWNER' ? 'Dueño de mascota' : 'Veterinario',
                   style: getSnackBarBodyStyle(isTablet),
                 ),
               ],
