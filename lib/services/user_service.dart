@@ -30,4 +30,29 @@ class UserService {
         .timeout(const Duration(seconds: 10));
     return result;
   }
+
+  static Future<QueryResult> login(String email, String password) async {
+    const String signInQuery = '''
+      query (\$signInInput: SignInInput!) {
+        signInWithEmail(signInInput: \$signInInput) {
+          access_token
+        }
+      }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .query(
+          QueryOptions(
+            document: gql(signInQuery),
+            variables: {
+              'signInInput': {
+                'email': email,
+                'password': password,
+              }
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
 }
