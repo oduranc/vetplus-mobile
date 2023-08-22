@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/screens/home/favorite_screen.dart';
+import 'package:vetplus/themes/typography.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -41,7 +42,12 @@ class Header extends StatelessWidget {
             children: [
               IconButton(
                 iconSize: isTablet ? 30 : 25.sp,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: false).push(
+                      MaterialPageRoute(
+                          builder: (context) => FavoriteScreen(),
+                          maintainState: false));
+                },
                 icon: const Icon(Icons.favorite_border_rounded),
               ),
               IconButton(

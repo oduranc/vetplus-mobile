@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/themes/typography.dart';
 
 class CarouselItem extends StatelessWidget {
   const CarouselItem({

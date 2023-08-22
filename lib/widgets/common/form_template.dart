@@ -7,12 +7,12 @@ class FormTemplate extends StatefulWidget {
     super.key,
     required this.children,
     required this.onSubmit,
-    required this.buttonText,
+    required this.buttonChild,
     this.padding = const EdgeInsets.symmetric(vertical: 15),
   });
   final List<Widget> children;
   final VoidCallback onSubmit;
-  final String buttonText;
+  final Widget buttonChild;
   final EdgeInsetsGeometry padding;
 
   @override
@@ -46,7 +46,7 @@ class _FormTemplateState extends State<FormTemplate> {
               child: SizedBox(
                 child: ElevatedButton(
                   onPressed: _btnActive ? widget.onSubmit : null,
-                  child: Text(widget.buttonText),
+                  child: widget.buttonChild,
                 ),
               ),
             ),

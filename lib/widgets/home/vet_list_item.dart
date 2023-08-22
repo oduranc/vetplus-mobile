@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/themes/typography.dart';
 
 class VetListItem extends StatelessWidget {
   const VetListItem({

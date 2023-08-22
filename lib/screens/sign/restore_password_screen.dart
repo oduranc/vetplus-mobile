@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
-import 'package:vetplus/utils/password_utils.dart';
+import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/validation_utils.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 

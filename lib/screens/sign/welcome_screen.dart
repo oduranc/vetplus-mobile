@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/screens/sign/register_screen.dart';
@@ -30,7 +29,7 @@ class WelcomeScreen extends StatelessWidget {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    buildSignInModal(context, isTablet, false);
+                    _buildSignInModal(context, isTablet, false);
                   },
                   child: const Text('Iniciar sesión'),
                 ),
@@ -41,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    buildSignInModal(context, isTablet, true);
+                    _buildSignInModal(context, isTablet, true);
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor:
@@ -59,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> buildSignInModal(
+  Future<void> _buildSignInModal(
       BuildContext context, bool isTablet, bool isRegister) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
@@ -76,15 +75,15 @@ class WelcomeScreen extends StatelessWidget {
                 endIndent: 100,
                 thickness: 4,
               ),
-              SocialButton(
-                iconData: Icon(
-                  FontAwesomeIcons.facebookF,
-                  size: isTablet ? 20 : 20.sp,
-                ),
-                text: 'Continuar con Facebook',
-                backgroundColor: Theme.of(context).colorScheme.surfaceTint,
-                onPressed: () {},
-              ),
+              // SocialButton(
+              //   iconData: Icon(
+              //     FontAwesomeIcons.facebookF,
+              //     size: isTablet ? 20 : 20.sp,
+              //   ),
+              //   text: 'Continuar con Facebook',
+              //   backgroundColor: Theme.of(context).colorScheme.surfaceTint,
+              //   onPressed: () {},
+              // ),
               SocialButton(
                 iconData: Image.asset(
                   'assets/images/google-logo.png',
@@ -105,7 +104,7 @@ class WelcomeScreen extends StatelessWidget {
                 textColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 hasBorder: true,
                 onPressed: () {
-                  Navigator.pushNamed(context,
+                  Navigator.pushReplacementNamed(context,
                       isRegister ? RegisterScreen.route : LoginScreen.route);
                 },
               ),

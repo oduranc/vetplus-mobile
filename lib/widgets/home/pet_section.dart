@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/widgets/home/add_pet_button.dart';
 
 class PetSection extends StatelessWidget {

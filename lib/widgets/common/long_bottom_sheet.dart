@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/theme/typography.dart';
+import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 
 class LongBottomSheet extends StatelessWidget {
@@ -58,7 +58,7 @@ class LongBottomSheet extends StatelessWidget {
                 const Divider(height: 0),
                 FormTemplate(
                   onSubmit: onSubmit,
-                  buttonText: buttonText,
+                  buttonChild: Text(buttonText),
                   padding: EdgeInsets.only(
                     top: isTablet ? 43 : 30.sp,
                     left: isTablet ? 37 : 24.sp,

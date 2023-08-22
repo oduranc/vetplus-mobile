@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:vetplus/dto/carousel_item_dto.dart';
+import 'package:vetplus/models/carousel_item_dto.dart';
 import 'package:vetplus/widgets/sign/carousel_item.dart';
 
 class WelcomeCarousel extends StatefulWidget {

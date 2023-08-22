@@ -1,3 +1,24 @@
+String? validateEmail(value) {
+  if (value == null || value.isEmpty) {
+    return 'Correo es requerido';
+  }
+  return null;
+}
+
+String? validateLastname(value) {
+  if (value == null || value.isEmpty) {
+    return 'Apellido es requerido';
+  }
+  return null;
+}
+
+String? validateName(value) {
+  if (value == null || value.isEmpty) {
+    return 'Nombre es requerido';
+  }
+  return null;
+}
+
 String? validatePassword(value) {
   String response = '';
   if (value == null || value.isEmpty) {
