@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
-import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 
 class ProfileDetailsDTO {
@@ -43,7 +43,7 @@ Future<dynamic> buildLogoutSheet(BuildContext context) {
                   Provider.of<UserProvider>(context, listen: false);
               userProvider.clearUser();
               Navigator.pushNamedAndRemoveUntil(
-                  context, LoginScreen.route, (route) => false);
+                  context, WelcomeScreen.route, (route) => false);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
