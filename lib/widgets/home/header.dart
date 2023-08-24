@@ -26,7 +26,7 @@ class Header extends StatelessWidget {
             backgroundImage: user.image != null
                 ? NetworkImage(user.image!)
                 : const AssetImage('assets/images/user.png') as ImageProvider,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             radius: (isTablet ? 66 : 55.sp) / 2,
           ),
           SizedBox(width: isTablet ? 6 : 6.sp),

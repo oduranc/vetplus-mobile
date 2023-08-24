@@ -6,7 +6,6 @@ import 'package:vetplus/screens/notifications/notifications_screen.dart';
 import 'package:vetplus/screens/profile/profile_screen.dart';
 import 'package:vetplus/screens/scan/scan_screen.dart';
 import 'package:vetplus/screens/search/search_screen.dart';
-import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
 class NavigationBarTemplate extends StatefulWidget {
   const NavigationBarTemplate({super.key});
@@ -30,11 +29,8 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
 
-    return SkeletonScreen(
-      providedPadding: EdgeInsets.only(
-        left: isTablet ? 37 : 24.sp,
-      ),
-      navBar: NavigationBar(
+    return Scaffold(
+      bottomNavigationBar: NavigationBar(
         destinations: [
           const NavigationDestination(
             icon: Icon(Icons.home_outlined),

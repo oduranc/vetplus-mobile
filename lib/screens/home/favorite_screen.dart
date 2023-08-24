@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
+import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -21,9 +23,13 @@ class FavoriteScreen extends StatelessWidget {
         title: Text('Favoritos'),
         centerTitle: false,
       ),
-      body: ListView.separated(
-        shrinkWrap: true,
+      body: SeparatedListView(
+        isTablet: isTablet,
         itemCount: 2,
+        separator: Padding(
+          padding: EdgeInsets.symmetric(vertical: isTablet ? 30 : 20.sp),
+          child: const Divider(),
+        ),
         itemBuilder: (context, index) {
           return Row(
             children: [
@@ -52,55 +58,44 @@ class FavoriteScreen extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.white,
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10, bottom: 41, right: 24, left: 24),
-                        child: Wrap(
-                          runSpacing: 22,
-                          children: [
-                            const Divider(
-                              indent: 100,
-                              endIndent: 100,
-                              thickness: 4,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Eliminar de favoritos'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.error,
-                                side: BorderSide(
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Cancelar'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  buildDangerModal(context);
                 },
                 icon: const Icon(Icons.more_horiz),
               ),
             ],
           );
         },
-        separatorBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(vertical: isTablet ? 30 : 20.sp),
-            child: Divider(),
-          );
-        },
       ),
+    );
+  }
+
+  Future<dynamic> buildDangerModal(BuildContext context) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return ButtonsBottomSheet(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('Eliminar de favoritos'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.error,
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
