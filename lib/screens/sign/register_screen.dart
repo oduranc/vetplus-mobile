@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/sign/login_screen.dart';
-import 'package:vetplus/services/user_service.dart';
+import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/utils/validation_utils.dart';
-import 'package:vetplus/widgets/common/custom_dialog.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -26,55 +24,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  Future<void> _showCustomDialog(
-      String title, String body, Color color, IconData icon) async {
-    await showDialog(
-      context: context,
-      builder: (context) =>
-          CustomDialog(title: title, body: body, color: color, icon: icon),
-    );
-  }
-
-  Future<void> _submitForm() async {
+  Future<void> _tryRegister(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
 
-    try {
-      final result = await UserService.signUp(
-          _nameController.text,
-          _lastnameController.text,
-          _emailController.text,
-          _passwordController.text);
+    await trySignUpWithEmail(_nameController.text, _lastnameController.text,
+        _emailController.text, _passwordController.text, context);
 
-      if (result.hasException) {
-        await _showCustomDialog(
-          'Correo en uso',
-          'El correo proporcionado ya se ha registrado. Intenta iniciar sesión o usar otro correo.',
-          Theme.of(context).colorScheme.error,
-          Icons.error_outline_outlined,
-        );
-      } else {
-        await _showCustomDialog(
-          'Cuenta creada',
-          '¡Cuenta creada de manera exitosa!',
-          Colors.green,
-          Icons.check_circle_outline_outlined,
-        ).then((value) =>
-            Navigator.pushReplacementNamed(context, LoginScreen.route));
-      }
-    } catch (e) {
-      await _showCustomDialog(
-        'Fallo en servidor',
-        'Error en el servidor. Intenta luego, por favor.',
-        Theme.of(context).colorScheme.error,
-        Icons.error_outline_outlined,
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -90,7 +50,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ? const CircularProgressIndicator(color: Colors.white)
             : const Text('Continuar'),
         padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
-        onSubmit: _submitForm,
+        onSubmit: () {
+          _tryRegister(context);
+        },
         children: <Widget>[
           CustomFormField(
             labelText: 'Nombre',

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/restore_password_screen.dart';
-import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
-import 'package:vetplus/utils/user_utils.dart';
-import 'package:vetplus/widgets/common/custom_dialog.dart';
+import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -27,55 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future<void> _showCustomDialog(
-      String title, String body, Color color, IconData icon) async {
-    await showDialog(
-      context: context,
-      builder: (context) =>
-          CustomDialog(title: title, body: body, color: color, icon: icon),
-    );
-  }
-
   Future<void> _tryLogin() async {
     setState(() {
       _isLoading = true;
     });
 
-    try {
-      final result = await UserService.login(
-          _emailController.text, _passwordController.text);
+    await tryLoginWithEmail(
+        context, _emailController.text, _passwordController.text);
 
-      if (result.hasException) {
-        await _showCustomDialog(
-          'Credenciales incorrectas',
-          'Las credenciales ingresadas no son correctas. Revise e intente nuevamente.',
-          Theme.of(context).colorScheme.error,
-          Icons.error_outline_outlined,
-        );
-      } else {
-        final user = await getUserProfile(result);
-
-        if (context.mounted) {
-          final userProvider =
-              Provider.of<UserProvider>(context, listen: false);
-          userProvider.setUser(user);
-
-          Navigator.pushNamedAndRemoveUntil(context,
-              NavigationBarTemplate.route, (Route<dynamic> route) => false);
-        }
-      }
-    } catch (e) {
-      await _showCustomDialog(
-        'Fallo en servidor',
-        'Error en el servidor. Intenta luego, por favor.',
-        Theme.of(context).colorScheme.error,
-        Icons.error_outline_outlined,
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

@@ -35,7 +35,9 @@ class Header extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${user.names} ${user.surnames}',
+                  user.surnames == null
+                      ? user.names
+                      : '${user.names} ${user.surnames}',
                   style: getButtonBodyStyle(isTablet),
                 ),
                 SizedBox(height: isTablet ? 4 : 4.sp),

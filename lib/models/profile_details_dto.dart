@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
+import 'package:vetplus/screens/profile/personal_information_screen.dart';
 import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 
@@ -17,7 +18,7 @@ final items = [
   ProfileDetailsDTO(
     leadingIcon: Icons.account_circle_outlined,
     name: 'Información personal',
-    action: buildLogoutSheet,
+    action: pushPersonalInformationScreen,
   ),
   ProfileDetailsDTO(
     leadingIcon: Icons.pets,
@@ -30,6 +31,10 @@ final items = [
     action: buildLogoutSheet,
   )
 ];
+
+Future<dynamic> pushPersonalInformationScreen(BuildContext context) {
+  return Navigator.pushNamed(context, PersonalInformationScreen.route);
+}
 
 Future<dynamic> buildLogoutSheet(BuildContext context) {
   return showModalBottomSheet(

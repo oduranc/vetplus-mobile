@@ -3,14 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/screens/sign/register_screen.dart';
+import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/sign/social_button.dart';
 import 'package:vetplus/widgets/sign/welcome_carousel.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
   static const String route = '/';
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
@@ -75,15 +81,6 @@ class WelcomeScreen extends StatelessWidget {
                 endIndent: 100,
                 thickness: 4,
               ),
-              // SocialButton(
-              //   iconData: Icon(
-              //     FontAwesomeIcons.facebookF,
-              //     size: isTablet ? 20 : 20.sp,
-              //   ),
-              //   text: 'Continuar con Facebook',
-              //   backgroundColor: Theme.of(context).colorScheme.surfaceTint,
-              //   onPressed: () {},
-              // ),
               SocialButton(
                 iconData: Image.asset(
                   'assets/images/google-logo.png',
@@ -92,7 +89,9 @@ class WelcomeScreen extends StatelessWidget {
                 text: 'Continuar con Google',
                 backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
                 textColor: Theme.of(context).colorScheme.outline,
-                onPressed: () {},
+                onPressed: () {
+                  trySignUpWithGoogle(context);
+                },
               ),
               SocialButton(
                 iconData: Icon(
