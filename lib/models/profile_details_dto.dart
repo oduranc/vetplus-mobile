@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
@@ -43,7 +46,8 @@ Future<dynamic> buildLogoutSheet(BuildContext context) {
       return ButtonsBottomSheet(
         children: [
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              await GoogleSignIn().signOut();
               final userProvider =
                   Provider.of<UserProvider>(context, listen: false);
               userProvider.clearUser();

@@ -32,7 +32,17 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
       await _navigateToHome(context, user);
     }
   } catch (e) {
-    await _showServerErrorDialog(context);
+    if (e.toString() == 'Null check operator used on a null value') {
+      _showCustomDialog(
+        'Acción cancelada',
+        'Se canceló el inicio de sesión con Google.',
+        Colors.blue,
+        Icons.info_outline_rounded,
+        context,
+      );
+    } else {
+      await _showServerErrorDialog(context);
+    }
   }
 }
 
