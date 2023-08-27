@@ -45,7 +45,8 @@ class FavoriteScreen extends StatelessWidget {
               ),
               Expanded(
                 child: Wrap(
-                  runSpacing: isTablet ? 2 : 2.sp,
+                  direction: Axis.vertical,
+                  spacing: isTablet ? 2 : 2.sp,
                   children: [
                     Text('Centro veterinario',
                         style: getSnackBarTitleStyle(isTablet)),

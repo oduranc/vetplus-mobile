@@ -13,9 +13,9 @@ import 'package:vetplus/widgets/common/custom_dialog.dart';
 Future<void> _tryLoginWithGoogle(BuildContext context) async {
   try {
     final result = await UserService.loginWithGoogle();
-    final user =
-        await getUserProfile(result.data!['googleLogin']['access_token']);
-    await _navigateToHome(context, user);
+    final accessToken = result.data!['googleLogin']['access_token'];
+    final user = await getUserProfile(accessToken);
+    await _navigateToHome(context, user, accessToken);
   } catch (e) {
     await _showServerErrorDialog(context);
   }
@@ -27,9 +27,9 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
     if (result.hasException) {
       await _tryLoginWithGoogle(context);
     } else {
-      final user =
-          await getUserProfile(result.data!['googleLogin']['access_token']);
-      await _navigateToHome(context, user);
+      final accessToken = result.data!['googleLogin']['access_token'];
+      final user = await getUserProfile(accessToken);
+      await _navigateToHome(context, user, accessToken);
     }
   } catch (e) {
     if (e.toString() == 'Null check operator used on a null value') {
@@ -54,9 +54,9 @@ Future<void> tryLoginWithEmail(
     if (result.hasException) {
       await showCredentialsErrorDialog(context);
     } else {
-      final user =
-          await getUserProfile(result.data!['signInWithEmail']['access_token']);
-      await _navigateToHome(context, user);
+      final accessToken = result.data!['signInWithEmail']['access_token'];
+      final user = await getUserProfile(accessToken);
+      await _navigateToHome(context, user, accessToken);
     }
   } catch (e) {
     await _showServerErrorDialog(context);
@@ -120,9 +120,10 @@ Future<void> _showCustomDialog(String title, String body, Color color,
   );
 }
 
-Future<void> _navigateToHome(BuildContext context, UserModel user) async {
+Future<void> _navigateToHome(
+    BuildContext context, UserModel user, String accessToken) async {
   final userProvider = Provider.of<UserProvider>(context, listen: false);
-  userProvider.setUser(user);
+  userProvider.setUser(user, accessToken);
 
   Navigator.pushNamedAndRemoveUntil(
     context,

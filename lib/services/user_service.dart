@@ -154,4 +154,38 @@ class UserService {
         .timeout(const Duration(seconds: 10));
     return result;
   }
+
+  static Future<QueryResult> editProfile(
+      String token, Map<String, String?> values) async {
+    const String updateProfileMutation = '''
+    mutation (\$updateUserInput: UpdateUserInput!) {
+      updateUser(updateUserInput: \$updateUserInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(updateProfileMutation),
+            variables: {
+              'updateUserInput': {
+                'names': values['names'],
+                'surnames': values['surnames'],
+                'document': values['document'],
+                'address': values['address'],
+                'telephone_number': values['telephone_number'],
+                'image': values['image'],
+              }
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
 }
