@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/home_screen.dart';
 import 'package:vetplus/screens/notifications/notifications_screen.dart';
+import 'package:vetplus/screens/pets/scan_screen.dart';
 import 'package:vetplus/screens/profile/profile_screen.dart';
-import 'package:vetplus/screens/scan/scan_screen.dart';
 import 'package:vetplus/screens/search/search_screen.dart';
 
 class NavigationBarTemplate extends StatefulWidget {
@@ -32,23 +33,24 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         destinations: [
-          const NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            label: 'Inicio',
-            selectedIcon: Icon(Icons.home),
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined),
+            label: AppLocalizations.of(context)!.home,
+            selectedIcon: const Icon(Icons.home),
           ),
-          const NavigationDestination(
-              icon: Icon(Icons.search), label: 'Buscar'),
+          NavigationDestination(
+              icon: const Icon(Icons.search),
+              label: AppLocalizations.of(context)!.search),
           _buildScanDestination(isTablet),
-          const NavigationDestination(
-            icon: Icon(Icons.notifications_none_rounded),
-            label: 'Notificaciones',
-            selectedIcon: Icon(Icons.notifications),
+          NavigationDestination(
+            icon: const Icon(Icons.notifications_none_rounded),
+            label: AppLocalizations.of(context)!.notifications,
+            selectedIcon: const Icon(Icons.notifications),
           ),
-          const NavigationDestination(
-            icon: Icon(Icons.person_2_outlined),
-            label: 'Perfil',
-            selectedIcon: Icon(Icons.person_2),
+          NavigationDestination(
+            icon: const Icon(Icons.person_2_outlined),
+            label: AppLocalizations.of(context)!.profile,
+            selectedIcon: const Icon(Icons.person_2),
           ),
         ],
         selectedIndex: _currentIndex,

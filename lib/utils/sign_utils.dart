@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
@@ -34,8 +35,8 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
   } catch (e) {
     if (e.toString() == 'Null check operator used on a null value') {
       _showCustomDialog(
-        'Acción cancelada',
-        'Se canceló el inicio de sesión con Google.',
+        AppLocalizations.of(context)!.canceledAction,
+        AppLocalizations.of(context)!.canceledGoogleLogin,
         Colors.blue,
         Icons.info_outline_rounded,
         context,
@@ -71,16 +72,16 @@ Future<void> trySignUpWithEmail(String name, String lastname, String email,
 
     if (result.hasException) {
       await _showCustomDialog(
-        'Correo en uso',
-        'El correo proporcionado ya se ha registrado. Intenta iniciar sesión o usar otro correo.',
+        AppLocalizations.of(context)!.usedEmailTitle,
+        AppLocalizations.of(context)!.usedEmailBody,
         Theme.of(context).colorScheme.error,
         Icons.error_outline_outlined,
         context,
       );
     } else {
       await _showCustomDialog(
-        'Cuenta creada',
-        '¡Cuenta creada de manera exitosa!',
+        AppLocalizations.of(context)!.createdAccountTitle,
+        AppLocalizations.of(context)!.createdAccountBody,
         Colors.green,
         Icons.check_circle_outline_outlined,
         context,
@@ -94,8 +95,8 @@ Future<void> trySignUpWithEmail(String name, String lastname, String email,
 
 Future<void> showCredentialsErrorDialog(BuildContext context) {
   return _showCustomDialog(
-      'Credenciales incorrectas',
-      'Las credenciales ingresadas no son correctas. Revise e intente nuevamente.',
+      AppLocalizations.of(context)!.wrongCredentialsTitle,
+      AppLocalizations.of(context)!.wrongCredentialsBody,
       Theme.of(context).colorScheme.error,
       Icons.error_outline_outlined,
       context);
@@ -103,8 +104,8 @@ Future<void> showCredentialsErrorDialog(BuildContext context) {
 
 Future<void> _showServerErrorDialog(BuildContext context) {
   return _showCustomDialog(
-    'Fallo en servidor',
-    'Error en el servidor. Intenta luego, por favor.',
+    AppLocalizations.of(context)!.serverFailedTitle,
+    AppLocalizations.of(context)!.serverFailedBody,
     Theme.of(context).colorScheme.error,
     Icons.error_outline_outlined,
     context,

@@ -1,0 +1,299 @@
+{
+  "language": "Español",
+  "@language": {
+    "description": "The current language"
+  },
+  "login": "Iniciar sesión",
+  "@login": {
+    "description": "Login button Text"
+  },
+  "register": "Crear cuenta",
+  "@register": {
+    "description": "Register button Text"
+  },
+  "carouselFirstTitle": "Estás más cerca.",
+  "@carouselFirstTitle": {
+    "description": "Carousel first title"
+  },
+  "carouselFirstDescription": "Ahora darás seguimiento a las citas y procedimientos realizados a tus mascotas.",
+  "@carouselFirstDescription": {
+    "description": "Carousel first description"
+  },
+  "carouselSecondTitle": "Conecta más.",
+  "@carouselSecondTitle": {
+    "description": "Carousel second title"
+  },
+  "carouselSecondDescription": "Puedes buscar los centros más cercanos por sus servicios ofrecidos y sus especialidades.",
+  "@carouselSecondDescription": {
+    "description": "Carousel second description"
+  },
+  "carouselThirdTitle": "Escuchamos tu opinión.",
+  "@carouselThirdTitle": {
+    "description": "Carousel third title"
+  },
+  "carouselThirdDescription": "Tenemos un espacio de sugerencias y valoración de nuestros centros veterinarios.",
+  "@carouselThirdDescription": {
+    "description": "Carousel third description"
+  },
+  "googleButton": "Continuar con Google",
+  "@googleButton": {
+    "description": "Google login button text"
+  },
+  "emailButton": "Continuar con Email",
+  "@emailButton": {
+    "description": "Email login button text"
+  },
+  "continueText": "Continuar",
+  "@continueText": {
+    "description": "Continue"
+  },
+  "nameText": "Nombre",
+  "@nameText": {
+    "description": "Name"
+  },
+  "surnameText": "Apellido",
+  "@surnameText": {
+    "description": "Surname"
+  },
+  "emailText": "Correo",
+  "@emailText": {
+    "description": "Email"
+  },
+  "password": "Contraseña",
+  "@password": {
+    "description": "Password"
+  },
+  "confirmPassword": "Confirmar contraseña",
+  "@confirmPassword": {
+    "description": "Password confirmation"
+  },
+  "forgotPassword": "¿Has olvidado tu contraseña?",
+  "@forgotPassword": {
+    "description": "Forgot password question"
+  },
+  "restorePasswordTitle": "Restaurar Contraseña",
+  "@restorePasswordTitle": {
+    "description": "Restore password title"
+  },
+  "restorePasswordBody": "Ingresa tu dirección de correo electrónico asociada a tu cuenta para que puedas restablecer tu contraseña",
+  "@restorePasswordBody": {
+    "description": "Restore password body"
+  },
+  "sendLink": "Enviar enlace",
+  "@sendLink": {
+    "description": "Send link text"
+  },
+  "checkEmailTitle": "Revisa tu bandeja de entrada",
+  "@checkEmailTitle": {
+    "description": "Check email title"
+  },
+  "checkEmailBody": "Un enlace para restaurar tu contraseña ha sido enviado a {email}",
+  "@checkEmailBody": {
+    "description": "Check email body",
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "update": "Actualizar",
+  "@update": {
+    "description": "Update password button"
+  },
+  "secondRestorePasswordBody": "Debe incluir al menos 12 dígitos, un carácter especial, una letra mayúscula, una minúscula y un número.",
+  "@secondRestorePasswordBody": {
+    "description": "Second restore password body"
+  },
+  "petOwner": "Dueño de mascota",
+  "@petOwner": {
+    "description": "Pet owner"
+  },
+  "veterinarian": "Veterinario",
+  "@veterinarian": {
+    "description": "Veterinarian"
+  },
+  "myPets": "Mis mascotas",
+  "@myPets": {
+    "description": "My pets"
+  },
+  "topRated": "Mejor valorados",
+  "@topRated": {
+    "description": "Top rated"
+  },
+  "closeToYou": "Cerca de ti",
+  "@closeToYou": {
+    "description": "Close to you"
+  },
+  "discover": "Descubrir",
+  "@discover": {
+    "description": "Discover"
+  },
+  "favorites": "Favoritos",
+  "@favorites": {
+    "description": "Favorites"
+  },
+  "removeFromFavorites": "Eliminar de favoritos",
+  "@removeFromFavorites": {
+    "description": "Delete from favorites"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Cancel text"
+  },
+  "logout": "Cerrar sesión",
+  "@logout": {
+    "description": "Logout text"
+  },
+  "personalInformation": "Información personal",
+  "@personalInformation": {
+    "description": "Personal information text"
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "Profile text"
+  },
+  "details": "Detalles",
+  "@details": {
+    "description": "Details text"
+  },
+  "registerPet": "Registrar mascota",
+  "@registerPet": {
+    "description": "Register pet"
+  },
+  "next": "Siguiente",
+  "@next": {
+    "description": "Next"
+  },
+  "sex": "Sexo",
+  "@sex": {
+    "description": "Sex"
+  },
+  "specie": "Especie",
+  "@specie": {
+    "description": "Specie"
+  },
+  "breed": "Raza",
+  "@breed": {
+    "description": "Breed"
+  },
+  "save": "Guardar",
+  "@save": {
+    "description": "Save"
+  },
+  "castrated": "Castrado",
+  "@castrated": {
+    "description": "Castrated"
+  },
+  "yes": "Sí",
+  "@yes": {
+    "description": "Yes"
+  },
+  "dateOfBirth": "Fecha de nacimiento",
+  "@dateOfBirth": {
+    "description": "Date of birth"
+  },
+  "idCard": "Documento de identidad",
+  "@idCard": {
+    "description": "ID Card"
+  },
+  "address": "Dirección",
+  "@address": {
+    "description": "Address"
+  },
+  "telephoneNumber": "Número de teléfono",
+  "@telephoneNumber": {
+    "description": "Telephone Number"
+  },
+  "add": "Añadir...",
+  "@add": {
+    "description": "Add"
+  },
+  "editInfoScreenTitle": "Editar {value}",
+  "@editInfoScreenTitle": {
+    "description": "Edit information screen title",
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "home": "Inicio",
+  "@home": {
+    "description": "Home"
+  },
+  "search": "Buscar",
+  "@search": {
+    "description": "Search"
+  },
+  "notifications": "Notificaciones",
+  "@notifications": {
+    "description": "Notifications"
+  },
+  "canceledAction": "Acción cancelada",
+  "@canceledAction": {
+    "description": "Canceled action"
+  },
+  "canceledGoogleLogin": "Se canceló el inicio de sesión con Google.",
+  "@canceledGoogleLogin": {
+    "description": "Canceled google login"
+  },
+  "usedEmailTitle": "Correo en uso",
+  "@usedEmailTitle": {
+    "description": "Used email title"
+  },
+  "usedEmailBody": "El correo proporcionado ya se ha registrado. Intenta iniciar sesión o usar otro correo.",
+  "@usedEmailBody": {
+    "description": "Used email body"
+  },
+  "createdAccountTitle": "Cuenta creada",
+  "@createdAccountTitle": {
+    "description": "Created account title"
+  },
+  "createdAccountBody": "¡Cuenta creada de manera exitosa!",
+  "@createdAccountBody": {
+    "description": "Created account body"
+  },
+  "wrongCredentialsTitle": "Credenciales incorrectas",
+  "@wrongCredentialsTitle": {
+    "description": "Wrong credentials title"
+  },
+  "wrongCredentialsBody": "Las credenciales ingresadas no son correctas. Revise e intente nuevamente.",
+  "@wrongCredentialsBody": {
+    "description": "Wrong credentials body"
+  },
+  "serverFailedTitle": "Fallo en servidor",
+  "@serverFailedTitle": {
+    "description": "Server failed title"
+  },
+  "serverFailedBody": "Error en el servidor. Intenta luego, por favor.",
+  "@serverFailedBody": {
+    "description": "Server failed body"
+  },
+  "isRequired": "{value} es requerido",
+  "@isRequired": {
+    "description": "Is required text",
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "passwordMatch": "Las contraseñas no coinciden",
+  "@passwordMatch": {
+    "description": "Password do not match message"
+  },
+  "capitalLetterValidation": "Debe tener al menos una letra mayúscula",
+  "@capitalLetterValidation": {
+    "description": "Capital letter validation"
+  },
+  "lowercaseLetterValidation": "Debe tener al menos una letra minúscula",
+  "@lowercaseLetterValidation": {
+    "description": "Lowercase letter validation"
+  },
+  "numberValidation": "Debe tener al menos un número",
+  "@numberValidation": {
+    "description": "Number validation"
+  },
+  "specialCharValidation": "Debe tener al menos un caracter especial",
+  "@specialCharValidation": {
+    "description": "Special char validation"
+  },
+  "lengthValidation": "Debe tener al menos 12 caracteres",
+  "@lengthValidation": {
+    "description": "Length validation"
+  }
+}

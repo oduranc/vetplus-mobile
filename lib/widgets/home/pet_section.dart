@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
 import 'package:vetplus/themes/typography.dart';
-import 'package:vetplus/widgets/home/add_pet_button.dart';
+import 'package:vetplus/widgets/pets/add_pet_button.dart';
 
 class PetSection extends StatelessWidget {
   const PetSection({
@@ -30,7 +31,21 @@ class PetSection extends StatelessWidget {
             ),
           ],
         )
-      : const AddPetButton();
+      : AddPetButton(
+          foregroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Colors.white,
+          hasBorder: true,
+          action: () {
+            Navigator.pushNamed(context, FirstAddPetScreen.route);
+          },
+          miniIcon: Icons.add,
+          miniButtonStyle: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                Theme.of(context).colorScheme.primary),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+          ),
+          width: Responsive.isTablet(context) ? 78 : 65.sp,
+        );
 
   @override
   Widget build(BuildContext context) {

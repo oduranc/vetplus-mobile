@@ -19,7 +19,7 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
     return Column(
       children: <Widget>[
         CarouselSlider(
-          items: items.map((item) {
+          items: getItems(context).map((item) {
             return Builder(
               builder: (BuildContext context) {
                 return CarouselItem(
@@ -44,7 +44,7 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: items.asMap().entries.map((entry) {
+          children: getItems(context).asMap().entries.map((entry) {
             return GestureDetector(
               onTap: () => _controller.animateToPage(entry.key),
               child: Container(

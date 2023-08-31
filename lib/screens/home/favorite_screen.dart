@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
@@ -20,7 +21,7 @@ class FavoriteScreen extends StatelessWidget {
         vertical: isTablet ? 60 : 35.sp,
       ),
       appBar: AppBar(
-        title: Text('Favoritos'),
+        title: Text(AppLocalizations.of(context)!.favorites),
         centerTitle: false,
       ),
       body: SeparatedListView(
@@ -79,7 +80,6 @@ class FavoriteScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {},
-              child: Text('Eliminar de favoritos'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Theme.of(context).colorScheme.error,
@@ -87,12 +87,13 @@ class FavoriteScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.error,
                 ),
               ),
+              child: Text(AppLocalizations.of(context)!.removeFromFavorites),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancelar'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ],
         );

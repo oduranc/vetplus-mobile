@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/user_model.dart';
@@ -21,11 +22,15 @@ class PersonalInformationScreen extends StatelessWidget {
     final UserModel user = Provider.of<UserProvider>(context).user!;
 
     Map<String, String> editableFields = {
-      'Nombre': user.names,
-      'Apellido': user.surnames ?? 'Añadir...',
-      'Documento de identidad': user.document ?? 'Añadir...',
-      'Dirección': user.address ?? 'Añadir...',
-      'Número de teléfono': user.telephoneNumber ?? 'Añadir...'
+      AppLocalizations.of(context)!.nameText: user.names,
+      AppLocalizations.of(context)!.surnameText:
+          user.surnames ?? AppLocalizations.of(context)!.add,
+      AppLocalizations.of(context)!.idCard:
+          user.document ?? AppLocalizations.of(context)!.add,
+      AppLocalizations.of(context)!.address:
+          user.address ?? AppLocalizations.of(context)!.add,
+      AppLocalizations.of(context)!.telephoneNumber:
+          user.telephoneNumber ?? AppLocalizations.of(context)!.add
     };
 
     return SkeletonScreen(
@@ -34,7 +39,7 @@ class PersonalInformationScreen extends StatelessWidget {
         vertical: isTablet ? 60 : 35.sp,
       ),
       appBar: AppBar(
-        title: const Text('Información personal'),
+        title: Text(AppLocalizations.of(context)!.personalInformation),
         centerTitle: false,
       ),
       body: SeparatedListView(
@@ -81,8 +86,9 @@ class PersonalInformationScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return LongBottomSheet(
-          title: 'Editar ${editableFields.keys.elementAt(index).toLowerCase()}',
-          buttonText: 'Actualizar',
+          title: AppLocalizations.of(context)!.editInfoScreenTitle(
+              editableFields.keys.elementAt(index).toLowerCase()),
+          buttonText: AppLocalizations.of(context)!.update,
           onSubmit: () async {
             await _tryEditField(
                 user, editableFields, index, editFieldController, context);

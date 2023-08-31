@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
@@ -17,6 +18,8 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
@@ -37,7 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   onPressed: () {
                     _buildSignInModal(context, isTablet, false);
                   },
-                  child: const Text('Iniciar sesión'),
+                  child: Text(AppLocalizations.of(context)!.login),
                 ),
               ),
               SizedBox(
@@ -54,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     backgroundColor:
                         Theme.of(context).colorScheme.surfaceVariant,
                   ),
-                  child: const Text('Crear cuenta'),
+                  child: Text(AppLocalizations.of(context)!.register),
                 ),
               ),
             ],
@@ -86,11 +89,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   'assets/images/google-logo.png',
                   width: isTablet ? 20 : 20.sp,
                 ),
-                text: 'Continuar con Google',
+                text: AppLocalizations.of(context)!.googleButton,
                 backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
                 textColor: Theme.of(context).colorScheme.outline,
-                onPressed: () {
-                  trySignUpWithGoogle(context);
+                onPressed: () async {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  await trySignUpWithGoogle(context);
+                  setState(() {
+                    _isLoading = false;
+                  });
                 },
               ),
               SocialButton(
@@ -98,7 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Icons.email_outlined,
                   size: isTablet ? 20 : 20.sp,
                 ),
-                text: 'Continuar con Email',
+                text: AppLocalizations.of(context)!.emailButton,
                 backgroundColor: Colors.white,
                 textColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 hasBorder: true,

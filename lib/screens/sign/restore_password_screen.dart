@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
@@ -19,8 +20,8 @@ class RestorePasswordScreen extends StatelessWidget {
     final bool isTablet = Responsive.isTablet(context);
 
     return LongBottomSheet(
-      title: 'Restaurar Contraseña',
-      buttonText: 'Enviar enlace',
+      title: AppLocalizations.of(context)!.restorePasswordTitle,
+      buttonText: AppLocalizations.of(context)!.sendLink,
       onSubmit: () {
         _buildSnackBar(context, isTablet);
         Navigator.pop(context);
@@ -28,14 +29,14 @@ class RestorePasswordScreen extends StatelessWidget {
       },
       children: <Widget>[
         Text(
-          'Ingresa tu dirección de correo electrónico asociada a tu cuenta para que puedas restablecer tu contraseña',
+          AppLocalizations.of(context)!.restorePasswordBody,
           style: getBottomSheetBodyStyle(isTablet),
           textAlign: TextAlign.justify,
         ),
         CustomFormField(
           keyboardType: TextInputType.emailAddress,
           controller: emailController,
-          labelText: 'Correo',
+          labelText: AppLocalizations.of(context)!.emailText,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return '';
@@ -72,11 +73,12 @@ class RestorePasswordScreen extends StatelessWidget {
                 runSpacing: 4.sp,
                 children: <Widget>[
                   Text(
-                    'Revisa tu bandeja de entrada',
+                    AppLocalizations.of(context)!.checkEmailTitle,
                     style: getSnackBarTitleStyle(isTablet),
                   ),
                   Text(
-                    'Un enlace para restaurar tu contraseña ha sido enviado a ${emailController.text}',
+                    AppLocalizations.of(context)!
+                        .checkEmailBody(emailController.text),
                     softWrap: true,
                     style: getSnackBarBodyStyle(isTablet),
                   ),
@@ -98,30 +100,32 @@ class RestorePasswordScreen extends StatelessWidget {
       isScrollControlled: true,
       builder: (context) {
         return LongBottomSheet(
-          title: 'Restaurar Contraseña',
-          buttonText: 'Actualizar',
+          title: AppLocalizations.of(context)!.restorePasswordTitle,
+          buttonText: AppLocalizations.of(context)!.update,
           onSubmit: () {
             Navigator.pop(context);
           },
           children: <Widget>[
             Text(
-              'Debe incluir al menos 12 dígitos, un carácter especial, una letra mayúscula, una minúscula y un número.',
+              AppLocalizations.of(context)!.secondRestorePasswordBody,
               style: getBottomSheetBodyStyle(isTablet),
               textAlign: TextAlign.justify,
             ),
             CustomFormField(
               controller: passwordController,
-              labelText: 'Contraseña',
-              keyboardType: TextInputType.visiblePassword,
-              isPasswordField: true,
-              validator: validatePassword,
-            ),
-            CustomFormField(
-              labelText: 'Confirmar contraseña',
+              labelText: AppLocalizations.of(context)!.password,
               keyboardType: TextInputType.visiblePassword,
               isPasswordField: true,
               validator: (value) {
-                return validatePasswordConfirmation(value, passwordController);
+                return validatePassword(value, context);
+              },
+            ),
+            CustomFormField(
+              labelText: AppLocalizations.of(context)!.confirmPassword,
+              keyboardType: TextInputType.visiblePassword,
+              isPasswordField: true,
+              validator: (value) {
+                return validatePasswordConfirmation(value, passwordController, context);
               },
             ),
           ],

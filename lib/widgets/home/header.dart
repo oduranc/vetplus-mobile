@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/user_model.dart';
@@ -42,7 +43,9 @@ class Header extends StatelessWidget {
                 ),
                 SizedBox(height: isTablet ? 4 : 4.sp),
                 Text(
-                  user.role == 'PET_OWNER' ? 'Dueño de mascota' : 'Veterinario',
+                  user.role == 'PET_OWNER'
+                      ? AppLocalizations.of(context)!.petOwner
+                      : AppLocalizations.of(context)!.veterinarian,
                   style: getSnackBarBodyStyle(isTablet),
                 ),
               ],

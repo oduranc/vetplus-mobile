@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -17,29 +18,29 @@ class HomeScreen extends StatelessWidget {
       providedPadding: EdgeInsets.only(
         left: isTablet ? 37 : 24.sp,
       ),
-      body: const Wrap(
+      body: Wrap(
         runSpacing: 35,
         children: [
-          Header(),
+          const Header(),
           PetSection(
-            itemCount: 2,
-            sectionTitle: 'Mis mascotas',
+            itemCount: 1,
+            sectionTitle: AppLocalizations.of(context)!.myPets,
           ),
           VetSection(
             itemCount: 4,
-            sectionTitle: 'Mejor valorados',
+            sectionTitle: AppLocalizations.of(context)!.topRated,
           ),
           VetSection(
             itemCount: 4,
-            sectionTitle: 'Cerca de ti',
+            sectionTitle: AppLocalizations.of(context)!.closeToYou,
           ),
           VetSection(
             itemCount: 4,
-            sectionTitle: 'Descubrir',
+            sectionTitle: AppLocalizations.of(context)!.discover,
           ),
           VetSection(
             itemCount: 4,
-            sectionTitle: 'Mejor valorados',
+            sectionTitle: AppLocalizations.of(context)!.topRated,
           ),
         ],
       ),

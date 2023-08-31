@@ -1,43 +1,81 @@
-String? validateEmail(value) {
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+String? validateEmail(value, context) {
   if (value == null || value.isEmpty) {
-    return 'Correo es requerido';
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.emailText);
   }
   return null;
 }
 
-String? validateLastname(value) {
+String? validateLastname(value, context) {
   if (value == null || value.isEmpty) {
-    return 'Apellido es requerido';
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.surnameText);
   }
   return null;
 }
 
-String? validateName(value) {
+String? validateName(value, context) {
   if (value == null || value.isEmpty) {
-    return 'Nombre es requerido';
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.nameText);
   }
   return null;
 }
 
-String? validatePassword(value) {
+String? validateSex(value, context) {
+  if (value == null || value.isEmpty) {
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.sex);
+  }
+  return null;
+}
+
+String? validateSpecie(value, context) {
+  if (value == null || value.isEmpty) {
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.specie);
+  }
+  return null;
+}
+
+String? validateBreed(value, context) {
+  if (value == null || value.isEmpty) {
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.breed);
+  }
+  return null;
+}
+
+String? validateCastrated(value, context) {
+  if (value == null || value.isEmpty) {
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.castrated);
+  }
+  return null;
+}
+
+String? validatePassword(value, context) {
   String response = '';
   if (value == null || value.isEmpty) {
-    response += 'Contraseña es requerida\n';
+    response +=
+        '${AppLocalizations.of(context)!.isRequired(AppLocalizations.of(context)!.password)}\n';
   }
   if (!RegExp(r'[A-Z]').hasMatch(value!)) {
-    response += 'Debe tener al menos una letra mayúscula\n';
+    response += '${AppLocalizations.of(context)!.capitalLetterValidation}\n';
   }
   if (!RegExp(r'[a-z]').hasMatch(value)) {
-    response += 'Debe tener al menos una letra minúscula\n';
+    response += '${AppLocalizations.of(context)!.lowercaseLetterValidation}\n';
   }
   if (!RegExp(r'[0-9]').hasMatch(value)) {
-    response += 'Debe tener al menos un número\n';
+    response += '${AppLocalizations.of(context)!.numberValidation}\n';
   }
   if (!RegExp(r'[!@#\\$&*~]').hasMatch(value)) {
-    response += 'Debe tener al menos un caracter especial\n';
+    response += '${AppLocalizations.of(context)!.specialCharValidation}\n';
   }
   if (value.length < 12) {
-    response += 'Debe tener al menos 12 caracteres';
+    response += AppLocalizations.of(context)!.lengthValidation;
   }
   if (response != '') {
     return response;
@@ -45,9 +83,9 @@ String? validatePassword(value) {
   return null;
 }
 
-String? validatePasswordConfirmation(value, passwordController) {
+String? validatePasswordConfirmation(value, passwordController, context) {
   if (value != passwordController.text) {
-    return 'Las contraseñas no coinciden';
+    return AppLocalizations.of(context)!.passwordMatch;
   }
   return null;
 }

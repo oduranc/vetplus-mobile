@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/sign/restore_password_screen.dart';
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           FormTemplate(
             buttonChild: _isLoading
                 ? const CircularProgressIndicator(color: Colors.white)
-                : const Text('Continuar'),
+                : Text(AppLocalizations.of(context)!.continueText),
             onSubmit: _tryLogin,
             padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
             children: [
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               CustomFormField(
-                labelText: 'Correo',
+                labelText: AppLocalizations.of(context)!.emailText,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -67,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: WrapAlignment.end,
                 children: <Widget>[
                   CustomFormField(
-                    labelText: 'Contraseña',
+                    labelText: AppLocalizations.of(context)!.password,
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     isPasswordField: true,
@@ -77,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildRestorePasswordModal(context, isTablet);
                     },
                     child: Text(
-                      '¿Has olvidado tu contraseña?',
+                      AppLocalizations.of(context)!.forgotPassword,
                       style: getLinkTextStyle(isTablet),
                     ),
                   ),

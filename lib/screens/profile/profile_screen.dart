@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/profile_details_dto.dart';
@@ -16,12 +17,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
     final UserModel? user = Provider.of<UserProvider>(context).user;
+    final items = getItems(context);
 
     if (user == null) {
       return const Center(child: CircularProgressIndicator());
     } else {
       return SkeletonScreen(
-        appBar: AppBar(title: const Text('Perfil')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.profile)),
         body: Column(
           children: [
             Padding(
@@ -32,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                 radius: isTablet ? 84 : 70.sp,
                 backgroundImage: user.image != null
                     ? NetworkImage(user.image!)
-                    : AssetImage('assets/images/user.png') as ImageProvider,
+                    : const AssetImage('assets/images/user.png') as ImageProvider,
               ),
             ),
             if (!isTablet)
@@ -40,7 +42,8 @@ class ProfileScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 15.sp),
-                  child: Text('Detalles', style: getSectionTitle(isTablet)),
+                  child: Text(AppLocalizations.of(context)!.details,
+                      style: getSectionTitle(isTablet)),
                 ),
               ),
             SeparatedListView(
