@@ -295,5 +295,27 @@
   "lengthValidation": "Debe tener al menos 12 caracteres",
   "@lengthValidation": {
     "description": "Length validation"
+  },
+  "successEditDialogTitle": "Campo actualizado",
+  "@successEditDialogTitle": {
+    "description": "Success edit dialog title"
+  },
+  "successEditDialogBody": "{field} actualizado con éxito",
+  "@successEditDialogBody": {
+    "description": "Success edit dialog body",
+    "placeholders": {
+      "field": {}
+    }
+  },
+  "errorEditDialogTitle": "Error",
+  "@errorEditDialogTitle": {
+    "description": "Error edit dialog title"
+  },
+  "errorEditDialogBody": "Error al actualizar {field}. Intente de nuevo luego.",
+  "@errorEditDialogBody": {
+    "description": "Error edit dialog body",
+    "placeholders": {
+      "field": {}
+    }
   }
 }

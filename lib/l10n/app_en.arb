@@ -70,5 +70,9 @@
   "lowercaseLetterValidation": "Must have at least one lowercase letter",
   "numberValidation": "Must have at least one number",
   "specialCharValidation": "Must have at least one special character",
-  "lengthValidation": "Must be at least 12 characters"
+  "lengthValidation": "Must be at least 12 characters",
+  "successEditDialogTitle": "Field updated",
+  "successEditDialogBody": "{field} updated successfully",
+  "errorEditDialogTitle": "Error",
+  "errorEditDialogBody": "Error updating {field}. Try again later."
 }

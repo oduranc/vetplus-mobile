@@ -8,11 +8,12 @@ class LongBottomSheet extends StatelessWidget {
   const LongBottomSheet({
     super.key,
     required this.title,
-    required this.buttonText,
+    required this.buttonChild,
     required this.onSubmit,
     required this.children,
   });
-  final String title, buttonText;
+  final String title;
+  final Widget buttonChild;
   final VoidCallback onSubmit;
   final List<Widget> children;
 
@@ -58,7 +59,7 @@ class LongBottomSheet extends StatelessWidget {
                 const Divider(height: 0),
                 FormTemplate(
                   onSubmit: onSubmit,
-                  buttonChild: Text(buttonText),
+                  buttonChild: buttonChild,
                   padding: EdgeInsets.only(
                     top: isTablet ? 43 : 30.sp,
                     left: isTablet ? 37 : 24.sp,

@@ -7,30 +7,37 @@ import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/user_utils.dart';
+import 'package:vetplus/widgets/common/custom_dialog.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
-class PersonalInformationScreen extends StatelessWidget {
+class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
   static const route = 'personal-information';
+
+  @override
+  State<PersonalInformationScreen> createState() =>
+      _PersonalInformationScreenState();
+}
+
+class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     bool isTablet = Responsive.isTablet(context);
     final UserModel user = Provider.of<UserProvider>(context).user!;
+    final appLocalizations = AppLocalizations.of(context)!;
 
     Map<String, String> editableFields = {
-      AppLocalizations.of(context)!.nameText: user.names,
-      AppLocalizations.of(context)!.surnameText:
-          user.surnames ?? AppLocalizations.of(context)!.add,
-      AppLocalizations.of(context)!.idCard:
-          user.document ?? AppLocalizations.of(context)!.add,
-      AppLocalizations.of(context)!.address:
-          user.address ?? AppLocalizations.of(context)!.add,
-      AppLocalizations.of(context)!.telephoneNumber:
-          user.telephoneNumber ?? AppLocalizations.of(context)!.add
+      appLocalizations.nameText: user.names,
+      appLocalizations.surnameText: user.surnames ?? appLocalizations.add,
+      appLocalizations.idCard: user.document ?? appLocalizations.add,
+      appLocalizations.address: user.address ?? appLocalizations.add,
+      appLocalizations.telephoneNumber:
+          user.telephoneNumber ?? appLocalizations.add
     };
 
     return SkeletonScreen(
@@ -39,7 +46,7 @@ class PersonalInformationScreen extends StatelessWidget {
         vertical: isTablet ? 60 : 35.sp,
       ),
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.personalInformation),
+        title: Text(appLocalizations.personalInformation),
         centerTitle: false,
       ),
       body: SeparatedListView(
@@ -49,7 +56,8 @@ class PersonalInformationScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () {
-              _buildEditInfoScreen(context, editableFields, index, user);
+              _buildEditInfoScreen(
+                  context, editableFields, index, user, appLocalizations);
             },
             contentPadding: EdgeInsets.zero,
             title: Column(
@@ -78,29 +86,45 @@ class PersonalInformationScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> _buildEditInfoScreen(BuildContext context,
-      Map<String, String> editableFields, int index, UserModel user) {
+  Future<dynamic> _buildEditInfoScreen(
+      BuildContext context,
+      Map<String, String> editableFields,
+      int index,
+      UserModel user,
+      AppLocalizations appLocalizations) {
     TextEditingController editFieldController = TextEditingController();
+    editFieldController.text = editableFields.values.elementAt(index);
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return LongBottomSheet(
-          title: AppLocalizations.of(context)!.editInfoScreenTitle(
-              editableFields.keys.elementAt(index).toLowerCase()),
-          buttonText: AppLocalizations.of(context)!.update,
-          onSubmit: () async {
-            await _tryEditField(
-                user, editableFields, index, editFieldController, context);
-          },
-          children: [
-            CustomFormField(
-              controller: editFieldController,
-              keyboardType: TextInputType.text,
-              labelText: editableFields.keys.elementAt(index),
-            )
-          ],
-        );
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return LongBottomSheet(
+            title: appLocalizations.editInfoScreenTitle(
+                editableFields.keys.elementAt(index).toLowerCase()),
+            buttonChild: _isLoading
+                ? const CircularProgressIndicator(color: Colors.white)
+                : Text(appLocalizations.update),
+            onSubmit: () async {
+              setState(() {
+                _isLoading = true;
+              });
+              await _tryEditField(user, editableFields, index,
+                  editFieldController, context, appLocalizations);
+              setState(() {
+                _isLoading = false;
+              });
+            },
+            children: [
+              CustomFormField(
+                controller: editFieldController,
+                keyboardType: TextInputType.text,
+                labelText: editableFields.keys.elementAt(index),
+              )
+            ],
+          );
+        });
       },
     );
   }
@@ -110,7 +134,8 @@ class PersonalInformationScreen extends StatelessWidget {
       Map<String, String> editableFields,
       int index,
       TextEditingController editFieldController,
-      BuildContext context) async {
+      BuildContext context,
+      AppLocalizations appLocalizations) async {
     try {
       Map<String, String?> values = {
         'names': user.names,
@@ -122,22 +147,45 @@ class PersonalInformationScreen extends StatelessWidget {
       };
       final target = editableFields.keys.elementAt(index);
       Map<String, String> targetToKey = {
-        'Nombre': 'names',
-        'Apellido': 'surnames',
-        'Documento de identidad': 'document',
-        'Dirección': 'address',
-        'Número de teléfono': 'telephone_number',
+        appLocalizations.nameText: 'names',
+        appLocalizations.surnameText: 'surnames',
+        appLocalizations.idCard: 'document',
+        appLocalizations.address: 'address',
+        appLocalizations.telephoneNumber: 'telephone_number',
       };
       if (targetToKey.containsKey(target)) {
         values[targetToKey[target]!] = editFieldController.text;
       }
-      print(Provider.of<UserProvider>(context, listen: false).accessToken!);
-      final result = await editUserProfile(
+      await editUserProfile(
           Provider.of<UserProvider>(context, listen: false).accessToken!,
-          values);
-      print(result);
+          values,
+          context);
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return CustomDialog(
+                title: appLocalizations.successEditDialogTitle,
+                body: appLocalizations.successEditDialogBody(
+                    editableFields.keys.elementAt(index)),
+                color: Theme.of(context).colorScheme.primary,
+                icon: Icons.check_circle_outline);
+          },
+        );
+      }
     } catch (e) {
-      print(e);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            title: appLocalizations.errorEditDialogTitle,
+            body: appLocalizations
+                .errorEditDialogBody(editableFields.keys.elementAt(index)),
+            color: Theme.of(context).colorScheme.error,
+            icon: Icons.error_outline,
+          );
+        },
+      );
     }
   }
 }
