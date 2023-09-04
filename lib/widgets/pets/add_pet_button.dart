@@ -13,6 +13,7 @@ class AddPetButton extends StatelessWidget {
     required this.miniIcon,
     required this.miniButtonStyle,
     required this.width,
+    this.image,
   });
   final Color foregroundColor, backgroundColor;
   final bool hasBorder;
@@ -20,6 +21,7 @@ class AddPetButton extends StatelessWidget {
   final IconData miniIcon;
   final ButtonStyle miniButtonStyle;
   final double width;
+  final ImageProvider? image;
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +61,13 @@ class AddPetButton extends StatelessWidget {
                             : (width / 2).sp,
                         backgroundColor: backgroundColor,
                         foregroundColor: foregroundColor,
-                        child: Icon(Icons.pets,
-                            size: Responsive.isTablet(context)
-                                ? (width / 2) + 3.5
-                                : (width / 2).sp),
+                        backgroundImage: image,
+                        child: image == null
+                            ? Icon(Icons.pets,
+                                size: Responsive.isTablet(context)
+                                    ? (width / 2) + 3.5
+                                    : (width / 2).sp)
+                            : null,
                       ),
                     ),
             ],

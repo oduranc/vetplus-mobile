@@ -47,6 +47,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  syncfusion_flutter_datepicker: ^22.2.11
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

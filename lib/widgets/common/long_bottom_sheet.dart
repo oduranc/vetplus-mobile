@@ -11,11 +11,15 @@ class LongBottomSheet extends StatelessWidget {
     required this.buttonChild,
     required this.onSubmit,
     required this.children,
+    this.formRunSpacing,
+    this.btnActive = false,
   });
   final String title;
   final Widget buttonChild;
   final VoidCallback onSubmit;
   final List<Widget> children;
+  final double? formRunSpacing;
+  final bool btnActive;
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +64,13 @@ class LongBottomSheet extends StatelessWidget {
                 FormTemplate(
                   onSubmit: onSubmit,
                   buttonChild: buttonChild,
+                  formRunSpacing: formRunSpacing,
+                  btnActive: btnActive,
                   padding: EdgeInsets.only(
                     top: isTablet ? 43 : 30.sp,
                     left: isTablet ? 37 : 24.sp,
                     right: isTablet ? 37 : 24.sp,
+                    bottom: isTablet ? 37 : 24.sp,
                   ),
                   children: children,
                 ),

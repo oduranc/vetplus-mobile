@@ -8,12 +8,16 @@ class FormTemplate extends StatefulWidget {
     required this.children,
     required this.onSubmit,
     required this.buttonChild,
+    this.formRunSpacing,
     this.padding = const EdgeInsets.symmetric(vertical: 15),
+    this.btnActive = false,
   });
   final List<Widget> children;
   final VoidCallback onSubmit;
   final Widget buttonChild;
   final EdgeInsetsGeometry padding;
+  final double? formRunSpacing;
+  final bool btnActive;
 
   @override
   State<FormTemplate> createState() => _FormTemplateState();
@@ -21,7 +25,13 @@ class FormTemplate extends StatefulWidget {
 
 class _FormTemplateState extends State<FormTemplate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _btnActive = false;
+  late bool _btnActive;
+
+  @override
+  void initState() {
+    _btnActive = widget.btnActive;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +48,7 @@ class _FormTemplateState extends State<FormTemplate> {
       child: Padding(
         padding: widget.padding,
         child: Wrap(
-          runSpacing: isTablet ? 46 : 45.sp,
+          runSpacing: widget.formRunSpacing ?? (isTablet ? 46 : 45.sp),
           children: [
             ...widget.children,
             Padding(
