@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    getDeviceLocale();
     super.initState();
   }
 
