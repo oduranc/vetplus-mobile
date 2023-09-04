@@ -63,7 +63,8 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                                     await pickImage(ImageSource.gallery);
                                 setState(() {});
                               },
-                              child: Text('Seleccionar desde galería'),
+                              child: Text(AppLocalizations.of(context)!
+                                  .selectFromGallery),
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -76,7 +77,8 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                                     await pickImage(ImageSource.camera);
                                 setState(() {});
                               },
-                              child: Text('Tomar con la cámara'),
+                              child: Text(
+                                  AppLocalizations.of(context)!.takeWithCamera),
                             ),
                           ],
                         );

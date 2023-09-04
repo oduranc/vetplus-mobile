@@ -74,5 +74,7 @@
   "successEditDialogTitle": "Field updated",
   "successEditDialogBody": "{field} updated successfully",
   "errorEditDialogTitle": "Error",
-  "errorEditDialogBody": "Error updating {field}. Try again later."
+  "errorEditDialogBody": "Error updating {field}. Try again later.",
+  "selectFromGallery": "Select from gallery",
+  "takeWithCamera": "Take with camera"
 }

@@ -317,5 +317,13 @@
     "placeholders": {
       "field": {}
     }
+  },
+  "selectFromGallery": "Seleccionar desde galería",
+  "@selectFromGallery": {
+    "description": "Select from gallery"
+  },
+  "takeWithCamera": "Tomar con la cámara",
+  "@takeWithCamera": {
+    "description": "Take with camera"
   }
 }
