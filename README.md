@@ -18,3 +18,15 @@ $ flutter pub get
 2.Then, select your flutter device. In vs code with "CTRL + SHIFT + P".
 
 3. Hit run inside lib/main.dart file.
+
+## Run DEV environment
+
+```bash
+$ docker compose -f docker-compose-dev.yml up -d
+```
+
+## Run QA environment
+
+```bash
+$ docker compose -f docker-compose-qa.yml up -d
+```
