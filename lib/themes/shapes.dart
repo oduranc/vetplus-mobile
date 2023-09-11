@@ -3,6 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/themes/colors.dart';
 import 'package:vetplus/themes/typography.dart';
 
+TextButtonThemeData textButtonTheme(bool isTablet) => TextButtonThemeData(
+        style: TextButton.styleFrom(
+      minimumSize: const Size.fromHeight(0),
+      padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      textStyle: getButtonBodyStyle(isTablet),
+    ));
+
 ElevatedButtonThemeData elevatedButtonTheme(bool isTablet) =>
     ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 
-class AddPetButton extends StatelessWidget {
-  const AddPetButton({
+class AddImageButton extends StatelessWidget {
+  const AddImageButton({
     super.key,
     required this.foregroundColor,
     required this.backgroundColor,
     this.hasBorder = false,
     required this.action,
+    required this.primaryIcon,
     required this.miniIcon,
     required this.miniButtonStyle,
     required this.width,
@@ -18,7 +19,7 @@ class AddPetButton extends StatelessWidget {
   final Color foregroundColor, backgroundColor;
   final bool hasBorder;
   final VoidCallback action;
-  final IconData miniIcon;
+  final IconData primaryIcon, miniIcon;
   final ButtonStyle miniButtonStyle;
   final double width;
   final ImageProvider? image;
@@ -46,7 +47,7 @@ class AddPetButton extends StatelessWidget {
                               : (width / 2).sp,
                           backgroundColor: backgroundColor,
                           foregroundColor: foregroundColor,
-                          child: Icon(Icons.pets,
+                          child: Icon(primaryIcon,
                               size: Responsive.isTablet(context)
                                   ? (width / 2) + 3.5
                                   : (width / 2).sp),
@@ -63,7 +64,7 @@ class AddPetButton extends StatelessWidget {
                         foregroundColor: foregroundColor,
                         backgroundImage: image,
                         child: image == null
-                            ? Icon(Icons.pets,
+                            ? Icon(primaryIcon,
                                 size: Responsive.isTablet(context)
                                     ? (width / 2) + 3.5
                                     : (width / 2).sp)

@@ -76,5 +76,9 @@
   "errorEditDialogTitle": "Error",
   "errorEditDialogBody": "Error updating {field}. Try again later.",
   "selectFromGallery": "Select from gallery",
-  "takeWithCamera": "Take with camera"
+  "takeWithCamera": "Take with camera",
+  "skipForNow": "Skip for now",
+  "accessDeniedTitle": "Access denied",
+  "accessDeniedBody": "This feature is only available with an user account",
+  "backToWelcome": "Go back to welcome screen"
 }

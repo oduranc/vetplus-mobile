@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:vetplus/models/user_model.dart';
-import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/themes/typography.dart';
 
 class Header extends StatelessWidget {
+  final UserModel user;
   const Header({
     super.key,
+    required this.user,
   });
 
   @override
   Widget build(BuildContext context) {
     final isTablet = Responsive.isTablet(context);
-    final UserModel user = Provider.of<UserProvider>(context).user!;
 
     return Padding(
       padding: EdgeInsets.only(

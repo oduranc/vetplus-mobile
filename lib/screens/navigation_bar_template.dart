@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:vetplus/models/user_model.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/home_screen.dart';
 import 'package:vetplus/screens/notifications/notifications_screen.dart';
 import 'package:vetplus/screens/pets/scan_screen.dart';
 import 'package:vetplus/screens/profile/profile_screen.dart';
 import 'package:vetplus/screens/search/search_screen.dart';
+import 'package:vetplus/screens/sign/welcome_screen.dart';
+import 'package:vetplus/widgets/common/custom_dialog.dart';
 
 class NavigationBarTemplate extends StatefulWidget {
   const NavigationBarTemplate({super.key});
@@ -18,17 +23,19 @@ class NavigationBarTemplate extends StatefulWidget {
 
 class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
   int _currentIndex = 0;
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const SearchScreen(),
-    const ScanScreen(),
-    const NotificationsScreen(),
-    const ProfileScreen()
-  ];
 
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
+    final UserModel? user = Provider.of<UserProvider>(context).user;
+
+    final List<Widget> screens = [
+      HomeScreen(user: user),
+      const SearchScreen(),
+      const ScanScreen(),
+      const NotificationsScreen(),
+      const ProfileScreen()
+    ];
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(
@@ -41,7 +48,7 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
           NavigationDestination(
               icon: const Icon(Icons.search),
               label: AppLocalizations.of(context)!.search),
-          _buildScanDestination(isTablet),
+          _buildScanDestination(isTablet, user),
           NavigationDestination(
             icon: const Icon(Icons.notifications_none_rounded),
             label: AppLocalizations.of(context)!.notifications,
@@ -55,17 +62,25 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
         ],
         selectedIndex: _currentIndex,
         onDestinationSelected: (int index) {
-          _changeScreenIndex(index);
+          if (user == null && index > 1) {
+            _buildUnauthorizedDialog(context);
+          } else {
+            _changeScreenIndex(index);
+          }
         },
       ),
-      body: _screens[_currentIndex],
+      body: screens[_currentIndex],
     );
   }
 
-  Widget _buildScanDestination(bool isTablet) {
+  Widget _buildScanDestination(bool isTablet, UserModel? user) {
     return GestureDetector(
       onTap: () {
-        _changeScreenIndex(2);
+        if (user == null) {
+          _buildUnauthorizedDialog(context);
+        } else {
+          _changeScreenIndex(2);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -84,5 +99,28 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  Future<dynamic> _buildUnauthorizedDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialog(
+          title: AppLocalizations.of(context)!.accessDeniedTitle,
+          body: AppLocalizations.of(context)!.accessDeniedBody,
+          color: Theme.of(context).colorScheme.primary,
+          icon: Icons.error_outline_outlined,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, WelcomeScreen.route, (route) => false);
+              },
+              child: Text(AppLocalizations.of(context)!.backToWelcome),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

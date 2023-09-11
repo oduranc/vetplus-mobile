@@ -7,6 +7,7 @@ ThemeData buildAppTheme(bool isTablet) {
     useMaterial3: true,
     colorScheme: lightColorScheme,
     elevatedButtonTheme: elevatedButtonTheme(isTablet),
+    textButtonTheme: textButtonTheme(isTablet),
     inputDecorationTheme: inputDecorationTheme(isTablet),
     appBarTheme: appBarTheme(isTablet),
     dividerColor: const Color(0xFFDCDCDD),

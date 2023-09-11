@@ -4,21 +4,25 @@ import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
 
 class CustomDialog extends StatelessWidget {
-  CustomDialog(
-      {super.key,
-      required this.title,
-      required this.body,
-      required this.color,
-      required this.icon});
+  CustomDialog({
+    super.key,
+    required this.title,
+    required this.body,
+    required this.color,
+    required this.icon,
+    this.actions,
+  });
   final String title, body;
   final Color color;
   final IconData icon;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
 
     return AlertDialog(
+      actions: actions,
       title: Text(title,
           style: getBottomSheetTitleStyle(isTablet),
           textAlign: TextAlign.center),

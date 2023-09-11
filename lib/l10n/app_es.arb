@@ -325,5 +325,21 @@
   "takeWithCamera": "Tomar con la cámara",
   "@takeWithCamera": {
     "description": "Take with camera"
+  },
+  "skipForNow": "Saltar por ahora",
+  "@skipForNow": {
+    "description": "Skip for now"
+  },
+  "accessDeniedTitle": "Accesso restringido",
+  "@accessDeniedTitle": {
+    "description": "Access denied title"
+  },
+  "accessDeniedBody": "Esta funcionalidad solo está disponible para usuarios registrados",
+  "@accessDeniedBody": {
+    "description": "Access denied body"
+  },
+  "backToWelcome": "Volver a pantalla de bienvenida",
+  "@backToWelcome": {
+    "description": "Back to welcome screen"
   }
 }

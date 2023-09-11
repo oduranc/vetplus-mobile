@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/screens/sign/register_screen.dart';
 import 'package:vetplus/utils/sign_utils.dart';
@@ -33,32 +34,44 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             height: MediaQuery.of(context).size.height * 0.0774,
           ),
           const WelcomeCarousel(),
-          Row(
+          Column(
             children: <Widget>[
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    _buildSignInModal(context, isTablet, false);
-                  },
-                  child: Text(AppLocalizations.of(context)!.login),
-                ),
-              ),
-              SizedBox(
-                width: isTablet ? 60 : 20,
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    _buildSignInModal(context, isTablet, true);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onSurfaceVariant,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceVariant,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _buildSignInModal(context, isTablet, false);
+                      },
+                      child: Text(AppLocalizations.of(context)!.login),
+                    ),
                   ),
-                  child: Text(AppLocalizations.of(context)!.register),
-                ),
+                  SizedBox(
+                    width: isTablet ? 60 : 20,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _buildSignInModal(context, isTablet, true);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onSurfaceVariant,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.surfaceVariant,
+                      ),
+                      child: Text(AppLocalizations.of(context)!.register),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, NavigationBarTemplate.route, (route) => false);
+                },
+                child: Text(AppLocalizations.of(context)!.skipForNow),
               ),
             ],
           ),
@@ -90,8 +103,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   width: isTablet ? 20 : 20.sp,
                 ),
                 text: AppLocalizations.of(context)!.googleButton,
-                backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                textColor: Theme.of(context).colorScheme.outline,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                textColor: Colors.white,
                 onPressed: () async {
                   setState(() {
                     _isLoading = true;
