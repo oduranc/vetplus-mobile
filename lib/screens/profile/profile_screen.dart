@@ -1,17 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/profile_details_dto.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/image_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
+import 'package:vetplus/widgets/home/add_image_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +41,31 @@ class ProfileScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                   top: isTablet ? 114 : 43.sp, bottom: isTablet ? 166 : 55.sp),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                radius: isTablet ? 84 : 70.sp,
-                backgroundImage: user.image != null
-                    ? NetworkImage(user.image!)
-                    : const AssetImage('assets/images/user.png') as ImageProvider,
+              child: AddImageButton(
+                primaryIcon: Icons.person,
+                image: user.image != null ? NetworkImage(user.image!) : null,
+                foregroundColor: Colors.black,
+                backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+                action: () {
+                  buildPickImageModal(
+                    context,
+                    () async {
+                      _selectedImage = await pickImage(ImageSource.gallery);
+                      setState(() {});
+                    },
+                    () async {
+                      _selectedImage = await pickImage(ImageSource.camera);
+                      setState(() {});
+                    },
+                  );
+                },
+                miniIcon: Icons.camera_alt,
+                miniButtonStyle: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xFFE8E8E8)),
+                  foregroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.onInverseSurface),
+                ),
+                width: (isTablet ? 84 : 70.sp) * 2,
               ),
             ),
             if (!isTablet)

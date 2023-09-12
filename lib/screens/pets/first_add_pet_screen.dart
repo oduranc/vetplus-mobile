@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:vetplus/models/breed_model.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
+import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/utils/image_utils.dart';
 import 'package:vetplus/utils/validation_utils.dart';
-import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/read_only_form_field.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
-import 'package:vetplus/widgets/pets/add_pet_button.dart';
+import 'package:vetplus/widgets/home/add_image_button.dart';
 
 class FirstAddPetScreen extends StatefulWidget {
   const FirstAddPetScreen({super.key});
@@ -25,8 +28,11 @@ class FirstAddPetScreen extends StatefulWidget {
 }
 
 class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
-  String? breed;
-  TextEditingController breedController = TextEditingController();
+  String? _sex;
+  int? _specie;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _breedController = TextEditingController();
+  BreedModel? _selectedBreed;
   File? _selectedImage;
 
   @override
@@ -42,46 +48,33 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
         children: [
           FormTemplate(
             onSubmit: () {
-              Navigator.pushNamed(context, SecondAddPetScreen.route);
+              Navigator.pushNamed(context, SecondAddPetScreen.route,
+                  arguments: [
+                    _selectedImage,
+                    _nameController.text,
+                    _sex,
+                    _specie,
+                    _selectedBreed!.id
+                  ]);
             },
             buttonChild: Text(AppLocalizations.of(context)!.next),
             children: [
               Align(
                 alignment: Alignment.center,
-                child: AddPetButton(
+                child: AddImageButton(
+                  primaryIcon: Icons.pets,
                   foregroundColor: Color(0xFFFBFBFB),
                   backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                   action: () async {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return ButtonsBottomSheet(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                _selectedImage =
-                                    await pickImage(ImageSource.gallery);
-                                setState(() {});
-                              },
-                              child: Text(AppLocalizations.of(context)!
-                                  .selectFromGallery),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                side: const BorderSide(color: Colors.black),
-                              ),
-                              onPressed: () async {
-                                _selectedImage =
-                                    await pickImage(ImageSource.camera);
-                                setState(() {});
-                              },
-                              child: Text(
-                                  AppLocalizations.of(context)!.takeWithCamera),
-                            ),
-                          ],
-                        );
+                    buildPickImageModal(
+                      context,
+                      () async {
+                        _selectedImage = await pickImage(ImageSource.gallery);
+                        setState(() {});
+                      },
+                      () async {
+                        _selectedImage = await pickImage(ImageSource.camera);
+                        setState(() {});
                       },
                     );
                   },
@@ -101,6 +94,7 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
               CustomFormField(
                 keyboardType: TextInputType.name,
                 labelText: AppLocalizations.of(context)!.nameText,
+                controller: _nameController,
                 validator: (value) {
                   return validateName(value, context);
                 },
@@ -111,17 +105,19 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                 },
                 decoration: InputDecoration(
                     label: Text(AppLocalizations.of(context)!.sex)),
-                items: const [
+                items: [
                   DropdownMenuItem(
-                    child: Text('Masculino'),
                     value: 'M',
+                    child: Text(AppLocalizations.of(context)!.male),
                   ),
                   DropdownMenuItem(
-                    child: Text('Femenino'),
                     value: 'F',
+                    child: Text(AppLocalizations.of(context)!.female),
                   ),
                 ],
-                onChanged: (String? value) {},
+                onChanged: (String? value) {
+                  _sex = value;
+                },
               ),
               DropdownButtonFormField(
                 validator: (value) {
@@ -129,71 +125,99 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                 },
                 decoration: InputDecoration(
                     label: Text(AppLocalizations.of(context)!.specie)),
-                items: const [
+                items: [
                   DropdownMenuItem(
-                    child: Text('Perro'),
-                    value: 'P',
+                    value: 1,
+                    child: Text(AppLocalizations.of(context)!.dog),
                   ),
                   DropdownMenuItem(
-                    child: Text('Gato'),
-                    value: 'G',
+                    value: 2,
+                    child: Text(AppLocalizations.of(context)!.cat),
                   ),
                 ],
-                onChanged: (String? value) {},
+                onChanged: (int? value) {
+                  _specie = value;
+                },
               ),
               ReadOnlyFormField(
                 validator: (value) {
                   return validateBreed(value, context);
                 },
                 labelText: AppLocalizations.of(context)!.breed,
-                controller: breedController,
+                controller: _breedController,
                 onTap: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(builder: (context, setState) {
-                        return LongBottomSheet(
-                          title: AppLocalizations.of(context)!.breed,
-                          buttonChild: Text(AppLocalizations.of(context)!.next),
-                          btnActive: true,
-                          formRunSpacing: isTablet ? 20 : 14.sp,
-                          onSubmit: () {
-                            Navigator.pop(context);
-                          },
-                          children: [
-                            ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return RadioListTile(
-                                  title: Text('Raza ${index + 1}'),
-                                  value: "Raza ${index + 1}",
-                                  groupValue: breed,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      breed = value.toString();
-                                      breedController.text = breed!;
-                                    });
-                                  },
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const Divider();
-                              },
-                              itemCount: 12,
-                            ),
-                          ],
-                        );
-                      });
-                    },
-                  );
+                  buildSpeciesBottomSheet(context, isTablet);
                 },
               ),
             ],
           )
         ],
       ),
+    );
+  }
+
+  Future<dynamic> buildSpeciesBottomSheet(BuildContext context, bool isTablet) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return FutureBuilder(
+            future: BreedService.getAllBreeds(
+                Provider.of<UserProvider>(context, listen: false).accessToken!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(AppLocalizations.of(context)!.serverFailedBody),
+                );
+              } else {
+                final breedsJson = snapshot.data!;
+                BreedList breeds = BreedList.fromJson(breedsJson.data!);
+                breeds.list = _specie != null
+                    ? breeds.list
+                        .where((breed) => breed.idSpecie == _specie)
+                        .toList()
+                    : breeds.list;
+                return StatefulBuilder(builder: (context, setState) {
+                  return LongBottomSheet(
+                    title: AppLocalizations.of(context)!.breed,
+                    buttonChild: Text(AppLocalizations.of(context)!.next),
+                    btnActive: true,
+                    formRunSpacing: isTablet ? 20 : 14.sp,
+                    onSubmit: () {
+                      Navigator.pop(context);
+                    },
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return RadioListTile(
+                            title: Text(breeds.list[index].name),
+                            value: breeds.list[index].name,
+                            groupValue: _selectedBreed?.name,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedBreed = breeds.list[index];
+                                _breedController.text = _selectedBreed!.name;
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const Divider();
+                        },
+                        itemCount: breeds.list.length,
+                      ),
+                    ],
+                  );
+                });
+              }
+            });
+      },
     );
   }
 }

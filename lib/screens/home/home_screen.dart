@@ -26,7 +26,6 @@ class HomeScreen extends StatelessWidget {
           if (user != null) Header(user: user!),
           if (user != null)
             PetSection(
-              itemCount: 1,
               sectionTitle: AppLocalizations.of(context)!.myPets,
             ),
           VetSection(

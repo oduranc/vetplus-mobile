@@ -49,6 +49,8 @@ dependencies:
   intl: any
   syncfusion_flutter_datepicker: ^22.2.11
   image_picker: ^1.0.4
+  http: ^0.13.6
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

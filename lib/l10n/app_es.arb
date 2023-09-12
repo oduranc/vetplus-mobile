@@ -341,5 +341,29 @@
   "backToWelcome": "Volver a pantalla de bienvenida",
   "@backToWelcome": {
     "description": "Back to welcome screen"
+  },
+  "male": "Masculino",
+  "@male": {
+    "description": "Male"
+  },
+  "female": "Femenino",
+  "@female": {
+    "description": "Female"
+  },
+  "dog": "Perro",
+  "@dog": {
+    "description": "Dog"
+  },
+  "cat": "Gato",
+  "@cat": {
+    "description": "Cat"
+  },
+  "registeredPetTitle": "Mascota registrada",
+  "@registeredPetTitle": {
+    "description": "Pet registered title"
+  },
+  "registeredPetBody": "¡Mascota registrada con éxito!",
+  "@registeredPetBody": {
+    "description": "Pet registered body"
   }
 }

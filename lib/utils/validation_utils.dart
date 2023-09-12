@@ -33,7 +33,7 @@ String? validateSex(value, context) {
 }
 
 String? validateSpecie(value, context) {
-  if (value == null || value.isEmpty) {
+  if (value == null) {
     return AppLocalizations.of(context)!
         .isRequired(AppLocalizations.of(context)!.specie);
   }
@@ -49,7 +49,7 @@ String? validateBreed(value, context) {
 }
 
 String? validateCastrated(value, context) {
-  if (value == null || value.isEmpty) {
+  if (value == null) {
     return AppLocalizations.of(context)!
         .isRequired(AppLocalizations.of(context)!.castrated);
   }

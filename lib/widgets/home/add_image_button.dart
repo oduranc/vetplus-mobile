@@ -10,7 +10,7 @@ class AddImageButton extends StatelessWidget {
     required this.backgroundColor,
     this.hasBorder = false,
     required this.action,
-    required this.primaryIcon,
+    this.primaryIcon,
     required this.miniIcon,
     required this.miniButtonStyle,
     required this.width,
@@ -19,7 +19,8 @@ class AddImageButton extends StatelessWidget {
   final Color foregroundColor, backgroundColor;
   final bool hasBorder;
   final VoidCallback action;
-  final IconData primaryIcon, miniIcon;
+  final IconData? primaryIcon;
+  final IconData miniIcon;
   final ButtonStyle miniButtonStyle;
   final double width;
   final ImageProvider? image;

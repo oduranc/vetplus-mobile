@@ -80,5 +80,11 @@
   "skipForNow": "Skip for now",
   "accessDeniedTitle": "Access denied",
   "accessDeniedBody": "This feature is only available with an user account",
-  "backToWelcome": "Go back to welcome screen"
+  "backToWelcome": "Go back to welcome screen",
+  "male": "Male",
+  "female": "Female",
+  "dog": "Dog",
+  "cat": "Cat",
+  "registeredPetTitle": "Pet registered",
+  "registeredPetBody": "Pet registered successfully!"
 }

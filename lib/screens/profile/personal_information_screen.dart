@@ -93,7 +93,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
       UserModel user,
       AppLocalizations appLocalizations) {
     TextEditingController editFieldController = TextEditingController();
-    editFieldController.text = editableFields.values.elementAt(index);
+    editFieldController.text =
+        editableFields.values.elementAt(index) == appLocalizations.add
+            ? ''
+            : editableFields.values.elementAt(index);
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
