@@ -1,16 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/profile_details_dto.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/services/image_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/image_utils.dart';
+import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
@@ -52,10 +57,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     () async {
                       _selectedImage = await pickImage(ImageSource.gallery);
                       setState(() {});
+                      await _updateProfileImage(context, user);
                     },
                     () async {
                       _selectedImage = await pickImage(ImageSource.camera);
                       setState(() {});
+                      await _updateProfileImage(context, user);
                     },
                   );
                 },
@@ -107,6 +114,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       );
+    }
+  }
+
+  Future<void> _updateProfileImage(BuildContext context, UserModel user) async {
+    if (_selectedImage != null) {
+      final token =
+          Provider.of<UserProvider>(context, listen: false).accessToken!;
+      QueryResult imageResult =
+          await ImageService.uploadImage(token, _selectedImage!, false);
+      Map<String, String?> values = {
+        'names': user.names,
+        'surnames': user.surnames,
+        'document': user.document,
+        'address': user.address,
+        'telephone_number': user.telephoneNumber,
+        'image': imageResult.data!['saveUserImage']['image'],
+      };
+      await editUserProfile(token, values, context);
     }
   }
 }

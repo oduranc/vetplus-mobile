@@ -54,7 +54,8 @@ class PetService {
       }
     ''';
 
-    QueryResult imageResult = await ImageService.uploadImage(token, image);
+    QueryResult imageResult =
+        await ImageService.uploadImage(token, image, true);
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)

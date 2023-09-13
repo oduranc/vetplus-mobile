@@ -65,7 +65,7 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                   primaryIcon: Icons.pets,
                   foregroundColor: Color(0xFFFBFBFB),
                   backgroundColor: Theme.of(context).colorScheme.outlineVariant,
-                  action: () async {
+                  action: () {
                     buildPickImageModal(
                       context,
                       () async {
