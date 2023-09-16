@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/pet_model.dart';
+import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
@@ -78,6 +79,9 @@ class PetSection extends StatelessWidget {
                 if (snapshot.hasData) {
                   final petsJson = snapshot.data!;
                   PetList pets = PetList.fromJson(petsJson.data!);
+                  final petsProvider =
+                      Provider.of<PetsProvider>(context, listen: false);
+                  petsProvider.setPets(pets.list);
                   return ListView.separated(
                     separatorBuilder: (context, index) => SizedBox(width: 20),
                     scrollDirection: Axis.horizontal,

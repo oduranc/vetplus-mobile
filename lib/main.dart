@@ -9,11 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/l10n/l10n.dart';
+import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
+import 'package:vetplus/screens/pets/my_pets_screen.dart';
 import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
@@ -34,6 +36,9 @@ void main() async {
         providers: [
           ChangeNotifierProvider(
             create: (_) => UserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => PetsProvider(),
           )
         ],
         child: const MyApp(),
@@ -111,6 +116,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           const PersonalInformationScreen(),
       FirstAddPetScreen.route: (context) => const FirstAddPetScreen(),
       SecondAddPetScreen.route: (context) => const SecondAddPetScreen(),
+      MyPetsScreen.route: (context) => const MyPetsScreen(),
     };
   }
 

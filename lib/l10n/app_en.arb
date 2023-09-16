@@ -39,7 +39,7 @@
   "details": "Details",
   "registerPet": "Register pet",
   "next": "Next",
-  "sex": "Sex",
+  "sex": "Gender",
   "specie": "Specie",
   "breed": "Breed",
   "save": "Save",
@@ -86,5 +86,6 @@
   "dog": "Dog",
   "cat": "Cat",
   "registeredPetTitle": "Pet registered",
-  "registeredPetBody": "Pet registered successfully!"
+  "registeredPetBody": "Pet registered successfully!",
+  "years": "years"
 }

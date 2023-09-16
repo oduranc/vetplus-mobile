@@ -162,9 +162,9 @@
   "@next": {
     "description": "Next"
   },
-  "sex": "Sexo",
+  "sex": "Género",
   "@sex": {
-    "description": "Sex"
+    "description": "Gender"
   },
   "specie": "Especie",
   "@specie": {
@@ -365,5 +365,9 @@
   "registeredPetBody": "¡Mascota registrada con éxito!",
   "@registeredPetBody": {
     "description": "Pet registered body"
+  },
+  "years": "años",
+  "@years": {
+    "description": "Years"
   }
 }

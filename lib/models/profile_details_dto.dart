@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
+import 'package:vetplus/screens/pets/my_pets_screen.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
 import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
@@ -28,7 +29,7 @@ List<ProfileDetailsDTO> getItems(BuildContext context) {
     ProfileDetailsDTO(
       leadingIcon: Icons.pets,
       name: AppLocalizations.of(context)!.myPets,
-      action: buildLogoutSheet,
+      action: pushMyPetsScreen,
     ),
     ProfileDetailsDTO(
       leadingIcon: Icons.logout_outlined,
@@ -40,6 +41,10 @@ List<ProfileDetailsDTO> getItems(BuildContext context) {
 
 Future<dynamic> pushPersonalInformationScreen(BuildContext context) {
   return Navigator.pushNamed(context, PersonalInformationScreen.route);
+}
+
+Future<dynamic> pushMyPetsScreen(BuildContext context) {
+  return Navigator.pushNamed(context, MyPetsScreen.route);
 }
 
 Future<dynamic> buildLogoutSheet(BuildContext context) {
