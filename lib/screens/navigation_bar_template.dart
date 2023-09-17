@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
+import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/home/home_screen.dart';
@@ -28,9 +30,10 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
     final UserModel? user = Provider.of<UserProvider>(context).user;
+    final List<PetModel>? pets = Provider.of<PetsProvider>(context).pets;
 
     final List<Widget> screens = [
-      HomeScreen(user: user),
+      HomeScreen(user: user, pets: pets),
       const SearchScreen(),
       const ScanScreen(),
       const NotificationsScreen(),

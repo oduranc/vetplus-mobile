@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:vetplus/models/pet_model.dart';
-import 'package:vetplus/providers/pets_provider.dart';
-import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
-import 'package:vetplus/services/pet_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
 
@@ -14,9 +10,11 @@ class PetSection extends StatelessWidget {
   const PetSection({
     Key? key,
     required this.sectionTitle,
+    required this.pets,
   }) : super(key: key);
 
   final String sectionTitle;
+  final List<PetModel>? pets;
 
   Widget _buildPetsList(BuildContext context, int index, List<PetModel> pets) =>
       (index != pets.length)
@@ -71,36 +69,23 @@ class PetSection extends StatelessWidget {
         SizedBox(height: isTablet ? 14 : 14.sp),
         SizedBox(
           height: isTablet ? 120 : 90.sp,
-          child: FutureBuilder(
-              future: PetService.getMyPets(
-                  Provider.of<UserProvider>(context, listen: false)
-                      .accessToken!),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final petsJson = snapshot.data!;
-                  PetList pets = PetList.fromJson(petsJson.data!);
-                  final petsProvider =
-                      Provider.of<PetsProvider>(context, listen: false);
-                  petsProvider.setPets(pets.list);
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => SizedBox(width: 20),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: pets.list.length + 1,
-                    itemBuilder: (context, index) {
-                      return _buildPetsList(context, index, pets.list);
-                    },
-                  );
-                } else {
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => SizedBox(width: 20),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return _buildPetsList(context, index, []);
-                    },
-                  );
-                }
-              }),
+          child: pets != null
+              ? ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: pets!.length + 1,
+                  itemBuilder: (context, index) {
+                    return _buildPetsList(context, index, pets!);
+                  },
+                )
+              : ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return _buildPetsList(context, index, []);
+                  },
+                ),
         ),
       ],
     );

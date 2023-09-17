@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -10,7 +11,8 @@ import 'package:vetplus/widgets/home/vet_section.dart';
 
 class HomeScreen extends StatelessWidget {
   final UserModel? user;
-  const HomeScreen({super.key, required this.user});
+  final List<PetModel>? pets;
+  const HomeScreen({super.key, required this.user, required this.pets});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class HomeScreen extends StatelessWidget {
           if (user != null)
             PetSection(
               sectionTitle: AppLocalizations.of(context)!.myPets,
+              pets: pets,
             ),
           VetSection(
             itemCount: 4,
