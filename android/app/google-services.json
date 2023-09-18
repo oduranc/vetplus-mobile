@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "442731666407-9opok297a59ghvrf730ophmb9ilqobu3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vetplus",
+            "certificate_hash": "aaa1cb74e0107f245a85b745593803cefdfe2270"
+          }
+        },
+        {
           "client_id": "442731666407-kv2v97redam2hn12144cbrrvdrvtl1po.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
