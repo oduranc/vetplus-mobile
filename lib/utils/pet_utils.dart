@@ -5,23 +5,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
-import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/services/pet_service.dart';
+import 'package:vetplus/utils/sign_utils.dart';
+import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
 Future<void> tryRegisterPet(File image, String name, String gender, int specie,
     int breed, bool castrated, String dob, BuildContext context) async {
   try {
+    final accessToken =
+        Provider.of<UserProvider>(context, listen: false).accessToken!;
     final result = await PetService.registerPet(
-        image,
-        name,
-        gender,
-        specie,
-        breed,
-        castrated,
-        dob,
-        Provider.of<UserProvider>(context, listen: false).accessToken!);
+        image, name, gender, specie, breed, castrated, dob, accessToken);
 
     if (!result.hasException) {
       await _showCustomDialog(
@@ -30,8 +27,11 @@ Future<void> tryRegisterPet(File image, String name, String gender, int specie,
         Colors.green,
         Icons.check_circle_outline_outlined,
         context,
-      ).then((value) =>
-          Navigator.pushReplacementNamed(context, NavigationBarTemplate.route));
+      ).then((value) async {
+        final pets = await getPets(context, accessToken);
+        final user = await getUserProfile(accessToken);
+        navigateToHome(context, user, accessToken, pets);
+      });
     }
   } catch (e) {
     await _showServerErrorDialog(context);
@@ -55,4 +55,11 @@ Future<void> _showServerErrorDialog(BuildContext context) {
     Icons.error_outline_outlined,
     context,
   );
+}
+
+Future<PetList> getPets(BuildContext context, accessToken) async {
+  final petsResult = await PetService.getMyPets(accessToken);
+  final petsJson = petsResult.data!;
+  final pets = PetList.fromJson(petsJson);
+  return pets;
 }

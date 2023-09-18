@@ -9,8 +9,8 @@ import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
-import 'package:vetplus/services/pet_service.dart';
 import 'package:vetplus/services/user_service.dart';
+import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
@@ -19,8 +19,8 @@ Future<void> _tryLoginWithGoogle(BuildContext context) async {
     final result = await UserService.loginWithGoogle();
     final accessToken = result.data!['googleLogin']['access_token'];
     final user = await getUserProfile(accessToken);
-    PetList pets = await _getPets(context, accessToken);
-    await _navigateToHome(context, user, accessToken, pets);
+    PetList pets = await getPets(context, accessToken);
+    await navigateToHome(context, user, accessToken, pets);
   } catch (e) {
     await _showServerErrorDialog(context);
   }
@@ -34,8 +34,8 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
     } else {
       final accessToken = result.data!['googleLogin']['access_token'];
       final user = await getUserProfile(accessToken);
-      PetList pets = await _getPets(context, accessToken);
-      await _navigateToHome(context, user, accessToken, pets);
+      PetList pets = await getPets(context, accessToken);
+      await navigateToHome(context, user, accessToken, pets);
     }
   } catch (e) {
     if (e.toString() == 'Null check operator used on a null value') {
@@ -62,19 +62,12 @@ Future<void> tryLoginWithEmail(
     } else {
       final accessToken = result.data!['signInWithEmail']['access_token'];
       final user = await getUserProfile(accessToken);
-      PetList pets = await _getPets(context, accessToken);
-      await _navigateToHome(context, user, accessToken, pets);
+      PetList pets = await getPets(context, accessToken);
+      await navigateToHome(context, user, accessToken, pets);
     }
   } catch (e) {
     await _showServerErrorDialog(context);
   }
-}
-
-Future<PetList> _getPets(BuildContext context, accessToken) async {
-  final petsResult = await PetService.getMyPets(accessToken);
-  final petsJson = petsResult.data!;
-  final pets = PetList.fromJson(petsJson);
-  return pets;
 }
 
 Future<void> trySignUpWithEmail(String name, String lastname, String email,
@@ -134,7 +127,7 @@ Future<void> _showCustomDialog(String title, String body, Color color,
   );
 }
 
-Future<void> _navigateToHome(BuildContext context, UserModel user,
+Future<void> navigateToHome(BuildContext context, UserModel user,
     String accessToken, PetList pets) async {
   final userProvider = Provider.of<UserProvider>(context, listen: false);
   final petsProvider = Provider.of<PetsProvider>(context, listen: false);
