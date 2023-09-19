@@ -16,15 +16,22 @@ import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
 class NavigationBarTemplate extends StatefulWidget {
-  const NavigationBarTemplate({super.key});
+  const NavigationBarTemplate({super.key, required this.index});
   static const route = 'navigation-template';
+  final int index;
 
   @override
   State<NavigationBarTemplate> createState() => _NavigationBarTemplateState();
 }
 
 class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    _currentIndex = widget.index;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

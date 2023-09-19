@@ -369,5 +369,13 @@
   "years": "años",
   "@years": {
     "description": "Years"
+  },
+  "months": "meses",
+  "@months": {
+    "description": "Months"
+  },
+  "days": "días",
+  "@days": {
+    "description": "Days"
   }
 }

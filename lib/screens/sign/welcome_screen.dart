@@ -68,8 +68,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, NavigationBarTemplate.route, (route) => false);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const NavigationBarTemplate(index: 0),
+                    ),
+                  );
                 },
                 child: Text(AppLocalizations.of(context)!.skipForNow),
               ),
@@ -102,7 +107,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   'assets/images/google-logo.png',
                   width: isTablet ? 20 : 20.sp,
                 ),
-                text: AppLocalizations.of(context)!.googleButton,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 textColor: Colors.white,
                 onPressed: () async {
@@ -114,13 +118,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     _isLoading = false;
                   });
                 },
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : Text(AppLocalizations.of(context)!.googleButton),
               ),
               SocialButton(
                 iconData: Icon(
                   Icons.email_outlined,
                   size: isTablet ? 20 : 20.sp,
                 ),
-                text: AppLocalizations.of(context)!.emailButton,
                 backgroundColor: Colors.white,
                 textColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 hasBorder: true,
@@ -128,6 +134,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Navigator.pushReplacementNamed(context,
                       isRegister ? RegisterScreen.route : LoginScreen.route);
                 },
+                child: Text(AppLocalizations.of(context)!.emailButton),
               ),
             ],
           ),

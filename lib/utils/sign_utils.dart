@@ -134,9 +134,11 @@ Future<void> navigateToHome(BuildContext context, UserModel user,
   userProvider.setUser(user, accessToken);
   petsProvider.setPets(pets.list);
 
-  Navigator.pushNamedAndRemoveUntil(
+  Navigator.pushAndRemoveUntil(
     context,
-    NavigationBarTemplate.route,
-    (Route<dynamic> route) => false,
+    MaterialPageRoute(
+      builder: (context) => const NavigationBarTemplate(index: 0),
+    ),
+    (route) => false,
   );
 }

@@ -11,6 +11,8 @@ class PetList {
       );
 }
 
+enum AgeUnit { days, months, years }
+
 class PetModel {
   final String id;
   final String idOwner;
@@ -25,6 +27,7 @@ class PetModel {
   final String createdAt;
   final String updatedAt;
   final bool status;
+  final String age;
 
   PetModel({
     required this.id,
@@ -40,9 +43,28 @@ class PetModel {
     required this.createdAt,
     required this.updatedAt,
     required this.status,
+    required this.age,
   });
 
   factory PetModel.fromJson(Map<String, dynamic> json) {
+    final dobString = json['dob'] as String?;
+    final dob = dobString != null ? DateTime.parse(dobString) : null;
+    final now = DateTime.now();
+
+    String age = '';
+
+    if (dob != null) {
+      final difference = now.difference(dob);
+
+      if (difference.inDays < 30) {
+        age = '${difference.inDays} ${AgeUnit.days}';
+      } else if (difference.inDays < 365) {
+        age = '${difference.inDays ~/ 30} ${AgeUnit.months}';
+      } else {
+        age = '${difference.inDays ~/ 365} ${AgeUnit.years}';
+      }
+    }
+
     return PetModel(
       id: json['id'],
       idOwner: json['id_owner'],
@@ -57,6 +79,7 @@ class PetModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       status: json['status'],
+      age: age,
     );
   }
 }

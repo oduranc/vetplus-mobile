@@ -6,14 +6,14 @@ class SocialButton extends StatelessWidget {
   const SocialButton({
     super.key,
     required this.iconData,
-    required this.text,
+    required this.child,
     required this.onPressed,
     required this.backgroundColor,
     this.textColor,
     this.hasBorder,
   });
   final Widget iconData;
-  final String text;
+  final Widget child;
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color? textColor;
@@ -40,7 +40,7 @@ class SocialButton extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           iconData,
-          Center(child: Text(text)),
+          Center(child: child),
         ],
       ),
     );

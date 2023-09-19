@@ -110,7 +110,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       WelcomeScreen.route: (context) => const WelcomeScreen(),
       RegisterScreen.route: (context) => RegisterScreen(),
       LoginScreen.route: (context) => const LoginScreen(),
-      NavigationBarTemplate.route: (context) => const NavigationBarTemplate(),
+      NavigationBarTemplate.route: (context) =>
+          const NavigationBarTemplate(index: 0),
       FavoriteScreen.route: (context) => const FavoriteScreen(),
       PersonalInformationScreen.route: (context) =>
           const PersonalInformationScreen(),

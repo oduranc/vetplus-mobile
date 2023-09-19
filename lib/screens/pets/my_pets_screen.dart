@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/models/breed_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
+import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -55,48 +58,83 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
         ],
         centerTitle: false,
       ),
-      body: SeparatedListView(
-        isTablet: isTablet,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {},
-            contentPadding: EdgeInsets.zero,
-            leading: CircleAvatar(
-              radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-              backgroundImage: NetworkImage(pets[index].image!),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  pets[index].name,
-                  style: getSnackBarTitleStyle(isTablet),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: isTablet ? 6 : 4.sp, bottom: isTablet ? 3 : 1.sp),
-                  child: Text(
-                    pets[index].idBreed.toString(),
-                    style: getSnackBarBodyStyle(isTablet),
-                  ),
-                ),
-                Text(
-                  '${(DateTime.now().difference(DateTime.parse(pets[index].dob!)).inDays / 365).floor()} ${AppLocalizations.of(context)!.years}',
-                  style: getSnackBarBodyStyle(isTablet),
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: Theme.of(context).colorScheme.onInverseSurface,
-              size: isTablet ? 35 : 25.sp,
-            ),
-          );
-        },
-        itemCount: pets!.length,
-        separator: const Divider(),
-      ),
+      body: FutureBuilder(
+          future: BreedService.getAllBreeds(
+              Provider.of<UserProvider>(context, listen: false).accessToken!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(AppLocalizations.of(context)!.serverFailedBody),
+              );
+            } else {
+              final breedsJson = snapshot.data!;
+              BreedList breeds = BreedList.fromJson(breedsJson.data!);
+              return SeparatedListView(
+                isTablet: isTablet,
+                itemBuilder: (context, index) {
+                  String ageUnit = _getAgeUnit(pets, index, context);
+                  return ListTile(
+                    onTap: () {},
+                    contentPadding: EdgeInsets.zero,
+                    leading: CircleAvatar(
+                      radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                      backgroundImage: NetworkImage(pets[index].image!),
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          pets[index].name,
+                          style: getSnackBarTitleStyle(isTablet),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: isTablet ? 6 : 4.sp,
+                              bottom: isTablet ? 3 : 1.sp),
+                          child: Text(
+                            breeds.list
+                                .where(
+                                    (breed) => breed.id == pets[index].idBreed)
+                                .first
+                                .name,
+                            style: getSnackBarBodyStyle(isTablet),
+                          ),
+                        ),
+                        Text(
+                          '${pets[index].age.split(' ')[0]} $ageUnit',
+                          style: getSnackBarBodyStyle(isTablet),
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Theme.of(context).colorScheme.onInverseSurface,
+                      size: isTablet ? 35 : 25.sp,
+                    ),
+                  );
+                },
+                itemCount: pets!.length,
+                separator: const Divider(),
+              );
+            }
+          }),
     );
+  }
+
+  String _getAgeUnit(List<PetModel> pets, int index, BuildContext context) {
+    String ageUnit;
+    if (pets[index].age.split(' ')[1] == AgeUnit.years.toString()) {
+      ageUnit = AppLocalizations.of(context)!.years;
+    } else if (pets[index].age.split(' ')[1] == AgeUnit.months.toString()) {
+      ageUnit = AppLocalizations.of(context)!.months;
+    } else {
+      ageUnit = AppLocalizations.of(context)!.days;
+    }
+    return ageUnit;
   }
 }
