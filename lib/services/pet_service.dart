@@ -41,8 +41,15 @@ class PetService {
     return result;
   }
 
-  static Future<QueryResult> registerPet(File image, String name, String gender,
-      int specie, int breed, bool castrated, String dob, String token) async {
+  static Future<QueryResult> registerPet(
+      File? image,
+      String name,
+      String gender,
+      int specie,
+      int breed,
+      bool castrated,
+      String dob,
+      String token) async {
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
     final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
 
@@ -54,8 +61,9 @@ class PetService {
       }
     ''';
 
-    QueryResult imageResult =
-        await ImageService.uploadImage(token, image, true);
+    QueryResult? imageResult = image != null
+        ? await ImageService.uploadImage(token, image, true)
+        : null;
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -67,7 +75,9 @@ class PetService {
                 "id_specie": specie,
                 "id_breed": breed,
                 "name": name,
-                "image": imageResult.data!['savePetImage']['image'],
+                "image": imageResult != null
+                    ? imageResult.data!['savePetImage']['image']
+                    : null,
                 "gender": gender,
                 "castrated": castrated,
                 "dob": dob,

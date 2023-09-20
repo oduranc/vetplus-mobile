@@ -42,7 +42,7 @@ class AddImageButton extends StatelessWidget {
                     onTap: action,
                     child: CircleAvatar(
                       radius: Responsive.isTablet(context)
-                          ? width + 4
+                          ? (width / 2)
                           : (width / 2).sp,
                       backgroundColor: backgroundColor,
                       foregroundColor: foregroundColor,
@@ -57,7 +57,7 @@ class AddImageButton extends StatelessWidget {
                   onTap: action,
                   child: CircleAvatar(
                     radius: Responsive.isTablet(context)
-                        ? width + 4
+                        ? (width / 2)
                         : (width / 2).sp,
                     backgroundColor: backgroundColor,
                     foregroundColor: foregroundColor,

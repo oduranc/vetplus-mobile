@@ -145,7 +145,7 @@ TextStyle getSnackBarBodyStyle(bool isTablet) {
     fontSize: 12.sp,
     fontFamily: 'Inter',
     fontWeight: FontWeight.w300,
-    height: 1.33,
+    height: 1.50,
     letterSpacing: 0.50,
   );
 

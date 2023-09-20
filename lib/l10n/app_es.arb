@@ -377,5 +377,33 @@
   "days": "días",
   "@days": {
     "description": "Days"
+  },
+  "wellnessPanel": "Panel de bienestar",
+  "@wellnessPanel": {
+    "description": "Wellness Panel"
+  },
+  "weight": "Peso",
+  "@weight": {
+    "description": "Weight"
+  },
+  "upcomingAppointments": "Próximas citas",
+  "@upcomingAppointments": {
+    "description": "Upcoming appointments"
+  },
+  "careHistory": "Historial de cuidados y citas",
+  "@careHistory": {
+    "description": "Care history"
+  },
+  "viewProfile": "Ver perfil",
+  "@viewProfile": {
+    "description": "View profile"
+  },
+  "sendToVet": "Enviar a veterinarios",
+  "@sendToVet": {
+    "description": "Send to vet"
+  },
+  "createReport": "Generar reporte",
+  "@createReport": {
+    "description": "Create report"
   }
 }

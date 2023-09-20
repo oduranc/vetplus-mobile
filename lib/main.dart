@@ -16,6 +16,7 @@ import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
 import 'package:vetplus/screens/pets/my_pets_screen.dart';
+import 'package:vetplus/screens/pets/pet_dashboard.dart';
 import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
@@ -118,6 +119,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       FirstAddPetScreen.route: (context) => const FirstAddPetScreen(),
       SecondAddPetScreen.route: (context) => const SecondAddPetScreen(),
       MyPetsScreen.route: (context) => const MyPetsScreen(),
+      PetDashboard.route: (context) => const PetDashboard(),
     };
   }
 

@@ -8,8 +8,10 @@ import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
+import 'package:vetplus/screens/pets/pet_dashboard.dart';
 import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
@@ -76,13 +78,30 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
               return SeparatedListView(
                 isTablet: isTablet,
                 itemBuilder: (context, index) {
-                  String ageUnit = _getAgeUnit(pets, index, context);
                   return ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        PetDashboard.route,
+                        arguments: {
+                          'pet': pets[index],
+                          'age': getFormattedAge(pets, index, context),
+                          'breedName': getBreedName(breeds, pets, index),
+                        },
+                      );
+                    },
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
                       radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-                      backgroundImage: NetworkImage(pets[index].image!),
+                      backgroundColor: Color(0xFFDCDCDD),
+                      foregroundColor: Color(0xFFFBFBFB),
+                      backgroundImage: pets[index].image != null
+                          ? NetworkImage(pets[index].image!)
+                          : null,
+                      child: pets[index].image != null
+                          ? null
+                          : Icon(Icons.pets,
+                              size: Responsive.isTablet(context) ? 36 : 30.sp),
                     ),
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,16 +116,12 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
                               top: isTablet ? 6 : 4.sp,
                               bottom: isTablet ? 3 : 1.sp),
                           child: Text(
-                            breeds.list
-                                .where(
-                                    (breed) => breed.id == pets[index].idBreed)
-                                .first
-                                .name,
+                            getBreedName(breeds, pets, index),
                             style: getSnackBarBodyStyle(isTablet),
                           ),
                         ),
                         Text(
-                          '${pets[index].age.split(' ')[0]} $ageUnit',
+                          getFormattedAge(pets, index, context),
                           style: getSnackBarBodyStyle(isTablet),
                         )
                       ],
@@ -124,17 +139,5 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
             }
           }),
     );
-  }
-
-  String _getAgeUnit(List<PetModel> pets, int index, BuildContext context) {
-    String ageUnit;
-    if (pets[index].age.split(' ')[1] == AgeUnit.years.toString()) {
-      ageUnit = AppLocalizations.of(context)!.years;
-    } else if (pets[index].age.split(' ')[1] == AgeUnit.months.toString()) {
-      ageUnit = AppLocalizations.of(context)!.months;
-    } else {
-      ageUnit = AppLocalizations.of(context)!.days;
-    }
-    return ageUnit;
   }
 }

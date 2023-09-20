@@ -24,6 +24,7 @@ class VetSection extends StatelessWidget {
         Text(sectionTitle, style: getSectionTitle(isTablet)),
         SizedBox(height: isTablet ? 14 : 14.sp),
         SingleChildScrollView(
+          padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
           scrollDirection: Axis.horizontal,
           child: Wrap(
             spacing: isTablet ? 30 : 20.sp,

@@ -89,5 +89,12 @@
   "registeredPetBody": "Pet registered successfully!",
   "years": "years",
   "months": "months",
-  "days": "days"
+  "days": "days",
+  "wellnessPanel": "Wellness panel",
+  "weight": "Weight",
+  "upcomingAppointments": "Upcoming appointments",
+  "careHistory": "Care history",
+  "viewProfile": "View profile",
+  "sendToVet": "Send to vets",
+  "createReport": "Create report"
 }
