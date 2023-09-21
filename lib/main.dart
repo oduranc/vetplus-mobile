@@ -92,6 +92,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return GraphQLProvider(
       client: globalGraphQLClient,
       child: MaterialApp(
+        builder: (context, widget) {
+          final MediaQueryData data = MediaQuery.of(context);
+          return MediaQuery(
+            data: data.copyWith(
+              textScaleFactor: data.textScaleFactor.clamp(0.85, 1),
+            ),
+            child: widget!,
+          );
+        },
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           AppLocalizations.delegate,
