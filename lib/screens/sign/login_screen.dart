@@ -47,7 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
         children: <Widget>[
           FormTemplate(
             buttonChild: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(color: Colors.white))
                 : Text(AppLocalizations.of(context)!.continueText),
             onSubmit: _tryLogin,
             padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),

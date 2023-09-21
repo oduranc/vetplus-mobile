@@ -119,7 +119,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   });
                 },
                 child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(color: Colors.white))
                     : Text(AppLocalizations.of(context)!.googleButton),
               ),
               SocialButton(

@@ -54,6 +54,7 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   syncfusion_flutter_calendar: ^22.2.12
   shimmer: ^3.0.0
+  flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:
