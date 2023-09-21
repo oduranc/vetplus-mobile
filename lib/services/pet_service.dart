@@ -89,4 +89,44 @@ class PetService {
         .timeout(const Duration(seconds: 10));
     return result;
   }
+
+  static Future<QueryResult> editPetProfile(
+      String token, Map<String, dynamic> values) async {
+    const String updatePetMutation = '''
+    mutation (\$updatePetInput: UpdatePetInput!) {
+      updatePet(updatePetInput: \$updatePetInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(updatePetMutation),
+            variables: {
+              'updatePetInput': {
+                'id': values['id'],
+                'id_specie': values['id_specie'],
+                'id_breed': values['id_breed'],
+                'name': values['name'],
+                if (values['url_current_image'] != null)
+                  'url_current_image': values['url_current_image'],
+                if (values['url_new_image'] != null)
+                  'url_new_image': values['url_new_image'],
+                'gender': values['gender'],
+                'castrated': values['castrated'],
+                'dob': values['dob'],
+                'observations': values['observations'],
+              }
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
 }

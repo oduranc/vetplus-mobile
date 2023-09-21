@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SeparatedListView extends StatelessWidget {
   const SeparatedListView({
@@ -18,6 +19,8 @@ class SeparatedListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.only(bottom: isTablet ? 37 : 24.sp),
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       separatorBuilder: (context, index) {

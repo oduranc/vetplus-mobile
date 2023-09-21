@@ -177,6 +177,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         );
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) {

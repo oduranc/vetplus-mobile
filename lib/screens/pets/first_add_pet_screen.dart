@@ -11,13 +11,11 @@ import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
 import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/utils/image_utils.dart';
-import 'package:vetplus/utils/validation_utils.dart';
-import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/form_template.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
-import 'package:vetplus/widgets/common/read_only_form_field.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
+import 'package:vetplus/widgets/pets/pet_form_fields.dart';
 
 class FirstAddPetScreen extends StatefulWidget {
   const FirstAddPetScreen({super.key});
@@ -91,64 +89,18 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                       : null,
                 ),
               ),
-              CustomFormField(
-                keyboardType: TextInputType.name,
-                labelText: AppLocalizations.of(context)!.nameText,
-                controller: _nameController,
-                validator: (value) {
-                  return validateName(value, context);
-                },
-              ),
-              DropdownButtonFormField(
-                validator: (value) {
-                  return validateSex(value, context);
-                },
-                decoration: InputDecoration(
-                    label: Text(AppLocalizations.of(context)!.sex)),
-                items: [
-                  DropdownMenuItem(
-                    value: 'M',
-                    child: Text(AppLocalizations.of(context)!.male),
-                  ),
-                  DropdownMenuItem(
-                    value: 'F',
-                    child: Text(AppLocalizations.of(context)!.female),
-                  ),
-                ],
-                onChanged: (String? value) {
-                  _sex = value;
-                },
-              ),
-              DropdownButtonFormField(
-                validator: (value) {
-                  return validateSpecie(value, context);
-                },
-                decoration: InputDecoration(
-                    label: Text(AppLocalizations.of(context)!.specie)),
-                items: [
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text(AppLocalizations.of(context)!.dog),
-                  ),
-                  DropdownMenuItem(
-                    value: 2,
-                    child: Text(AppLocalizations.of(context)!.cat),
-                  ),
-                ],
-                onChanged: (int? value) {
-                  _specie = value;
-                },
-              ),
-              ReadOnlyFormField(
-                validator: (value) {
-                  return validateBreed(value, context);
-                },
-                labelText: AppLocalizations.of(context)!.breed,
-                controller: _breedController,
-                onTap: () {
-                  buildSpeciesBottomSheet(context, isTablet);
-                },
-              ),
+              PetNameFormField(nameController: _nameController),
+              buildPetGenderFormField(context, (String? value) {
+                _sex = value;
+              }),
+              buildPetSpecieFormField(context, (int? value) {
+                _specie = value;
+                _selectedBreed = null;
+                _breedController.text = '';
+              }),
+              buildPetBreedFormField(context, _breedController, () {
+                buildSpeciesBottomSheet(context, isTablet);
+              }),
             ],
           )
         ],
@@ -156,7 +108,10 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
     );
   }
 
-  Future<dynamic> buildSpeciesBottomSheet(BuildContext context, bool isTablet) {
+  Future<dynamic> buildSpeciesBottomSheet(
+    BuildContext context,
+    bool isTablet,
+  ) {
     return showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -176,6 +131,7 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
               } else {
                 final breedsJson = snapshot.data!;
                 BreedList breeds = BreedList.fromJson(breedsJson.data!);
+                print(_specie);
                 breeds.list = _specie != null
                     ? breeds.list
                         .where((breed) => breed.idSpecie == _specie)

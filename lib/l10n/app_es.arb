@@ -405,5 +405,17 @@
   "createReport": "Generar reporte",
   "@createReport": {
     "description": "Create report"
+  },
+  "petProfile": "Perfil de tu mascota",
+  "@petProfile": {
+    "description": "Pet profile"
+  },
+  "generalInformation": "Información general",
+  "@generalInformation": {
+    "description": "General information"
+  },
+  "observations": "Observaciones",
+  "@observations": {
+    "description": "Observations"
   }
 }

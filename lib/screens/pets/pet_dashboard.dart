@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/pet_model.dart';
+import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/pets/pet_profile.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/pets/dashboard_app_bar_title.dart';
@@ -20,9 +25,11 @@ class PetDashboard extends StatelessWidget {
     bool isTablet = Responsive.isTablet(context);
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    final PetModel pet = arguments['pet'];
-    final String age = arguments['age'];
-    final String breedName = arguments['breedName'];
+    final PetModel pet = Provider.of<PetsProvider>(context)
+        .pets!
+        .where((pet) => pet.id == arguments['id'])
+        .first;
+    final String age = getFormattedAge(pet, context);
 
     return SkeletonScreen(
       providedPadding: EdgeInsets.symmetric(
@@ -33,10 +40,67 @@ class PetDashboard extends StatelessWidget {
         toolbarHeight: isTablet ? 78 + 23 : (65 + 23).sp,
         titleSpacing: 0,
         actions: [
-          _buildAppBarActions(isTablet, context),
+          _buildAppBarActions(isTablet, context, arguments),
         ],
-        title: DashboardAppBarTitle(
-            pet: pet, isTablet: isTablet, breedName: breedName, age: age),
+        title: FutureBuilder(
+          future: getBreedName(pet, context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Row(
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: CircleAvatar(
+                      radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Wrap(
+                    direction: Axis.vertical,
+                    spacing: 5,
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          color: Colors.black,
+                          width: 100,
+                          height: 14,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          color: Colors.black,
+                          width: 100,
+                          height: 12,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          color: Colors.black,
+                          width: 100,
+                          height: 12,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              );
+            } else {
+              return DashboardAppBarTitle(
+                pet: pet,
+                isTablet: isTablet,
+                breedName: snapshot.data!,
+                age: age,
+              );
+            }
+          },
+        ),
       ),
       body: Wrap(
         alignment: WrapAlignment.start,
@@ -57,14 +121,17 @@ class PetDashboard extends StatelessWidget {
     );
   }
 
-  Padding _buildAppBarActions(bool isTablet, BuildContext context) {
+  Padding _buildAppBarActions(
+      bool isTablet, BuildContext context, Map arguments) {
     return Padding(
       padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
       child: isTablet
           ? Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _sendToPetProfile(context, arguments);
+                  },
                   icon: const Icon(Icons.settings_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
@@ -96,7 +163,9 @@ class PetDashboard extends StatelessWidget {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            _sendToPetProfile(context, arguments);
+                          },
                           child:
                               Text(AppLocalizations.of(context)!.viewProfile),
                         ),
@@ -138,5 +207,9 @@ class PetDashboard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _sendToPetProfile(BuildContext context, Map arguments) {
+    Navigator.pushNamed(context, PetProfile.route, arguments: arguments);
   }
 }

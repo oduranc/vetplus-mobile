@@ -96,5 +96,8 @@
   "careHistory": "Care history",
   "viewProfile": "View profile",
   "sendToVet": "Send to vets",
-  "createReport": "Create report"
+  "createReport": "Create report",
+  "petProfile": "Pet profile",
+  "generalInformation": "General information",
+  "observations": "Observations"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/breed_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
@@ -10,7 +11,6 @@ import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
 import 'package:vetplus/screens/pets/pet_dashboard.dart';
 import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/themes/typography.dart';
-import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
 
 class PetSection extends StatelessWidget {
@@ -32,9 +32,7 @@ class PetSection extends StatelessWidget {
                   context,
                   PetDashboard.route,
                   arguments: {
-                    'pet': pets[index],
-                    'age': getFormattedAge(pets, index, context),
-                    'breedName': getBreedName(breeds, pets, index),
+                    'id': pets[index].id,
                   },
                 );
               },
@@ -101,8 +99,21 @@ class PetSection extends StatelessWidget {
                       .accessToken!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 20),
+                    padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: CircleAvatar(
+                          radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                        ),
+                      );
+                    },
                   );
                 } else if (snapshot.hasError) {
                   return Center(

@@ -75,15 +75,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: (isTablet ? 84 : 70.sp) * 2,
               ),
             ),
-            if (!isTablet)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 15.sp),
-                  child: Text(AppLocalizations.of(context)!.details,
-                      style: getSectionTitle(isTablet)),
-                ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 15.sp),
+                child: Text(AppLocalizations.of(context)!.details,
+                    style: getSectionTitle(isTablet)),
               ),
+            ),
             SeparatedListView(
               isTablet: isTablet,
               itemCount: items.length,

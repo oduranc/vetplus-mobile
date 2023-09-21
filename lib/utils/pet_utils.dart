@@ -7,7 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/models/breed_model.dart';
 import 'package:vetplus/models/pet_model.dart';
+import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
+import 'package:vetplus/services/breed_service.dart';
 import 'package:vetplus/services/pet_service.dart';
 import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/utils/user_utils.dart';
@@ -65,21 +67,33 @@ Future<PetList> getPets(BuildContext context, accessToken) async {
   return pets;
 }
 
-String getBreedName(BreedList breeds, List<PetModel> pets, int index) {
+Future<String> getBreedName(PetModel pet, BuildContext context) async {
+  final snapshot = await BreedService.getAllBreeds(
+      Provider.of<UserProvider>(context, listen: false).accessToken!);
+  BreedList breeds = BreedList.fromJson(snapshot.data!);
   final breedName =
-      breeds.list.where((breed) => breed.id == pets[index].idBreed).first.name;
+      breeds.list.where((breed) => breed.id == pet.idBreed).first.name;
   return breedName;
 }
 
-String getFormattedAge(List<PetModel> pets, int index, BuildContext context) {
+String getFormattedAge(PetModel pet, BuildContext context) {
   String ageUnit;
-  if (pets[index].age.split(' ')[1] == AgeUnit.years.toString()) {
+  if (pet.age.split(' ')[1] == AgeUnit.years.toString()) {
     ageUnit = AppLocalizations.of(context)!.years;
-  } else if (pets[index].age.split(' ')[1] == AgeUnit.months.toString()) {
+  } else if (pet.age.split(' ')[1] == AgeUnit.months.toString()) {
     ageUnit = AppLocalizations.of(context)!.months;
   } else {
     ageUnit = AppLocalizations.of(context)!.days;
   }
-  final age = '${pets[index].age.split(' ')[0]} $ageUnit';
+  final age = '${pet.age.split(' ')[0]} $ageUnit';
   return age;
+}
+
+Future<void> editPetProfile(String accessToken, Map<String, dynamic> values,
+    BuildContext context) async {
+  final res = await PetService.editPetProfile(accessToken, values);
+
+  final pets = await getPets(context, accessToken);
+  final petsProvider = Provider.of<PetsProvider>(context, listen: false);
+  petsProvider.setPets(pets.list);
 }
