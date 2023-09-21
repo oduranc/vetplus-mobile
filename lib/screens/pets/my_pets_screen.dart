@@ -60,80 +60,102 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
       ),
       body: SeparatedListView(
         isTablet: isTablet,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                PetDashboard.route,
-                arguments: {
-                  'id': pets[index].id,
-                },
-              );
-            },
-            contentPadding: EdgeInsets.zero,
-            leading: CircleAvatar(
-              radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-              backgroundColor: Color(0xFFDCDCDD),
-              foregroundColor: Color(0xFFFBFBFB),
-              backgroundImage: pets[index].image != null
-                  ? NetworkImage(pets[index].image!)
-                  : null,
-              child: pets[index].image != null
-                  ? null
-                  : Icon(Icons.pets,
-                      size: Responsive.isTablet(context) ? 36 : 30.sp),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  pets[index].name,
-                  style: getSnackBarTitleStyle(isTablet),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: isTablet ? 6 : 4.sp, bottom: isTablet ? 3 : 1.sp),
-                  child: FutureBuilder(
-                    future: getBreedName(pets[index], context),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox(
-                          width: 100.0,
-                          height: 15.0,
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade100,
-                            child: Container(
-                              color: Colors.black,
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Text(
-                          snapshot.data!,
-                          style: getSnackBarBodyStyle(isTablet),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Text(
-                  getFormattedAge(pets[index], context),
-                  style: getSnackBarBodyStyle(isTablet),
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: Theme.of(context).colorScheme.onInverseSurface,
-              size: isTablet ? 35 : 25.sp,
-            ),
-          );
-        },
         itemCount: pets!.length,
         separator: const Divider(),
+        itemBuilder: (context, index) {
+          return FutureBuilder(
+            future: getBreedName(pets[index], context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Wrap(
+                    spacing: 8,
+                    children: [
+                      CircleAvatar(
+                          radius: Responsive.isTablet(context) ? 39 : 32.5.sp),
+                      Wrap(
+                        direction: Axis.vertical,
+                        spacing: 10,
+                        children: [
+                          Container(
+                            color: Colors.black,
+                            height: 14,
+                            width: 100,
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: 12,
+                            width: 150,
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: 12,
+                            width: 100,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      PetDashboard.route,
+                      arguments: {
+                        'id': pets[index].id,
+                      },
+                    );
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  leading: CircleAvatar(
+                    radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                    backgroundColor: Color(0xFFDCDCDD),
+                    foregroundColor: Color(0xFFFBFBFB),
+                    backgroundImage: pets[index].image != null
+                        ? NetworkImage(pets[index].image!)
+                        : null,
+                    child: pets[index].image != null
+                        ? null
+                        : Icon(Icons.pets,
+                            size: Responsive.isTablet(context) ? 36 : 30.sp),
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        pets[index].name,
+                        style: getSnackBarTitleStyle(isTablet),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: isTablet ? 6 : 4.sp,
+                            bottom: isTablet ? 3 : 1.sp),
+                        child: Text(
+                          snapshot.data!,
+                          style: getSnackBarBodyStyle(isTablet),
+                        ),
+                      ),
+                      Text(
+                        getFormattedAge(pets[index], context),
+                        style: getSnackBarBodyStyle(isTablet),
+                      )
+                    ],
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                    size: isTablet ? 35 : 25.sp,
+                  ),
+                );
+              }
+            },
+          );
+        },
       ),
     );
   }

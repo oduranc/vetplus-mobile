@@ -104,7 +104,7 @@ class PetSection extends StatelessWidget {
                         const SizedBox(width: 20),
                     padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 3,
+                    itemCount: pets != null ? pets!.length + 1 : 1,
                     itemBuilder: (context, index) {
                       return Shimmer.fromColors(
                         baseColor: Colors.grey.shade300,

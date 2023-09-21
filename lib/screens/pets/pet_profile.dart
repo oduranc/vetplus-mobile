@@ -34,23 +34,6 @@ class PetProfile extends StatefulWidget {
 class _PetProfileState extends State<PetProfile> {
   File? _selectedImage;
   bool _isLoading = false;
-  String? breedString;
-
-  @override
-  void initState() {
-    setBreedString();
-    super.initState();
-  }
-
-  Future<void> setBreedString() async {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    final PetModel pet = Provider.of<PetsProvider>(context)
-        .pets!
-        .where((pet) => pet.id == arguments['id'])
-        .first;
-    breedString = await getBreedName(pet, context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +52,7 @@ class _PetProfileState extends State<PetProfile> {
           pet.gender == 'M' ? appLocalizations.male : appLocalizations.female,
       appLocalizations.specie:
           pet.idSpecie == 1 ? appLocalizations.dog : appLocalizations.cat,
-      appLocalizations.breed: breedString ?? appLocalizations.add,
+      appLocalizations.breed: pet.idBreed.toString(),
       appLocalizations.dateOfBirth: pet.dob ?? appLocalizations.add,
       appLocalizations.castrated: pet.castrated ? appLocalizations.yes : 'No',
       appLocalizations.observations: pet.observations ?? appLocalizations.add,
