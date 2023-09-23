@@ -48,7 +48,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: FormTemplate(
         buttonChild: _isLoading
-            ? const CircularProgressIndicator(color: Colors.white)
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(color: Colors.white))
             : Text(AppLocalizations.of(context)!.continueText),
         padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
         onSubmit: () {
@@ -94,7 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             keyboardType: TextInputType.visiblePassword,
             isPasswordField: true,
             validator: (value) {
-              return validatePasswordConfirmation(value, _passwordController, context);
+              return validatePasswordConfirmation(
+                  value, _passwordController, context);
             },
           ),
         ],

@@ -51,10 +51,11 @@ class DashboardAppBarTitle extends StatelessWidget {
                 style: getBottomSheetBodyStyle(isTablet),
               ),
             ),
-            Text(
-              age,
-              style: getBottomSheetBodyStyle(isTablet),
-            ),
+            if (age != '')
+              Text(
+                age,
+                style: getBottomSheetBodyStyle(isTablet),
+              ),
           ],
         ),
       ],

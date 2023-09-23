@@ -22,7 +22,7 @@ class _SecondAddPetScreenState extends State<SecondAddPetScreen> {
   bool _showDatePicker = false;
   final TextEditingController datePickerController = TextEditingController();
   late bool _castrated;
-  late String _dateOfBirth;
+  String? _dateOfBirth;
   bool _isLoading = false;
 
   Future<void> _tryRegisterPet(BuildContext context) async {
@@ -58,7 +58,10 @@ class _SecondAddPetScreenState extends State<SecondAddPetScreen> {
               _tryRegisterPet(context);
             },
             buttonChild: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(color: Colors.white))
                 : Text(AppLocalizations.of(context)!.save),
             children: [
               buildPetCastratedFormField(context, (bool? value) {

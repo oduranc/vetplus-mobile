@@ -16,7 +16,7 @@ import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
 Future<void> tryRegisterPet(File? image, String name, String gender, int specie,
-    int breed, bool castrated, String dob, BuildContext context) async {
+    int breed, bool castrated, String? dob, BuildContext context) async {
   try {
     final accessToken =
         Provider.of<UserProvider>(context, listen: false).accessToken!;
@@ -45,8 +45,19 @@ Future<void> _showCustomDialog(String title, String body, Color color,
     IconData icon, BuildContext context) async {
   await showDialog(
     context: context,
-    builder: (context) =>
-        CustomDialog(title: title, body: body, color: color, icon: icon),
+    builder: (context) {
+      return FutureBuilder(
+        future:
+            Future.delayed(const Duration(seconds: 2)).then((value) => true),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Navigator.of(context).pop();
+          }
+          return CustomDialog(
+              title: title, body: body, color: color, icon: icon);
+        },
+      );
+    },
   );
 }
 
@@ -78,14 +89,17 @@ Future<String> getBreedName(PetModel pet, BuildContext context) async {
 
 String getFormattedAge(PetModel pet, BuildContext context) {
   String ageUnit;
-  if (pet.age.split(' ')[1] == AgeUnit.years.toString()) {
-    ageUnit = AppLocalizations.of(context)!.years;
-  } else if (pet.age.split(' ')[1] == AgeUnit.months.toString()) {
-    ageUnit = AppLocalizations.of(context)!.months;
-  } else {
-    ageUnit = AppLocalizations.of(context)!.days;
+  String age = '';
+  if (pet.age != '') {
+    if (pet.age.split(' ')[1] == AgeUnit.years.toString()) {
+      ageUnit = AppLocalizations.of(context)!.years;
+    } else if (pet.age.split(' ')[1] == AgeUnit.months.toString()) {
+      ageUnit = AppLocalizations.of(context)!.months;
+    } else {
+      ageUnit = AppLocalizations.of(context)!.days;
+    }
+    age = '${pet.age.split(' ')[0]} $ageUnit';
   }
-  final age = '${pet.age.split(' ')[0]} $ageUnit';
   return age;
 }
 

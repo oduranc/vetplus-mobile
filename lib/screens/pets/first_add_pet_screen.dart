@@ -63,6 +63,19 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                   primaryIcon: Icons.pets,
                   foregroundColor: Color(0xFFFBFBFB),
                   backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+                  bigButtonAction: () {
+                    buildPickImageModal(
+                      context,
+                      () async {
+                        _selectedImage = await pickImage(ImageSource.gallery);
+                        setState(() {});
+                      },
+                      () async {
+                        _selectedImage = await pickImage(ImageSource.camera);
+                        setState(() {});
+                      },
+                    );
+                  },
                   action: () {
                     buildPickImageModal(
                       context,
@@ -121,12 +134,26 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
                 Provider.of<UserProvider>(context, listen: false).accessToken!),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return const FractionallySizedBox(
+                  heightFactor: 0.5,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               } else if (snapshot.hasError) {
-                return Center(
-                  child: Text(AppLocalizations.of(context)!.serverFailedBody),
+                return FractionallySizedBox(
+                  heightFactor: 0.5,
+                  child: Center(
+                    child: Text(AppLocalizations.of(context)!.serverFailedBody),
+                  ),
+                );
+              } else if (snapshot.data!.hasException) {
+                return FractionallySizedBox(
+                  heightFactor: 0.5,
+                  child: Center(
+                    child:
+                        Text(AppLocalizations.of(context)!.internetConnection),
+                  ),
                 );
               } else {
                 final breedsJson = snapshot.data!;

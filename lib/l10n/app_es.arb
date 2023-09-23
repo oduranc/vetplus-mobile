@@ -417,5 +417,9 @@
   "observations": "Observaciones",
   "@observations": {
     "description": "Observations"
+  },
+  "internetConnection": "No estás conectado. Comprueba la conexión.",
+  "@internetConnection": {
+    "description": "Internet connection"
   }
 }

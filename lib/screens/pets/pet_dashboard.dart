@@ -91,12 +91,21 @@ class PetDashboard extends StatelessWidget {
                   )
                 ],
               );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(AppLocalizations.of(context)!.serverFailedBody),
+              );
             } else {
-              return DashboardAppBarTitle(
-                pet: pet,
-                isTablet: isTablet,
-                breedName: snapshot.data!,
-                age: age,
+              return GestureDetector(
+                onTap: () {
+                  _sendToPetProfile(context, arguments);
+                },
+                child: DashboardAppBarTitle(
+                  pet: pet,
+                  isTablet: isTablet,
+                  breedName: snapshot.data!,
+                  age: age,
+                ),
               );
             }
           },

@@ -20,7 +20,8 @@ import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 // }
 
 Future<File?> pickImage(ImageSource source) async {
-  final XFile? returnedImage = await ImagePicker().pickImage(source: source);
+  final XFile? returnedImage =
+      await ImagePicker().pickImage(source: source, imageQuality: 85);
 
   if (returnedImage == null) return null;
   return File(returnedImage.path);

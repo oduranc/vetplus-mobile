@@ -19,6 +19,7 @@ import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
+import 'package:vetplus/widgets/images/user_image_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -51,6 +52,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 image: user.image != null ? NetworkImage(user.image!) : null,
                 foregroundColor: Colors.black,
                 backgroundColor: Theme.of(context).colorScheme.outlineVariant,
+                bigButtonAction: () {
+                  Navigator.pushNamed(context, UserImageScreen.route);
+                },
                 action: () {
                   buildPickImageModal(
                     context,

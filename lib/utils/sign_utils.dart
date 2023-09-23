@@ -122,8 +122,16 @@ Future<void> _showCustomDialog(String title, String body, Color color,
     IconData icon, BuildContext context) async {
   await showDialog(
     context: context,
-    builder: (context) =>
-        CustomDialog(title: title, body: body, color: color, icon: icon),
+    builder: (context) => FutureBuilder(
+        future:
+            Future.delayed(const Duration(seconds: 2)).then((value) => true),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Navigator.of(context).pop();
+          }
+          return CustomDialog(
+              title: title, body: body, color: color, icon: icon);
+        }),
   );
 }
 

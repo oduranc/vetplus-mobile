@@ -99,5 +99,6 @@
   "createReport": "Create report",
   "petProfile": "Pet profile",
   "generalInformation": "General information",
-  "observations": "Observations"
+  "observations": "Observations",
+  "internetConnection": "You are not online. Check the connection."
 }

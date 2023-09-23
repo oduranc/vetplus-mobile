@@ -64,6 +64,9 @@ class PetSection extends StatelessWidget {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   backgroundColor: Colors.white,
                   hasBorder: true,
+                  bigButtonAction: () {
+                    Navigator.pushNamed(context, FirstAddPetScreen.route);
+                  },
                   action: () {
                     Navigator.pushNamed(context, FirstAddPetScreen.route);
                   },
@@ -118,6 +121,11 @@ class PetSection extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(AppLocalizations.of(context)!.serverFailedBody),
+                  );
+                } else if (snapshot.data!.hasException) {
+                  return Center(
+                    child:
+                        Text(AppLocalizations.of(context)!.internetConnection),
                   );
                 } else {
                   final breedsJson = snapshot.data!;

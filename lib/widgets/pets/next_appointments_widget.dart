@@ -17,6 +17,7 @@ class NextAppointmentsWidget extends StatelessWidget {
       title: AppLocalizations.of(context)!.upcomingAppointments,
       icon: Icons.event_outlined,
       child: SfCalendar(
+        selectionDecoration: const BoxDecoration(),
         view: CalendarView.month,
         headerStyle: CalendarHeaderStyle(
           textStyle: TextStyle(

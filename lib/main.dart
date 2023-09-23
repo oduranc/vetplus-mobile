@@ -25,6 +25,8 @@ import 'package:vetplus/screens/sign/register_screen.dart';
 import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/services/graphql_client.dart';
 import 'package:vetplus/themes/theme_data.dart';
+import 'package:vetplus/widgets/images/pet_image_screen.dart';
+import 'package:vetplus/widgets/images/user_image_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -131,6 +133,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       MyPetsScreen.route: (context) => const MyPetsScreen(),
       PetDashboard.route: (context) => const PetDashboard(),
       PetProfile.route: (context) => const PetProfile(),
+      PetImageScreen.route: (context) => const PetImageScreen(),
+      UserImageScreen.route: (context) => const UserImageScreen(),
     };
   }
 

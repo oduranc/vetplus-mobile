@@ -43,6 +43,9 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
               foregroundColor: Theme.of(context).colorScheme.primary,
               backgroundColor: Colors.white,
               hasBorder: true,
+              bigButtonAction: () {
+                Navigator.pushNamed(context, FirstAddPetScreen.route);
+              },
               action: () {
                 Navigator.pushNamed(context, FirstAddPetScreen.route);
               },
@@ -67,6 +70,39 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
             future: getBreedName(pets[index], context),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Wrap(
+                    spacing: 8,
+                    children: [
+                      CircleAvatar(
+                          radius: Responsive.isTablet(context) ? 39 : 32.5.sp),
+                      Wrap(
+                        direction: Axis.vertical,
+                        spacing: 10,
+                        children: [
+                          Container(
+                            color: Colors.black,
+                            height: 14,
+                            width: 100,
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: 12,
+                            width: 150,
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: 12,
+                            width: 100,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
                 return Shimmer.fromColors(
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
@@ -140,10 +176,11 @@ class _MyPetsScreenState extends State<MyPetsScreen> {
                           style: getSnackBarBodyStyle(isTablet),
                         ),
                       ),
-                      Text(
-                        getFormattedAge(pets[index], context),
-                        style: getSnackBarBodyStyle(isTablet),
-                      )
+                      if (pets[index].age != '')
+                        Text(
+                          getFormattedAge(pets[index], context),
+                          style: getSnackBarBodyStyle(isTablet),
+                        )
                     ],
                   ),
                   trailing: Icon(

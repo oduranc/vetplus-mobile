@@ -10,6 +10,7 @@ class AddImageButton extends StatelessWidget {
     required this.backgroundColor,
     this.hasBorder = false,
     required this.action,
+    required this.bigButtonAction,
     this.primaryIcon,
     required this.miniIcon,
     required this.miniButtonStyle,
@@ -19,6 +20,7 @@ class AddImageButton extends StatelessWidget {
   final Color foregroundColor, backgroundColor;
   final bool hasBorder;
   final VoidCallback action;
+  final VoidCallback bigButtonAction;
   final IconData? primaryIcon;
   final IconData miniIcon;
   final ButtonStyle miniButtonStyle;
@@ -54,7 +56,7 @@ class AddImageButton extends StatelessWidget {
                   ),
                 )
               : GestureDetector(
-                  onTap: action,
+                  onTap: bigButtonAction,
                   child: CircleAvatar(
                     radius: Responsive.isTablet(context)
                         ? (width / 2)

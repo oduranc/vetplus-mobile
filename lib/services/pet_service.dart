@@ -48,7 +48,7 @@ class PetService {
       int specie,
       int breed,
       bool castrated,
-      String dob,
+      String? dob,
       String token) async {
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
     final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
