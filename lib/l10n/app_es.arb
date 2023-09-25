@@ -421,5 +421,57 @@
   "internetConnection": "No estás conectado. Comprueba la conexión.",
   "@internetConnection": {
     "description": "Internet connection"
+  },
+  "ratings": "calificaciones",
+  "@ratings": {
+    "description": "Ratings"
+  },
+  "veterinarians": "Veterinarios",
+  "@veterinarians": {
+    "description": "Veterinarians"
+  },
+  "services": "Servicios",
+  "@services": {
+    "description": "Services"
+  },
+  "scheduleAppointment": "Agendar",
+  "@scheduleAppointment": {
+    "description": "Schedule appointment"
+  },
+  "comments": "Comentarios",
+  "@comments": {
+    "description": "Comments"
+  },
+  "addToFavorites": "Añadir a favoritos",
+  "@addToFavorites": {
+    "description": "Add to favorites"
+  },
+  "addReview": "Añadir reseña",
+  "@addReview": {
+    "description": "Add review"
+  },
+  "review": "Reseña",
+  "@review": {
+    "description": "Review"
+  },
+  "done": "Listo",
+  "@done": {
+    "description": "Done"
+  },
+  "reviewBody": "Tu opinión es muy valiosa para nosotros y nos ayuda a mantener la calidad de los servicios.",
+  "@reviewBody": {
+    "description": "Review body"
+  },
+  "addComment": "Añadir comentario",
+  "@addComment": {
+    "description": "Add comment"
+  },
+  "publish": "Publicar",
+  "@publish": {
+    "description": "Publish"
+  },
+  "commentExperience": "Comenta tu experiencia...",
+  "@commentExperience": {
+    "description": "Comment experience"
   }
 }

@@ -9,11 +9,13 @@ class SkeletonScreen extends StatelessWidget {
     this.appBar,
     this.navBar,
     this.providedPadding,
+    this.extendedBody = false,
   }) : super(key: key);
   final Widget body;
   final PreferredSizeWidget? appBar;
   final Widget? navBar;
   final EdgeInsetsGeometry? providedPadding;
+  final bool extendedBody;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class SkeletonScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      extendBodyBehindAppBar: extendedBody,
       appBar: appBar,
       bottomNavigationBar: navBar,
       body: SafeArea(

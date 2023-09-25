@@ -32,20 +32,13 @@ class HomeScreen extends StatelessWidget {
               pets: pets,
             ),
           VetSection(
-            itemCount: 4,
             sectionTitle: AppLocalizations.of(context)!.topRated,
           ),
           VetSection(
-            itemCount: 4,
             sectionTitle: AppLocalizations.of(context)!.closeToYou,
           ),
           VetSection(
-            itemCount: 4,
             sectionTitle: AppLocalizations.of(context)!.discover,
-          ),
-          VetSection(
-            itemCount: 4,
-            sectionTitle: AppLocalizations.of(context)!.topRated,
           ),
         ],
       ),

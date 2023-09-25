@@ -158,7 +158,6 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
               } else {
                 final breedsJson = snapshot.data!;
                 BreedList breeds = BreedList.fromJson(breedsJson.data!);
-                print(_specie);
                 breeds.list = _specie != null
                     ? breeds.list
                         .where((breed) => breed.idSpecie == _specie)

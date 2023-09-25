@@ -24,6 +24,9 @@ class ClinicModel {
   final String updatedAt;
   final bool status;
   final ClinicSummaryScoreModel clinicSummaryScore;
+  final String clinicRating;
+  final List<Object?>? services;
+  final Schedule? schedule;
 
   ClinicModel({
     required this.id,
@@ -38,9 +41,24 @@ class ClinicModel {
     required this.updatedAt,
     required this.status,
     required this.clinicSummaryScore,
+    required this.clinicRating,
+    this.services,
+    this.schedule,
   });
 
   factory ClinicModel.fromJson(Map<String, dynamic> json) {
+    final clinicSummaryScore =
+        ClinicSummaryScoreModel.fromJson(json['ClinicSummaryScore']);
+    final clinicRating = double.parse(
+            (clinicSummaryScore.totalPoints / clinicSummaryScore.totalUsers)
+                .toString())
+        .toStringAsFixed(1);
+
+    Schedule? schedule;
+    if (json['schedule'] != null) {
+      schedule = Schedule.fromJson(json['schedule']);
+    }
+
     return ClinicModel(
       id: json['id'],
       idOwner: json['id_owner'],
@@ -53,7 +71,10 @@ class ClinicModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       status: json['status'],
-      clinicSummaryScore: json['ClinicSummaryScore'],
+      clinicSummaryScore: clinicSummaryScore,
+      clinicRating: clinicRating,
+      services: json['services'],
+      schedule: schedule,
     );
   }
 }
@@ -71,6 +92,20 @@ class ClinicSummaryScoreModel {
     return ClinicSummaryScoreModel(
       totalPoints: json['total_points'],
       totalUsers: json['total_users'],
+    );
+  }
+}
+
+class Schedule {
+  final List<Object?> nonWorkingDays;
+
+  Schedule({
+    required this.nonWorkingDays,
+  });
+
+  factory Schedule.fromJson(Map<String, dynamic> json) {
+    return Schedule(
+      nonWorkingDays: json['nonWorkingDays'],
     );
   }
 }

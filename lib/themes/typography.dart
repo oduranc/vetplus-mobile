@@ -179,3 +179,42 @@ TextStyle getSectionTitle(bool isTablet) {
     letterSpacing: isTablet ? 0.33 : null,
   );
 }
+
+TextStyle getClinicNameTextStyle(bool isTablet) {
+  final clinicNameTextStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 28.sp,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w600,
+  );
+
+  return clinicNameTextStyle.copyWith(
+    fontSize: isTablet ? 34 : null,
+  );
+}
+
+TextStyle getClinicDetailsTextStyle(bool isTablet) {
+  final clinicDetailsTextStyle = TextStyle(
+    color: const Color(0xFF666666),
+    fontSize: 14.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.14,
+  );
+
+  return clinicDetailsTextStyle.copyWith(
+      fontSize: isTablet ? 16 : null, letterSpacing: isTablet ? 0.16 : null);
+}
+
+TextStyle getClinicTitleStyle(bool isTablet) {
+  final clinicTitleStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 18.sp,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.18,
+  );
+
+  return clinicTitleStyle.copyWith(
+      fontSize: isTablet ? 22 : null, letterSpacing: -0.22);
+}

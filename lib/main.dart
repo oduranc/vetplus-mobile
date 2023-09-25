@@ -12,6 +12,7 @@ import 'package:vetplus/l10n/l10n.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/clinics/clinic_profile.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
@@ -135,6 +136,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       PetProfile.route: (context) => const PetProfile(),
       PetImageScreen.route: (context) => const PetImageScreen(),
       UserImageScreen.route: (context) => const UserImageScreen(),
+      ClinicProfile.route: (context) => const ClinicProfile(),
     };
   }
 

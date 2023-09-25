@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:vetplus/providers/user_provider.dart';
+import 'package:vetplus/models/clinic_model.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/themes/typography.dart';
@@ -12,11 +11,9 @@ import 'package:vetplus/widgets/home/vet_list_item.dart';
 class VetSection extends StatelessWidget {
   const VetSection({
     Key? key,
-    required this.itemCount,
     required this.sectionTitle,
   }) : super(key: key);
 
-  final int itemCount;
   final String sectionTitle;
 
   @override
@@ -31,8 +28,7 @@ class VetSection extends StatelessWidget {
         SizedBox(
           height: isTablet ? 200 : 150.sp,
           child: FutureBuilder(
-            future: ClinicService.getAllClinic(
-                Provider.of<UserProvider>(context, listen: false).accessToken!),
+            future: ClinicService.getAllClinic(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return ListView.separated(
@@ -64,12 +60,17 @@ class VetSection extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.internetConnection),
                 );
               } else {
+                final clinicsJson = snapshot.data!;
+                List<ClinicModel> clinics =
+                    ClinicList.fromJson(clinicsJson.data!).list;
                 return ListView.separated(
                   separatorBuilder: (context, index) =>
                       SizedBox(width: isTablet ? 30 : 20.sp),
-                  itemCount: 4,
-                  itemBuilder: (context, index) =>
-                      VetListItem(isTablet: isTablet),
+                  itemCount: clinics.length,
+                  itemBuilder: (context, index) {
+                    return VetListItem(
+                        isTablet: isTablet, clinic: clinics[index]);
+                  },
                   padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
                   scrollDirection: Axis.horizontal,
                 );

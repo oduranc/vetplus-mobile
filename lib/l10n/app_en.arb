@@ -100,5 +100,18 @@
   "petProfile": "Pet profile",
   "generalInformation": "General information",
   "observations": "Observations",
-  "internetConnection": "You are not online. Check the connection."
+  "internetConnection": "You are not online. Check the connection.",
+  "ratings": "ratings",
+  "veterinarians": "Veterinarians",
+  "services": "Services",
+  "scheduleAppointment": "Schedule appointment",
+  "comments": "Comments",
+  "addToFavorites": "Add to favorites",
+  "addReview": "Add review",
+  "review": "Review",
+  "done": "Done",
+  "reviewBody": "Your opinion is very valuable to help us maintain the quality of services.",
+  "addComment": "Add comment",
+  "publish": "Publish",
+  "commentExperience": "Tell us your experience..."
 }

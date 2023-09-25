@@ -7,11 +7,11 @@ import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/clinics/search_screen.dart';
 import 'package:vetplus/screens/home/home_screen.dart';
 import 'package:vetplus/screens/notifications/notifications_screen.dart';
 import 'package:vetplus/screens/pets/scan_screen.dart';
 import 'package:vetplus/screens/profile/profile_screen.dart';
-import 'package:vetplus/screens/search/search_screen.dart';
 import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 

@@ -10,12 +10,16 @@ class CustomFormField extends StatefulWidget {
     this.isPasswordField = false,
     this.validator,
     required this.labelText,
+    this.minLines,
+    this.maxLines,
   });
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool isPasswordField;
   final String? Function(String?)? validator;
   final String labelText;
+  final int? minLines;
+  final int? maxLines;
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -29,6 +33,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
     final bool isTablet = Responsive.isTablet(context);
 
     return TextFormField(
+      minLines: widget.minLines,
+      maxLines: widget.maxLines,
       controller: widget.controller,
       style: getFieldTextStyle(isTablet),
       keyboardType: widget.keyboardType,
