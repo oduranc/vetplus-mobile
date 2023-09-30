@@ -22,7 +22,7 @@ import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/home/add_image_button.dart';
-import 'package:vetplus/widgets/images/pet_image_screen.dart';
+import 'package:vetplus/widgets/images/image_screen.dart';
 
 class PetProfile extends StatefulWidget {
   const PetProfile({super.key});
@@ -74,8 +74,9 @@ class _PetProfileState extends State<PetProfile> {
               bigButtonAction: () {
                 Navigator.pushNamed(
                   context,
-                  PetImageScreen.route,
+                  ImageScreen.route,
                   arguments: {
+                    'isPet': true,
                     'id': pet.id,
                   },
                 );

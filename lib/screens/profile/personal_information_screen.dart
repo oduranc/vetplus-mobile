@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +33,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
     final UserModel user = Provider.of<UserProvider>(context).user!;
     final appLocalizations = AppLocalizations.of(context)!;
 
-    Map<String, String> editableFields = {
+    final editableFields = {
       appLocalizations.nameText: user.names,
       appLocalizations.surnameText: user.surnames ?? appLocalizations.add,
       appLocalizations.idCard: user.document ?? appLocalizations.add,
@@ -54,58 +56,67 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         itemCount: editableFields.length,
         separator: const Divider(),
         itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              _buildEditInfoScreen(
-                  context, editableFields, index, user, appLocalizations);
-            },
-            contentPadding: EdgeInsets.zero,
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  editableFields.keys.elementAt(index),
-                  style: getBottomSheetTitleStyle(isTablet),
-                ),
-                SizedBox(height: isTablet ? 4 : 4.sp),
-                Text(
-                  editableFields.values.elementAt(index),
-                  style: getCarouselBodyStyle(isTablet)
-                      .copyWith(color: Theme.of(context).colorScheme.outline),
-                ),
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-              color: Theme.of(context).colorScheme.onInverseSurface,
-              size: isTablet ? 35 : 25.sp,
-            ),
-          );
+          final field = editableFields.entries.elementAt(index);
+          return _buildEditableField(context, field, user, appLocalizations);
         },
       ),
     );
   }
 
-  Future<dynamic> _buildEditInfoScreen(
-      BuildContext context,
-      Map<String, String> editableFields,
-      int index,
-      UserModel user,
-      AppLocalizations appLocalizations) {
+  Widget _buildEditableField(
+    BuildContext context,
+    MapEntry field,
+    UserModel user,
+    AppLocalizations appLocalizations,
+  ) {
+    bool isTablet = Responsive.isTablet(context);
+
+    return ListTile(
+      onTap: () {
+        _buildEditInfoScreen(context, field, user, appLocalizations);
+      },
+      contentPadding: EdgeInsets.zero,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            field.key,
+            style: getBottomSheetTitleStyle(isTablet),
+          ),
+          SizedBox(height: isTablet ? 4 : 4.sp),
+          Text(
+            field.value ?? appLocalizations.add,
+            style: getCarouselBodyStyle(isTablet)
+                .copyWith(color: Theme.of(context).colorScheme.outline),
+          ),
+        ],
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        color: Theme.of(context).colorScheme.onInverseSurface,
+        size: isTablet ? 35 : 25.sp,
+      ),
+    );
+  }
+
+  Future<void> _buildEditInfoScreen(
+    BuildContext context,
+    MapEntry field,
+    UserModel user,
+    AppLocalizations appLocalizations,
+  ) async {
+    final fieldName = field.key.toString().toLowerCase();
     TextEditingController editFieldController = TextEditingController();
-    editFieldController.text =
-        editableFields.values.elementAt(index) == appLocalizations.add
-            ? ''
-            : editableFields.values.elementAt(index);
-    return showModalBottomSheet(
+    editFieldController.text = field.value ?? '';
+
+    await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return LongBottomSheet(
-            title: appLocalizations.editInfoScreenTitle(
-                editableFields.keys.elementAt(index).toLowerCase()),
+            title: appLocalizations.editInfoScreenTitle(fieldName),
             buttonChild: _isLoading
                 ? const SizedBox(
                     width: 20,
@@ -116,8 +127,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               setState(() {
                 _isLoading = true;
               });
-              await _tryEditField(user, editableFields, index,
-                  editFieldController, context, appLocalizations);
+              final updatedValue = editFieldController.text;
+              final fieldName = field.key;
+              await _tryEditField(
+                  user, fieldName, updatedValue, context, appLocalizations);
               setState(() {
                 _isLoading = false;
               });
@@ -126,7 +139,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               CustomFormField(
                 controller: editFieldController,
                 keyboardType: TextInputType.text,
-                labelText: editableFields.keys.elementAt(index),
+                labelText: field.key,
               )
             ],
           );
@@ -136,22 +149,16 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   }
 
   Future<void> _tryEditField(
-      UserModel user,
-      Map<String, String> editableFields,
-      int index,
-      TextEditingController editFieldController,
-      BuildContext context,
-      AppLocalizations appLocalizations) async {
+    UserModel user,
+    String fieldName,
+    String updatedValue,
+    BuildContext context,
+    AppLocalizations appLocalizations,
+  ) async {
     try {
-      Map<String, String?> values = {
-        'names': user.names,
-        'surnames': user.surnames,
-        'document': user.document,
-        'address': user.address,
-        'telephone_number': user.telephoneNumber,
-        'image': user.image,
-      };
-      final target = editableFields.keys.elementAt(index);
+      final accessToken =
+          Provider.of<UserProvider>(context, listen: false).accessToken!;
+
       Map<String, String> targetToKey = {
         appLocalizations.nameText: 'names',
         appLocalizations.surnameText: 'surnames',
@@ -159,35 +166,28 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         appLocalizations.address: 'address',
         appLocalizations.telephoneNumber: 'telephone_number',
       };
-      if (targetToKey.containsKey(target)) {
-        values[targetToKey[target]!] = editFieldController.text;
-      }
-      await editUserProfile(
-          Provider.of<UserProvider>(context, listen: false).accessToken!,
-          values,
-          context);
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return CustomDialog(
-                title: appLocalizations.successEditDialogTitle,
-                body: appLocalizations.successEditDialogBody(
-                    editableFields.keys.elementAt(index)),
-                color: Theme.of(context).colorScheme.primary,
-                icon: Icons.check_circle_outline);
-          },
-        );
-      }
+
+      final key = targetToKey[fieldName] ?? fieldName;
+
+      await editUserProfile(accessToken, {key: updatedValue}, context);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            title: appLocalizations.successEditDialogTitle,
+            body: appLocalizations.successEditDialogBody(fieldName),
+            color: Theme.of(context).colorScheme.primary,
+            icon: Icons.check_circle_outline,
+          );
+        },
+      );
     } catch (e) {
-      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (context) {
           return CustomDialog(
             title: appLocalizations.errorEditDialogTitle,
-            body: appLocalizations
-                .errorEditDialogBody(editableFields.keys.elementAt(index)),
+            body: appLocalizations.errorEditDialogBody(fieldName),
             color: Theme.of(context).colorScheme.error,
             icon: Icons.error_outline,
           );

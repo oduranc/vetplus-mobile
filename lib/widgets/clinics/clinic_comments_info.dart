@@ -11,6 +11,8 @@ import 'package:vetplus/screens/clinics/clinic_profile.dart';
 import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/validation_utils.dart';
+import 'package:vetplus/widgets/clinics/comment_owner_widget.dart';
+import 'package:vetplus/widgets/clinics/comments_list.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 
@@ -49,99 +51,8 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
             if (user != null)
               IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(builder: (context, setState) {
-                        return LongBottomSheet(
-                          title: appLocalizations.addComment,
-                          buttonChild: _isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                      color: Colors.white))
-                              : Text(appLocalizations.publish),
-                          onSubmit: () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            final accessToken = Provider.of<UserProvider>(
-                                    context,
-                                    listen: false)
-                                .accessToken!;
-                            await ClinicService.registerComment(accessToken,
-                                widget.id, commentsController.text);
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            Navigator.of(context).popUntil(
-                                ModalRoute.withName(ClinicProfile.route));
-                            Navigator.pushReplacementNamed(
-                              context,
-                              ClinicProfile.route,
-                              arguments: {'id': widget.id},
-                            );
-                          },
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: widget.isTablet ? 27.5 : 22.5.sp,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: user.image != null
-                                      ? NetworkImage(user.image!)
-                                      : null,
-                                  child: user.image != null
-                                      ? null
-                                      : const Icon(Icons.person),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: widget.isTablet ? 15 : 13.sp),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${user.names} ${user.surnames ?? ''}',
-                                          style: getClinicDetailsTextStyle(
-                                                  widget.isTablet)
-                                              .copyWith(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          appLocalizations.justNow,
-                                          style: getClinicDetailsTextStyle(
-                                              widget.isTablet),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 200,
-                              child: CustomFormField(
-                                validator: (value) {
-                                  return validateComment(value, context);
-                                },
-                                controller: commentsController,
-                                keyboardType: TextInputType.multiline,
-                                labelText: appLocalizations.commentExperience,
-                                isBig: true,
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                    },
-                  );
+                  _buildCreateCommentBottomSheet(
+                      context, appLocalizations, user);
                 },
                 icon: Icon(
                   Icons.add_comment,
@@ -151,89 +62,75 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
               )
           ],
         ),
-        ListView.separated(
-          itemCount: widget.comments.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) =>
-              SizedBox(height: widget.isTablet ? 44 : 34.sp),
-          itemBuilder: (context, index) {
-            final owner = widget.comments[index].owner;
-            final time = DateTime.now()
-                .difference(DateTime.parse(widget.comments[index].updatedAt));
-            String timePassed;
-            if (time.inSeconds < 60) {
-              timePassed = '${time.inSeconds} ${appLocalizations.seconds}';
-            } else if (time.inMinutes < 60) {
-              timePassed = '${time.inMinutes} ${appLocalizations.minutes}';
-            } else if (time.inHours < 24) {
-              timePassed = '${time.inHours} ${appLocalizations.hours}';
-            } else if (time.inDays < 30) {
-              timePassed = '${time.inDays} ${appLocalizations.days}';
-            } else if (time.inDays < 365) {
-              timePassed =
-                  '${(time.inDays / 30).floor()} ${appLocalizations.months}';
-            } else {
-              timePassed =
-                  '${(time.inDays / 365).floor()} ${appLocalizations.years}';
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: widget.isTablet ? 27.5 : 22.5.sp,
-                      backgroundImage: owner.image != null
-                          ? NetworkImage(owner.image!)
-                          : null,
-                      backgroundColor: Colors.transparent,
-                      child: owner.image == null
-                          ? Icon(
-                              Icons.person,
-                              size: widget.isTablet ? 55 : 45.sp,
-                            )
-                          : null,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(left: widget.isTablet ? 15 : 13.sp),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${owner.names} ${owner.surnames}',
-                              style: getClinicDetailsTextStyle(widget.isTablet)
-                                  .copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              appLocalizations.ago(timePassed),
-                              style: getClinicDetailsTextStyle(widget.isTablet),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: widget.isTablet ? 14 : 6.sp),
-                Text(
-                  widget.comments[index].comment,
-                  style: getClinicDetailsTextStyle(widget.isTablet)
-                      .copyWith(color: Colors.black),
-                  textAlign: TextAlign.justify,
-                ),
-              ],
-            );
-          },
-        )
+        CommentsList(widget: widget, appLocalizations: appLocalizations)
       ],
     );
+  }
+
+  Future<dynamic> _buildCreateCommentBottomSheet(
+      BuildContext context, AppLocalizations appLocalizations, UserModel user) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return LongBottomSheet(
+            title: appLocalizations.addComment,
+            buttonChild: _isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(color: Colors.white))
+                : Text(appLocalizations.publish),
+            onSubmit: () => _submitComment(context, setState),
+            children: [
+              CommentOwnerWidget(
+                names: user.names,
+                surnames: user.surnames,
+                image: user.image,
+                appLocalizations: appLocalizations,
+                isTablet: widget.isTablet,
+                timePassed: appLocalizations.justNow,
+              ),
+              SizedBox(
+                height: 200,
+                child: CustomFormField(
+                  validator: (value) {
+                    return validateComment(value, context);
+                  },
+                  controller: commentsController,
+                  keyboardType: TextInputType.multiline,
+                  labelText: appLocalizations.commentExperience,
+                  isBig: true,
+                ),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> _submitComment(
+      BuildContext context, StateSetter setState) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final accessToken =
+        Provider.of<UserProvider>(context, listen: false).accessToken!;
+    final commentText = commentsController.text;
+
+    try {
+      await ClinicService.registerComment(accessToken, widget.id, commentText);
+      Navigator.of(context).popUntil(ModalRoute.withName(ClinicProfile.route));
+      Navigator.pushReplacementNamed(context, ClinicProfile.route,
+          arguments: {'id': widget.id});
+    } catch (e) {
+      print('Error submitting comment: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

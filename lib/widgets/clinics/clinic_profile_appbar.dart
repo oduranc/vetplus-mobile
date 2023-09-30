@@ -44,46 +44,49 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
 
     return AppBar(
       backgroundColor: Colors.transparent,
-      leading: IconButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(
-              Theme.of(context).colorScheme.surfaceVariant),
-        ),
-        onPressed: () {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavigationBarTemplate(index: 0),
-              ),
-              (route) => false);
-        },
-        icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
+      leading: _buildLeadingIcon(context),
+      actions: user != null ? [_buildTrailingIcon(context, isTablet)] : null,
+    );
+  }
+
+  IconButton _buildLeadingIcon(BuildContext context) {
+    return IconButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(
+            Theme.of(context).colorScheme.surfaceVariant),
       ),
-      actions: user != null
-          ? [
-              IconButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
-                      Theme.of(context).colorScheme.surfaceVariant),
-                ),
-                onPressed: () async {
-                  final accessToken =
-                      Provider.of<UserProvider>(context, listen: false)
-                          .accessToken!;
-                  final currentFavorites =
-                      await getFavorites(context, accessToken);
-                  for (final element in currentFavorites.list) {
-                    if (element.idClinic == widget.id) {
-                      _isFavorite = true;
-                      break;
-                    }
-                  }
-                  _buildModalBottomSheet(context, accessToken, isTablet);
-                },
-                icon: const Icon(Icons.more_horiz),
-              )
-            ]
-          : null,
+      onPressed: () {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NavigationBarTemplate(index: 0),
+            ),
+            (route) => false);
+      },
+      icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
+    );
+  }
+
+  IconButton _buildTrailingIcon(BuildContext context, bool isTablet) {
+    final accessToken =
+        Provider.of<UserProvider>(context, listen: false).accessToken!;
+
+    return IconButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(
+            Theme.of(context).colorScheme.surfaceVariant),
+      ),
+      onPressed: () async {
+        final currentFavorites = await getFavorites(context, accessToken);
+        for (final element in currentFavorites.list) {
+          if (element.idClinic == widget.id) {
+            _isFavorite = true;
+            break;
+          }
+        }
+        _buildModalBottomSheet(context, accessToken, isTablet);
+      },
+      icon: const Icon(Icons.more_horiz),
     );
   }
 
@@ -98,7 +101,7 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
               _buildFavoriteButton(setState, accessToken, context),
               ElevatedButton(
                 onPressed: () {
-                  showScoreDialog(context, isTablet, accessToken, widget.id);
+                  _showScoreDialog(context, accessToken);
                 },
                 child: Text(AppLocalizations.of(context)!.addReview),
               ),
@@ -109,12 +112,14 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
     );
   }
 
-  Future<dynamic> showScoreDialog(
-      BuildContext context, bool isTablet, String accessToken, String id) {
-    return showDialog(
+  Future<void> _showScoreDialog(
+      BuildContext context, String accessToken) async {
+    int ratingValue = 1;
+    final isTablet = Responsive.isTablet(context);
+
+    await showDialog(
       context: context,
       builder: (context) {
-        int ratingValue = 1;
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             actions: [
@@ -123,7 +128,8 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
                   setState(() {
                     _isLoading = true;
                   });
-                  await ClinicService.scoreClinic(accessToken, id, ratingValue);
+                  await ClinicService.scoreClinic(
+                      accessToken, widget.id, ratingValue);
                   setState(() {
                     _isLoading = false;
                   });
@@ -132,7 +138,7 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
                   Navigator.pushReplacementNamed(
                     context,
                     ClinicProfile.route,
-                    arguments: {'id': id},
+                    arguments: {'id': widget.id},
                   );
                 },
                 child: _isLoading
@@ -149,42 +155,52 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
               style: getBottomSheetTitleStyle(isTablet),
               textAlign: TextAlign.center,
             ),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Divider(),
-                  RatingBar.builder(
-                    glow: false,
-                    itemCount: 5,
-                    initialRating: 1,
-                    itemPadding: EdgeInsets.symmetric(
-                      horizontal: isTablet ? 8 : 4.sp,
-                      vertical: isTablet ? 20 : 20.sp,
-                    ),
-                    minRating: 1,
-                    maxRating: 5,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    unratedColor: Colors.amber.withOpacity(0.2),
-                    onRatingUpdate: (rating) {
-                      ratingValue = rating.toInt();
-                    },
-                  ),
-                  SizedBox(height: isTablet ? 30 : 11.sp),
-                  Text(
-                    AppLocalizations.of(context)!.reviewBody,
-                    style: getBottomSheetBodyStyle(isTablet),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+            content: _buildDialogContent(
+              isTablet,
+              ratingValue,
+              context,
+              (rating) {
+                ratingValue = rating.toInt();
+              },
             ),
           );
         });
       },
+    );
+  }
+
+  SingleChildScrollView _buildDialogContent(bool isTablet, int ratingValue,
+      BuildContext context, void Function(double) onRatingUpdate) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const Divider(),
+          RatingBar.builder(
+            glow: false,
+            itemCount: 5,
+            initialRating: 1,
+            itemPadding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 8 : 4.sp,
+              vertical: isTablet ? 20 : 20.sp,
+            ),
+            minRating: 1,
+            maxRating: 5,
+            itemBuilder: (context, _) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            unratedColor: Colors.amber.withOpacity(0.2),
+            onRatingUpdate: onRatingUpdate,
+          ),
+          SizedBox(height: isTablet ? 30 : 11.sp),
+          Text(
+            AppLocalizations.of(context)!.reviewBody,
+            style: getBottomSheetBodyStyle(isTablet),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
@@ -201,17 +217,7 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
           _isFavorite = !_isFavorite;
         });
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: _isFavorite
-            ? Theme.of(context).colorScheme.error
-            : Theme.of(context).colorScheme.primary,
-        side: BorderSide(
-          color: _isFavorite
-              ? Theme.of(context).colorScheme.error
-              : Theme.of(context).colorScheme.primary,
-        ),
-      ),
+      style: _buildFavoriteButtonStyle(context),
       child: _isLoading
           ? SizedBox(
               height: 20,
@@ -225,6 +231,20 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
           : _isFavorite
               ? Text(AppLocalizations.of(context)!.removeFromFavorites)
               : Text(AppLocalizations.of(context)!.addToFavorites),
+    );
+  }
+
+  ButtonStyle _buildFavoriteButtonStyle(BuildContext context) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: Colors.white,
+      foregroundColor: _isFavorite
+          ? Theme.of(context).colorScheme.error
+          : Theme.of(context).colorScheme.primary,
+      side: BorderSide(
+        color: _isFavorite
+            ? Theme.of(context).colorScheme.error
+            : Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 

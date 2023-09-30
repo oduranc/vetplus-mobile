@@ -17,9 +17,10 @@ Future<UserModel> getUserProfile(String accessToken) async {
 
 Future<void> editUserProfile(String accessToken, Map<String, String?> values,
     BuildContext context) async {
-  final res = await UserService.editProfile(accessToken, values);
+  UserModel user = await getUserProfile(accessToken);
+  final res = await UserService.editProfile(accessToken, values, user);
 
-  final user = await getUserProfile(accessToken);
+  user = await getUserProfile(accessToken);
   final userProvider = Provider.of<UserProvider>(context, listen: false);
   userProvider.setUser(user, accessToken);
 }

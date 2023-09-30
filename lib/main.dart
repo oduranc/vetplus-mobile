@@ -8,62 +8,48 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/app_routes.dart';
 import 'package:vetplus/l10n/l10n.dart';
 import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/screens/clinics/clinic_profile.dart';
-import 'package:vetplus/screens/home/favorite_screen.dart';
-import 'package:vetplus/screens/navigation_bar_template.dart';
-import 'package:vetplus/screens/pets/first_add_pet_screen.dart';
-import 'package:vetplus/screens/pets/my_pets_screen.dart';
-import 'package:vetplus/screens/pets/pet_dashboard.dart';
-import 'package:vetplus/screens/pets/pet_profile.dart';
-import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
-import 'package:vetplus/screens/profile/personal_information_screen.dart';
-import 'package:vetplus/screens/sign/login_screen.dart';
-import 'package:vetplus/screens/sign/register_screen.dart';
-import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/services/graphql_client.dart';
 import 'package:vetplus/themes/theme_data.dart';
-import 'package:vetplus/widgets/images/pet_image_screen.dart';
-import 'package:vetplus/widgets/images/user_image_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  //initializeFirebase();
   await ScreenUtil.ensureScreenSize();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then(
-    (value) => runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => UserProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => PetsProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => FavoritesProvider(),
-          )
-        ],
-        child: const MyApp(),
-      ),
-    ),
-  );
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => PetsProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider())
+      ],
+      child: const App(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with WidgetsBindingObserver {
   String _locale = 'en';
 
   @override
@@ -87,14 +73,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
   }
 
+  void getDeviceLocale() {
+    if (Platform.localeName.startsWith('es')) {
+      setState(() {
+        _locale = 'es';
+      });
+    } else {
+      setState(() {
+        _locale = 'en';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bool isTablet = Responsive.isTablet(context);
-    ScreenUtil.init(context, designSize: const Size(392.7, 826.9));
-
-    final HttpLink httpLink = HttpLink(dotenv.env['API_LINK']!);
-
-    initializeGraphQLClient(httpLink);
+    // Initialize GraphQL client and other configurations
+    initializeApp(context);
 
     return GraphQLProvider(
       client: globalGraphQLClient,
@@ -116,43 +110,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: L10n.all,
+        theme: buildAppTheme(Responsive.isTablet(context)),
         locale: Locale(_locale),
-        theme: buildAppTheme(isTablet),
-        routes: _buildRoutes(),
+        routes: getAppRoutes(),
       ),
     );
   }
+}
 
-  Map<String, WidgetBuilder> _buildRoutes() {
-    return {
-      WelcomeScreen.route: (context) => const WelcomeScreen(),
-      RegisterScreen.route: (context) => RegisterScreen(),
-      LoginScreen.route: (context) => const LoginScreen(),
-      NavigationBarTemplate.route: (context) =>
-          const NavigationBarTemplate(index: 0),
-      FavoriteScreen.route: (context) => const FavoriteScreen(),
-      PersonalInformationScreen.route: (context) =>
-          const PersonalInformationScreen(),
-      FirstAddPetScreen.route: (context) => const FirstAddPetScreen(),
-      SecondAddPetScreen.route: (context) => const SecondAddPetScreen(),
-      MyPetsScreen.route: (context) => const MyPetsScreen(),
-      PetDashboard.route: (context) => const PetDashboard(),
-      PetProfile.route: (context) => const PetProfile(),
-      PetImageScreen.route: (context) => const PetImageScreen(),
-      UserImageScreen.route: (context) => const UserImageScreen(),
-      ClinicProfile.route: (context) => const ClinicProfile(),
-    };
-  }
+void initializeApp(BuildContext context) {
+  // Initialize ScreenUtil
+  ScreenUtil.init(context, designSize: const Size(392.7, 826.9));
 
-  void getDeviceLocale() {
-    if (Platform.localeName.startsWith('es')) {
-      setState(() {
-        _locale = 'es';
-      });
-    } else {
-      setState(() {
-        _locale = 'en';
-      });
-    }
-  }
+  final HttpLink httpLink = HttpLink(dotenv.env['API_LINK']!);
+  initializeGraphQLClient(httpLink);
 }

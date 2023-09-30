@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/services/graphql_client.dart';
 
 class UserService {
@@ -148,6 +149,7 @@ class UserService {
         .query(
           QueryOptions(
             document: gql(getMyProfileQuery),
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
@@ -155,7 +157,7 @@ class UserService {
   }
 
   static Future<QueryResult> editProfile(
-      String token, Map<String, String?> values) async {
+      String token, Map<String, String?> values, UserModel user) async {
     const String updateProfileMutation = '''
     mutation (\$updateUserInput: UpdateUserInput!) {
       updateUser(updateUserInput: \$updateUserInput) {
@@ -174,17 +176,19 @@ class UserService {
             document: gql(updateProfileMutation),
             variables: {
               'updateUserInput': {
-                'names': values['names'],
-                'surnames': values['surnames'],
-                'document': values['document'],
-                'address': values['address'],
-                'telephone_number': values['telephone_number'],
-                'image': values['image'],
+                'names': values['names'] ?? user.names,
+                'surnames': values['surnames'] ?? user.surnames,
+                'document': values['document'] ?? user.document,
+                'address': values['address'] ?? user.address,
+                'telephone_number':
+                    values['telephone_number'] ?? user.telephoneNumber,
+                'image': values['image'] ?? user.image,
               }
             },
           ),
         )
         .timeout(const Duration(seconds: 10));
+    print(result);
     if (result.hasException) {
       throw Exception();
     }
