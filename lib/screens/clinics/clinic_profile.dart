@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:vetplus/models/clinic_model.dart';
+import 'package:vetplus/models/comment_model.dart';
 import 'package:vetplus/models/employee_model.dart';
+import 'package:vetplus/models/user_model.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/clinics/shimmer_clinic_profile.dart';
 import 'package:vetplus/services/clinic_service.dart';
@@ -25,10 +29,11 @@ class ClinicProfile extends StatelessWidget {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     final String clinicId = arguments['id'];
+    final UserModel? user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const ClinicProfileAppBar(),
+      appBar: ClinicProfileAppBar(id: clinicId),
       body: FutureBuilder(
         future: Future.wait([
           ClinicService.getClinicById(clinicId),
@@ -56,9 +61,10 @@ class ClinicProfile extends StatelessWidget {
             List<EmployeeModel> employees =
                 EmployeeList.fromJson(employeesJson.data!).list;
 
-            // final commentsJson = snapshot.data![2];
-            // List<CommentModel> comments =
-            //     CommentList.fromJson(commentsJson.data!).list;
+            final commentsJson = snapshot.data![2];
+            List<CommentModel> comments =
+                CommentList.fromJson(commentsJson.data!).list;
+            comments.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
 
             final sectionsToShow = [
               ClinicMainInfo(isTablet: isTablet, clinic: clinic),
@@ -74,7 +80,8 @@ class ClinicProfile extends StatelessWidget {
                   isTablet: isTablet,
                   mapsUrl: clinic.googleMapsUrl,
                 ),
-              ClinicCommentsInfo(isTablet: isTablet),
+              ClinicCommentsInfo(
+                  isTablet: isTablet, comments: comments, id: clinicId),
             ];
 
             return Column(
@@ -111,7 +118,7 @@ class ClinicProfile extends StatelessWidget {
                     ),
                   ),
                 ),
-                ScheduleButtonFooter(isTablet: isTablet),
+                if (user != null) ScheduleButtonFooter(isTablet: isTablet),
               ],
             );
           }

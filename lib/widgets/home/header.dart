@@ -77,9 +77,10 @@ class Header extends StatelessWidget {
                 iconSize: isTablet ? 30 : 25.sp,
                 onPressed: () {
                   Navigator.of(context, rootNavigator: false).push(
-                      MaterialPageRoute(
-                          builder: (context) => FavoriteScreen(),
-                          maintainState: false));
+                    MaterialPageRoute(
+                        builder: (context) => FavoriteScreen(),
+                        maintainState: false),
+                  );
                 },
                 icon: const Icon(Icons.favorite_border_rounded),
               ),

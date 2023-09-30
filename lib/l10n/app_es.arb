@@ -378,6 +378,18 @@
   "@days": {
     "description": "Days"
   },
+  "hours": "horas",
+  "@hours": {
+    "description": "Hours"
+  },
+  "minutes": "minutos",
+  "@minutes": {
+    "description": "Minutes"
+  },
+  "seconds": "segundos",
+  "@seconds": {
+    "description": "Seconds"
+  },
   "wellnessPanel": "Panel de bienestar",
   "@wellnessPanel": {
     "description": "Wellness Panel"
@@ -473,5 +485,23 @@
   "commentExperience": "Comenta tu experiencia...",
   "@commentExperience": {
     "description": "Comment experience"
+  },
+  "ago": "hace {field}",
+  "@ago": {
+    "description": "Ago text",
+    "placeholders": {
+      "field": {}
+    }
+  },
+  "justNow": "Justo ahora",
+  "@justNow": {
+    "description": "Just now"
+  },
+  "textLengthExceeded": "Tu mensaje es muy largo. Por favor, acórtelo en {exceededBy} caracteres.",
+  "@textLengthExceeded": {
+    "description": "Text length exceeded",
+    "placeholders": {
+      "exceededBy": {}
+    }
   }
 }

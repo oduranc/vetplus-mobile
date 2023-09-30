@@ -89,3 +89,16 @@ String? validatePasswordConfirmation(value, passwordController, context) {
   }
   return null;
 }
+
+String? validateComment(String? value, context) {
+  int maxLength = 150;
+  if (value == null || value.isEmpty) {
+    return AppLocalizations.of(context)!
+        .isRequired(AppLocalizations.of(context)!.comments);
+  }
+  if (value.length > maxLength) {
+    return AppLocalizations.of(context)!
+        .textLengthExceeded(value.length - maxLength);
+  }
+  return null;
+}

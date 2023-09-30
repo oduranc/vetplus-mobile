@@ -3,12 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/models/favorite_clinic_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
+import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/utils/user_utils.dart';
@@ -20,7 +23,8 @@ Future<void> _tryLoginWithGoogle(BuildContext context) async {
     final accessToken = result.data!['googleLogin']['access_token'];
     final user = await getUserProfile(accessToken);
     PetList pets = await getPets(context, accessToken);
-    await navigateToHome(context, user, accessToken, pets);
+    FavoriteClinicList favorites = await getFavorites(context, accessToken);
+    await navigateToHome(context, user, accessToken, pets, favorites);
   } catch (e) {
     await _showServerErrorDialog(context);
   }
@@ -35,7 +39,8 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
       final accessToken = result.data!['googleLogin']['access_token'];
       final user = await getUserProfile(accessToken);
       PetList pets = await getPets(context, accessToken);
-      await navigateToHome(context, user, accessToken, pets);
+      FavoriteClinicList favorites = await getFavorites(context, accessToken);
+      await navigateToHome(context, user, accessToken, pets, favorites);
     }
   } catch (e) {
     if (e.toString() == 'Null check operator used on a null value') {
@@ -52,6 +57,14 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
   }
 }
 
+Future<FavoriteClinicList> getFavorites(
+    BuildContext context, accessToken) async {
+  final favoritesResult = await ClinicService.getFavoriteClinics(accessToken);
+  final favoritesJson = favoritesResult.data!;
+  final favorites = FavoriteClinicList.fromJson(favoritesJson);
+  return favorites;
+}
+
 Future<void> tryLoginWithEmail(
     BuildContext context, String email, String password) async {
   try {
@@ -63,7 +76,8 @@ Future<void> tryLoginWithEmail(
       final accessToken = result.data!['signInWithEmail']['access_token'];
       final user = await getUserProfile(accessToken);
       PetList pets = await getPets(context, accessToken);
-      await navigateToHome(context, user, accessToken, pets);
+      FavoriteClinicList favorites = await getFavorites(context, accessToken);
+      await navigateToHome(context, user, accessToken, pets, favorites);
     }
   } catch (e) {
     await _showServerErrorDialog(context);
@@ -136,11 +150,14 @@ Future<void> _showCustomDialog(String title, String body, Color color,
 }
 
 Future<void> navigateToHome(BuildContext context, UserModel user,
-    String accessToken, PetList pets) async {
+    String accessToken, PetList pets, FavoriteClinicList favorites) async {
   final userProvider = Provider.of<UserProvider>(context, listen: false);
   final petsProvider = Provider.of<PetsProvider>(context, listen: false);
+  final favoritesProvider =
+      Provider.of<FavoritesProvider>(context, listen: false);
   userProvider.setUser(user, accessToken);
   petsProvider.setPets(pets.list);
+  favoritesProvider.setFavorites(favorites.list);
 
   Navigator.pushAndRemoveUntil(
     context,

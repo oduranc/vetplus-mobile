@@ -107,7 +107,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             title: appLocalizations.editInfoScreenTitle(
                 editableFields.keys.elementAt(index).toLowerCase()),
             buttonChild: _isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(color: Colors.white))
                 : Text(appLocalizations.update),
             onSubmit: () async {
               setState(() {

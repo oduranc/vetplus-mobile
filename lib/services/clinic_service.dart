@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:vetplus/services/graphql_client.dart';
 
@@ -29,6 +30,7 @@ class ClinicService {
         .query(
           QueryOptions(
             document: gql(getAllClinicQuery),
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
@@ -71,6 +73,7 @@ class ClinicService {
                 'id': id,
               }
             },
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
@@ -109,6 +112,7 @@ class ClinicService {
                 'id': id,
               }
             },
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
@@ -144,7 +148,121 @@ class ClinicService {
                 'id': id,
               }
             },
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
+
+  static Future<QueryResult> getFavoriteClinics(String token) async {
+    const getFavoriteClinicsQuery = '''
+    query {
+      getAllFavoriteClinic {
+        Clinic {
+          name
+          address
+          image
+        }
+        id_user
+        id_clinic
+        favorite
+        points
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .query(
+          QueryOptions(
+            document: gql(getFavoriteClinicsQuery),
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
+
+  static Future<QueryResult> markClinicAsFavorite(
+      String token, String id, bool favorite) async {
+    const markAsFavoriteMutation = '''
+    mutation (\$markAsFavoriteClinicInput: MarkAsFavoriteClinicInput!) {
+      markAsFavoriteClinic(markAsFavoriteClinicInput: \$markAsFavoriteClinicInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(document: gql(markAsFavoriteMutation), variables: {
+            'markAsFavoriteClinicInput': {
+              'id': id,
+              'favorite': favorite,
+            },
+          }),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
+
+  static Future<QueryResult> scoreClinic(
+      String token, String id, int score) async {
+    const scoreClinicMutation = '''
+    mutation (\$scoreClinicInput: ScoreClinicInput!) {
+      scoreClinic(scoreClinicInput: \$scoreClinicInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(document: gql(scoreClinicMutation), variables: {
+            'scoreClinicInput': {
+              'id_clinic': id,
+              'score': score,
+            },
+          }),
+        )
+        .timeout(const Duration(seconds: 10));
+    return result;
+  }
+
+  static Future<QueryResult> registerComment(
+      String token, String id, String comment) async {
+    const registerCommentMutation = '''
+    mutation (\$addCommentInput: AddCommentInput!) {
+      registerComment(addCommentInput: \$addCommentInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(document: gql(registerCommentMutation), variables: {
+            'addCommentInput': {
+              'id': id,
+              'comment': comment,
+            },
+          }),
         )
         .timeout(const Duration(seconds: 10));
     return result;

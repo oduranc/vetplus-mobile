@@ -25,7 +25,6 @@ class UserService {
         .copyWith(link: link)
         .query(QueryOptions(document: gql(googleLoginQuery)))
         .timeout(const Duration(seconds: 10));
-
     return result;
   }
 
@@ -186,6 +185,9 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+    if (result.hasException) {
+      throw Exception();
+    }
     return result;
   }
 }

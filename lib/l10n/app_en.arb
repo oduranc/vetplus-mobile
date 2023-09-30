@@ -113,5 +113,11 @@
   "reviewBody": "Your opinion is very valuable to help us maintain the quality of services.",
   "addComment": "Add comment",
   "publish": "Publish",
-  "commentExperience": "Tell us your experience..."
+  "commentExperience": "Tell us your experience...",
+  "hours": "hours",
+  "minutes": "minutes",
+  "seconds": "seconds",
+  "ago": "{field} ago",
+  "justNow": "Just now",
+  "textLengthExceeded": "Your message is too long. Please shorten it by {exceededBy} characters."
 }

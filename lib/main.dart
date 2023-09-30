@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:vetplus/l10n/l10n.dart';
+import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
@@ -44,6 +45,9 @@ void main() async {
           ),
           ChangeNotifierProvider(
             create: (_) => PetsProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => FavoritesProvider(),
           )
         ],
         child: const MyApp(),

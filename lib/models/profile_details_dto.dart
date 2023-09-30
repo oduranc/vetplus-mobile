@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/pets/my_pets_screen.dart';
@@ -59,6 +60,8 @@ Future<dynamic> buildLogoutSheet(BuildContext context) {
               await GoogleSignIn().signOut();
               Provider.of<UserProvider>(context, listen: false).clearUser();
               Provider.of<PetsProvider>(context, listen: false).clearPets();
+              Provider.of<FavoritesProvider>(context, listen: false)
+                  .clearFavorites();
               Navigator.pushNamedAndRemoveUntil(
                   context, WelcomeScreen.route, (route) => false);
             },

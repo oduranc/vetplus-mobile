@@ -33,7 +33,8 @@ Future<void> tryRegisterPet(File? image, String name, String gender, int specie,
       ).then((value) async {
         final pets = await getPets(context, accessToken);
         final user = await getUserProfile(accessToken);
-        navigateToHome(context, user, accessToken, pets);
+        final favorites = await getFavorites(context, accessToken);
+        navigateToHome(context, user, accessToken, pets, favorites);
       });
     }
   } catch (e) {

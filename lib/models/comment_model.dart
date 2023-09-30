@@ -35,7 +35,7 @@ class CommentModel {
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
-    final owner = Owner.fromJson(json['owner']);
+    final owner = Owner.fromJson(json['Owner']);
 
     return CommentModel(
       id: json['id'],
