@@ -64,7 +64,7 @@ AppBarTheme appBarTheme(bool isTablet) => AppBarTheme(
 
 NavigationBarThemeData navigationBarTheme(bool isTablet) {
   return NavigationBarThemeData(
-    height: isTablet ? 96 : 97.sp,
+    height: isTablet ? 96 : 90.sp,
     surfaceTintColor: Colors.white,
     shadowColor: Colors.black,
     indicatorColor: Colors.transparent,
@@ -85,5 +85,49 @@ NavigationBarThemeData navigationBarTheme(bool isTablet) {
         return getNavBarTextStyle(isTablet);
       }
     }),
+  );
+}
+
+SearchBarThemeData searchBarThemeData(bool isTablet) {
+  final textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: isTablet ? 20 : 16.sp,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+  );
+
+  return SearchBarThemeData(
+    backgroundColor: const MaterialStatePropertyAll(Colors.white),
+    shadowColor: const MaterialStatePropertyAll(Colors.white),
+    surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
+    elevation: const MaterialStatePropertyAll(2),
+    padding: MaterialStatePropertyAll(
+        EdgeInsets.symmetric(horizontal: isTablet ? 20 : 15.sp)),
+    textStyle: MaterialStatePropertyAll(textStyle),
+    hintStyle: MaterialStatePropertyAll(
+        textStyle.copyWith(color: const Color(0xFF858586))),
+    shape: MaterialStatePropertyAll(
+      RoundedRectangleBorder(
+        side: const BorderSide(width: 1, color: Color(0xFFF4F4F4)),
+        borderRadius: BorderRadius.circular(15),
+      ),
+    ),
+  );
+}
+
+CheckboxThemeData checkboxThemeData(bool isTablet) {
+  return CheckboxThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4),
+    ),
+    side: const BorderSide(
+      color: Color(0xFFACACAD),
+    ),
+    fillColor: MaterialStateProperty.resolveWith(
+      (states) => states.contains(MaterialState.selected)
+          ? const Color(0xFF27AAE1)
+          : Colors.white,
+    ),
   );
 }

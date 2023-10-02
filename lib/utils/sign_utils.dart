@@ -10,6 +10,7 @@ import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
+import 'package:vetplus/screens/sign/auth_code_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/services/user_service.dart';
@@ -84,29 +85,91 @@ Future<void> tryLoginWithEmail(
   }
 }
 
+Future<void> signUpWithCode(int code, String room, BuildContext context) async {
+  try {
+    final result = await UserService.signUp(code, room);
+
+    if (result.hasException) {
+      if (result.exception!.graphqlErrors[0].message == 'EMAIL_EXIST') {
+        await _showCustomDialog(
+          AppLocalizations.of(context)!.usedEmailTitle,
+          AppLocalizations.of(context)!.usedEmailBody,
+          Theme.of(context).colorScheme.error,
+          Icons.error_outline_outlined,
+          context,
+        );
+      } else {
+        await _showServerErrorDialog(context);
+      }
+    } else {
+      final res = result.data!['signUp']['result'];
+      final message = result.data!['signUp']['message'];
+      print('result: $res');
+      print('message: $message');
+      if (res == 'FAILED') {
+        _showCustomDialog(
+          AppLocalizations.of(context)!.wrongCodeTitle,
+          AppLocalizations.of(context)!.wrongCodeBody,
+          Colors.red,
+          Icons.error_outline_outlined,
+          context,
+        );
+      } else {
+        await _showCustomDialog(
+          AppLocalizations.of(context)!.createdAccountTitle,
+          AppLocalizations.of(context)!.createdAccountBody,
+          Colors.green,
+          Icons.check_circle_outline_outlined,
+          context,
+        ).then((value) =>
+            Navigator.pushReplacementNamed(context, LoginScreen.route));
+      }
+    }
+  } catch (e) {
+    await _showServerErrorDialog(context);
+  }
+}
+
 Future<void> trySignUpWithEmail(String name, String lastname, String email,
     String password, BuildContext context) async {
   try {
-    final result =
-        await UserService.signUpWithEmail(name, lastname, email, password);
+    final result = await UserService.signUpVerificationCode(
+        name, lastname, email, password);
 
     if (result.hasException) {
-      await _showCustomDialog(
-        AppLocalizations.of(context)!.usedEmailTitle,
-        AppLocalizations.of(context)!.usedEmailBody,
-        Theme.of(context).colorScheme.error,
-        Icons.error_outline_outlined,
-        context,
-      );
+      print(result.exception!.graphqlErrors[0].message);
+      if (result.exception!.graphqlErrors[0].message ==
+          'VALIDATION_FIELDS_FAIL') {
+        await _showCustomDialog(
+          AppLocalizations.of(context)!.wrongEmailFormatTitle,
+          AppLocalizations.of(context)!.wrongEmailFormatBody,
+          Theme.of(context).colorScheme.error,
+          Icons.error_outline_outlined,
+          context,
+        );
+      } else {
+        await _showCustomDialog(
+          AppLocalizations.of(context)!.usedEmailTitle,
+          AppLocalizations.of(context)!.usedEmailBody,
+          Theme.of(context).colorScheme.error,
+          Icons.error_outline_outlined,
+          context,
+        );
+      }
     } else {
-      await _showCustomDialog(
-        AppLocalizations.of(context)!.createdAccountTitle,
-        AppLocalizations.of(context)!.createdAccountBody,
-        Colors.green,
-        Icons.check_circle_outline_outlined,
+      final room = result.data!['signUpVerificationCode']['room'];
+      Navigator.pushReplacement(
         context,
-      ).then((value) =>
-          Navigator.pushReplacementNamed(context, LoginScreen.route));
+        MaterialPageRoute(
+          builder: (context) => AuthCodeScreen(
+            room: room,
+            name: name,
+            lastname: lastname,
+            email: email,
+            password: password,
+          ),
+        ),
+      );
     }
   } catch (e) {
     await _showServerErrorDialog(context);

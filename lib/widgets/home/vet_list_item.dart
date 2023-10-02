@@ -90,19 +90,21 @@ class VetListItem extends StatelessWidget {
                     ? const EdgeInsets.symmetric(vertical: 18, horizontal: 16)
                     : EdgeInsets.symmetric(vertical: 10.sp, horizontal: 8.sp),
                 child: Wrap(
-                  direction: Axis.vertical,
-                  alignment: WrapAlignment.center,
-                  spacing: Responsive.isTablet(context) ? 6 : 2.sp,
-                  clipBehavior: Clip.antiAlias,
+                  runSpacing: Responsive.isTablet(context) ? 6 : 2.sp,
                   children: [
-                    Text(
-                      clinic.name,
-                      style:
-                          getSnackBarTitleStyle(Responsive.isTablet(context)),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        clinic.name,
+                        style:
+                            getSnackBarTitleStyle(Responsive.isTablet(context)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Text(
                       clinic.address,
                       style: getSnackBarBodyStyle(Responsive.isTablet(context)),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

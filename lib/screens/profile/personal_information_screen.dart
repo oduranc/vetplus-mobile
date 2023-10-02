@@ -107,7 +107,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   ) async {
     final fieldName = field.key.toString().toLowerCase();
     TextEditingController editFieldController = TextEditingController();
-    editFieldController.text = field.value ?? '';
+    editFieldController.text =
+        field.value != appLocalizations.add ? field.value : '';
 
     await showModalBottomSheet(
       isScrollControlled: true,
@@ -127,7 +128,9 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               setState(() {
                 _isLoading = true;
               });
-              final updatedValue = editFieldController.text;
+              final updatedValue = editFieldController.text == ''
+                  ? null
+                  : editFieldController.text;
               final fieldName = field.key;
               await _tryEditField(
                   user, fieldName, updatedValue, context, appLocalizations);
@@ -151,7 +154,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Future<void> _tryEditField(
     UserModel user,
     String fieldName,
-    String updatedValue,
+    String? updatedValue,
     BuildContext context,
     AppLocalizations appLocalizations,
   ) async {

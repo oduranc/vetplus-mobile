@@ -43,20 +43,23 @@ class ClinicProfile extends StatelessWidget {
           } else if (snapshot.hasError) {
             return _buildErrorWidget(
                 AppLocalizations.of(context)!.serverFailedBody);
-          } else if (snapshot.data![0].hasException ||
-              snapshot.data![1].hasException) {
+          } else if (snapshot.data![0].hasException) {
             return _buildErrorWidget(
                 AppLocalizations.of(context)!.internetConnection);
           } else {
             ClinicModel clinic =
                 ClinicModel.fromJson(snapshot.data![0].data!['getClinicById']);
 
-            List<EmployeeModel> employees =
-                EmployeeList.fromJson(snapshot.data![1].data!).list;
+            List<EmployeeModel>? employees = [];
+            if (snapshot.data![1].data != null) {
+              employees = EmployeeList.fromJson(snapshot.data![1].data!).list;
+            }
 
-            List<CommentModel> comments =
-                CommentList.fromJson(snapshot.data![2].data!).list;
-            comments.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+            List<CommentModel>? comments = [];
+            if (snapshot.data![2].data != null) {
+              comments = CommentList.fromJson(snapshot.data![2].data!).list;
+              comments.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+            }
 
             final sectionsToShow =
                 _buildSections(isTablet, clinic, employees, comments, clinicId);

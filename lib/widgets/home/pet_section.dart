@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/breed_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
@@ -18,10 +17,12 @@ class PetSection extends StatelessWidget {
     Key? key,
     required this.sectionTitle,
     required this.pets,
+    required this.shimmerEffect,
   }) : super(key: key);
 
   final String sectionTitle;
   final List<PetModel>? pets;
+  final Widget shimmerEffect;
 
   Widget _buildPetsList(BuildContext context, int index, List<PetModel> pets,
           BreedList breeds) =>
@@ -85,6 +86,12 @@ class PetSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = Responsive.isTablet(context);
+    if (pets != null) {
+      pets!
+          .sort((a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
+    }
+    final accessToken =
+        Provider.of<UserProvider>(context, listen: false).accessToken!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -97,27 +104,10 @@ class PetSection extends StatelessWidget {
         SizedBox(
           height: isTablet ? 120 : 90.sp,
           child: FutureBuilder(
-              future: BreedService.getAllBreeds(
-                  Provider.of<UserProvider>(context, listen: false)
-                      .accessToken!),
+              future: BreedService.getAllBreeds(accessToken),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ListView.separated(
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 20),
-                    padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: pets != null ? pets!.length + 1 : 1,
-                    itemBuilder: (context, index) {
-                      return Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: CircleAvatar(
-                          radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-                        ),
-                      );
-                    },
-                  );
+                  return shimmerEffect;
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(AppLocalizations.of(context)!.serverFailedBody),

@@ -105,8 +105,8 @@ String getFormattedAge(PetModel pet, BuildContext context) {
 }
 
 Future<void> editPetProfile(String accessToken, Map<String, dynamic> values,
-    BuildContext context) async {
-  final res = await PetService.editPetProfile(accessToken, values);
+    BuildContext context, PetModel pet) async {
+  final res = await PetService.editPetProfile(accessToken, values, pet);
 
   final pets = await getPets(context, accessToken);
   final petsProvider = Provider.of<PetsProvider>(context, listen: false);

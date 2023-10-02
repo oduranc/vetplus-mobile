@@ -2,13 +2,15 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/services/graphql_client.dart';
 import 'package:vetplus/services/image_service.dart';
 
 class PetService {
   static Future<QueryResult> getMyPets(String token) async {
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     const String getMyPetsQuery = '''
     query {
@@ -35,6 +37,7 @@ class PetService {
         .query(
           QueryOptions(
             document: gql(getMyPetsQuery),
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
@@ -51,7 +54,8 @@ class PetService {
       String? dob,
       String token) async {
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     const String registerPetMutation = '''
       mutation (\$addPetInput: AddPetInput!) {
@@ -91,7 +95,7 @@ class PetService {
   }
 
   static Future<QueryResult> editPetProfile(
-      String token, Map<String, dynamic> values) async {
+      String token, Map<String, dynamic> values, PetModel pet) async {
     const String updatePetMutation = '''
     mutation (\$updatePetInput: UpdatePetInput!) {
       updatePet(updatePetInput: \$updatePetInput) {
@@ -101,7 +105,8 @@ class PetService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -110,23 +115,36 @@ class PetService {
             document: gql(updatePetMutation),
             variables: {
               'updatePetInput': {
-                'id': values['id'],
-                'id_specie': values['id_specie'],
-                'id_breed': values['id_breed'],
-                'name': values['name'],
+                'id': values.containsKey('id') ? values['id'] : pet.id,
+                'id_specie': values.containsKey('id_specie')
+                    ? values['id_specie']
+                    : pet.idSpecie,
+                'id_breed': values.containsKey('id_breed')
+                    ? values['id_breed']
+                    : pet.idBreed,
+                'name': values.containsKey('name') ? values['name'] : pet.name,
                 if (values['url_current_image'] != null)
                   'url_current_image': values['url_current_image'],
                 if (values['url_new_image'] != null)
                   'url_new_image': values['url_new_image'],
-                'gender': values['gender'],
-                'castrated': values['castrated'],
-                'dob': values['dob'],
-                'observations': values['observations'],
+                'gender': values.containsKey('gender')
+                    ? values['gender']
+                    : pet.gender,
+                'castrated': values.containsKey('castrated')
+                    ? values['castrated']
+                    : pet.castrated,
+                'dob': values.containsKey('dob') ? values['dob'] : pet.dob,
+                'observations': values.containsKey('observations')
+                    ? values['observations']
+                    : pet.observations,
               }
             },
           ),
         )
         .timeout(const Duration(seconds: 10));
+    if (result.hasException) {
+      throw Exception();
+    }
     return result;
   }
 }

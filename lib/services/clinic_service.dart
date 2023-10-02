@@ -18,6 +18,7 @@ class ClinicService {
         created_at
         updated_at
         status
+        services
         ClinicSummaryScore {
           total_points
           total_users
@@ -173,7 +174,8 @@ class ClinicService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -198,7 +200,8 @@ class ClinicService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -225,7 +228,8 @@ class ClinicService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -252,7 +256,8 @@ class ClinicService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)

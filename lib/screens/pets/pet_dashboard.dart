@@ -15,10 +15,17 @@ import 'package:vetplus/widgets/pets/dashboard_app_bar_title.dart';
 import 'package:vetplus/widgets/pets/next_appointments_widget.dart';
 import 'package:vetplus/widgets/pets/weight_widget.dart';
 
-class PetDashboard extends StatelessWidget {
+class PetDashboard extends StatefulWidget {
   const PetDashboard({super.key});
 
   static const route = 'pet-dashboard';
+
+  @override
+  State<PetDashboard> createState() => _PetDashboardState();
+}
+
+class _PetDashboardState extends State<PetDashboard> {
+  String _breedName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +103,11 @@ class PetDashboard extends StatelessWidget {
                 child: Text(AppLocalizations.of(context)!.serverFailedBody),
               );
             } else {
+              _breedName = snapshot.data!;
               return GestureDetector(
                 onTap: () {
-                  _sendToPetProfile(context, arguments);
+                  _sendToPetProfile(
+                      context, {...arguments, 'breed': _breedName});
                 },
                 child: DashboardAppBarTitle(
                   pet: pet,
@@ -139,7 +148,8 @@ class PetDashboard extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    _sendToPetProfile(context, arguments);
+                    _sendToPetProfile(
+                        context, {...arguments, 'breed': _breedName});
                   },
                   icon: const Icon(Icons.settings_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
@@ -173,7 +183,8 @@ class PetDashboard extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            _sendToPetProfile(context, arguments);
+                            _sendToPetProfile(
+                                context, {...arguments, 'breed': _breedName});
                           },
                           child:
                               Text(AppLocalizations.of(context)!.viewProfile),

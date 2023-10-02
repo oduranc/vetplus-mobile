@@ -19,7 +19,9 @@ class ClinicMainInfo extends StatelessWidget {
     return Wrap(
       runSpacing: isTablet ? 13 : 5.sp,
       children: [
-        Text(clinic.name, style: getClinicNameTextStyle(isTablet)),
+        SizedBox(
+            width: double.infinity,
+            child: Text(clinic.name, style: getClinicNameTextStyle(isTablet))),
         Text(
           ' ⭐ ${clinic.clinicRating} • ${clinic.clinicSummaryScore.totalUsers} ${AppLocalizations.of(context)!.ratings}',
           style: getClinicDetailsTextStyle(isTablet),

@@ -10,12 +10,14 @@ class CustomCalendar extends StatelessWidget {
     super.key,
     required this.now,
     required this.minDate,
+    required this.initialDate,
     required this.isTablet,
     required this.onChanged,
   });
 
   final DateTime now;
   final DateTime minDate;
+  final DateTime initialDate;
   final bool isTablet;
   final void Function(dynamic) onChanged;
 
@@ -27,12 +29,14 @@ class CustomCalendar extends StatelessWidget {
               onDateTimeChanged: onChanged,
               mode: CupertinoDatePickerMode.date,
               maximumDate: now,
-              initialDateTime: DateTime(now.year, now.month, now.day),
+              initialDateTime: initialDate,
               minimumDate: minDate,
             )
           : SfDateRangePicker(
               maxDate: now,
               minDate: minDate,
+              initialDisplayDate: initialDate,
+              initialSelectedDate: initialDate,
               headerHeight: isTablet ? 78 : 68.sp,
               headerStyle: const DateRangePickerHeaderStyle(
                 textStyle: TextStyle(

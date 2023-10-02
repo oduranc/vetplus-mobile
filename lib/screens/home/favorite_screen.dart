@@ -72,15 +72,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
                 Expanded(
                   child: Wrap(
-                    direction: Axis.vertical,
-                    clipBehavior: Clip.antiAlias,
-                    spacing: isTablet ? 2 : 2.sp,
+                    runSpacing: isTablet ? 2 : 2.sp,
                     children: [
-                      Text(clinics[index].clinicData.name,
-                          style: getSnackBarTitleStyle(isTablet)),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Text(clinics[index].clinicData.name,
+                            style: getSnackBarTitleStyle(isTablet)),
+                      ),
                       Text(
                         clinics[index].clinicData.address,
                         style: getSnackBarBodyStyle(isTablet),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

@@ -20,7 +20,8 @@ class UserService {
 
     final AuthLink authLink =
         AuthLink(getToken: () async => 'Bearer ${googleAuth!.idToken}');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -44,7 +45,8 @@ class UserService {
 
     final AuthLink authLink =
         AuthLink(getToken: () async => 'Bearer ${googleAuth!.idToken}');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -65,15 +67,44 @@ class UserService {
     return result;
   }
 
-  static Future<QueryResult> signUpWithEmail(
+  static Future<QueryResult> signUp(int verificationCode, String room) async {
+    const String signUpMutations = '''
+    mutation (\$verificationCodeInput: VerificationCodeInput!) {
+      signUp(verificationCodeInput: \$verificationCodeInput) {
+        result
+        message
+      }
+    }
+    ''';
+    print(verificationCode);
+    print(room);
+
+    final QueryResult result = await globalGraphQLClient.value
+        .mutate(
+          MutationOptions(
+            document: gql(signUpMutations),
+            variables: {
+              'verificationCodeInput': {
+                'verificationCode': verificationCode,
+                'room': room,
+              },
+            },
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    print(result);
+    return result;
+  }
+
+  static Future<QueryResult> signUpVerificationCode(
       String name, String lastname, String email, String password) async {
     const String signUpMutation = '''
-      mutation SignUp(\$input: SignUpInput!) {
-        signUp(signUpInput: \$input){
-          result
-          message
-        }
+    mutation (\$signUpInput: SignUpInput!) {
+      signUpVerificationCode(signUpInput: \$signUpInput) {
+        room
       }
+    }
     ''';
 
     final QueryResult result = await globalGraphQLClient.value
@@ -81,16 +112,18 @@ class UserService {
           MutationOptions(
             document: gql(signUpMutation),
             variables: {
-              'input': {
+              'signUpInput': {
                 'names': name,
                 'surnames': lastname,
                 'email': email,
                 'password': password,
               }
             },
+            fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
         .timeout(const Duration(seconds: 10));
+    print(result);
     return result;
   }
 
@@ -142,7 +175,8 @@ class UserService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -167,7 +201,8 @@ class UserService {
     ''';
 
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!));
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
 
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
@@ -176,22 +211,89 @@ class UserService {
             document: gql(updateProfileMutation),
             variables: {
               'updateUserInput': {
-                'names': values['names'] ?? user.names,
-                'surnames': values['surnames'] ?? user.surnames,
-                'document': values['document'] ?? user.document,
-                'address': values['address'] ?? user.address,
-                'telephone_number':
-                    values['telephone_number'] ?? user.telephoneNumber,
-                'image': values['image'] ?? user.image,
+                'names':
+                    values.containsKey('names') ? values['names'] : user.names,
+                'surnames': values.containsKey('surnames')
+                    ? values['surnames']
+                    : user.surnames,
+                'document': values.containsKey('document')
+                    ? values['document']
+                    : user.document,
+                'address': values.containsKey('address')
+                    ? values['address']
+                    : user.address,
+                'telephone_number': values.containsKey('telephone_number')
+                    ? values['telephone_number']
+                    : user.telephoneNumber,
+                'image':
+                    values.containsKey('image') ? values['image'] : user.image,
               }
             },
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
     if (result.hasException) {
       throw Exception();
     }
+    return result;
+  }
+
+  static Future<QueryResult> recoverPasswordVerificationCode(
+      String email) async {
+    const String recoverMutation = '''
+    mutation (\$recoveryCredentialsInput: RecoveryCredentialsInput!) {
+      recoveryPasswordSendVerificationCode(
+        recoveryCredentialsInput: \$recoveryCredentialsInput
+      ) {
+        room
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .mutate(
+          MutationOptions(
+            document: gql(recoverMutation),
+            variables: {
+              'recoveryCredentialsInput': {
+                'email': email,
+              }
+            },
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    print(result);
+    return result;
+  }
+
+  static Future<QueryResult> recoverPassword(
+      int verificationCode, String room) async {
+    const String recoverMutation = '''
+    mutation (\$verificationCodeInput: VerificationCodeInput!) {
+      recoveryAccount(verificationCodeInput: \$verificationCodeInput) {
+        access_token
+      }
+    }
+    ''';
+    print(verificationCode);
+    print(room);
+
+    final QueryResult result = await globalGraphQLClient.value
+        .mutate(
+          MutationOptions(
+            document: gql(recoverMutation),
+            variables: {
+              'verificationCodeInput': {
+                'verificationCode': verificationCode,
+                'room': room,
+              },
+            },
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+    print(result);
     return result;
   }
 }

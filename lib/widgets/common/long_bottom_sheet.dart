@@ -13,6 +13,8 @@ class LongBottomSheet extends StatelessWidget {
     required this.children,
     this.formRunSpacing,
     this.btnActive = false,
+    this.heightFactor = 0.9,
+    this.footer,
   });
   final String title;
   final Widget buttonChild;
@@ -20,13 +22,15 @@ class LongBottomSheet extends StatelessWidget {
   final List<Widget> children;
   final double? formRunSpacing;
   final bool btnActive;
+  final double heightFactor;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
 
     return FractionallySizedBox(
-      heightFactor: 0.9,
+      heightFactor: heightFactor,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
@@ -74,6 +78,11 @@ class LongBottomSheet extends StatelessWidget {
                   ),
                   children: children,
                 ),
+                if (footer != null)
+                  Padding(
+                    padding: EdgeInsets.all(isTablet ? 37 : 24.sp),
+                    child: footer!,
+                  ),
               ],
             ),
           ),

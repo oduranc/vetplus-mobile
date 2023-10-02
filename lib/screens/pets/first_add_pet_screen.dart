@@ -105,7 +105,7 @@ class _FirstAddPetScreenState extends State<FirstAddPetScreen> {
               PetNameFormField(nameController: _nameController),
               buildPetGenderFormField(context, (String? value) {
                 _sex = value;
-              }),
+              }, null),
               buildPetSpecieFormField(context, (int? value) {
                 _specie = value;
                 _selectedBreed = null;

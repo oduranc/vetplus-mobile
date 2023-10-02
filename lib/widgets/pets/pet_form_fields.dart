@@ -44,12 +44,13 @@ DropdownButtonFormField<int> buildPetSpecieFormField(
 }
 
 DropdownButtonFormField<String> buildPetGenderFormField(
-    BuildContext context, void Function(String?)? onChanged) {
+    BuildContext context, void Function(String?)? onChanged, String? value) {
   return DropdownButtonFormField(
     validator: (value) {
       return validateSex(value, context);
     },
     decoration: InputDecoration(label: Text(AppLocalizations.of(context)!.sex)),
+    value: value,
     items: [
       DropdownMenuItem(
         value: 'M',
@@ -86,7 +87,7 @@ class PetNameFormField extends StatelessWidget {
 }
 
 SizedBox buildCalendar(bool isTablet, DateTime now, DateTime minDate,
-    void Function(dynamic) onChanged) {
+    DateTime? initialDate, void Function(dynamic) onChanged) {
   return SizedBox(
     height: isTablet ? 409 : 356.sp,
     child: Column(
@@ -96,6 +97,7 @@ SizedBox buildCalendar(bool isTablet, DateTime now, DateTime minDate,
         CustomCalendar(
           now: now,
           minDate: minDate,
+          initialDate: initialDate ?? DateTime(now.year, now.month, now.day),
           isTablet: isTablet,
           onChanged: onChanged,
         ),
@@ -114,13 +116,14 @@ ReadOnlyFormField buildPetDobFormField(BuildContext context,
 }
 
 DropdownButtonFormField<bool> buildPetCastratedFormField(
-    BuildContext context, void Function(bool?)? onChanged) {
+    BuildContext context, void Function(bool?)? onChanged, bool? value) {
   return DropdownButtonFormField(
     validator: (value) {
       return validateCastrated(value, context);
     },
     decoration:
         InputDecoration(label: Text(AppLocalizations.of(context)!.castrated)),
+    value: value,
     items: [
       DropdownMenuItem(
         value: true,

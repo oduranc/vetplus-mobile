@@ -66,7 +66,7 @@ class _SecondAddPetScreenState extends State<SecondAddPetScreen> {
             children: [
               buildPetCastratedFormField(context, (bool? value) {
                 _castrated = value!;
-              }),
+              }, null),
               buildPetDobFormField(context, datePickerController, () {
                 setState(() {
                   _showDatePicker = true;
@@ -79,6 +79,7 @@ class _SecondAddPetScreenState extends State<SecondAddPetScreen> {
               isTablet,
               now,
               minDate,
+              null,
               (date) {
                 if (date is DateRangePickerSelectionChangedArgs) {
                   date = date.value;

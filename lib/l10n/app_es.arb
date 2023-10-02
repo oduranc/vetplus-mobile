@@ -122,6 +122,10 @@
   "@closeToYou": {
     "description": "Close to you"
   },
+  "trending": "Populares",
+  "@trending": {
+    "description": "Trending"
+  },
   "discover": "Descubrir",
   "@discover": {
     "description": "Discover"
@@ -342,11 +346,11 @@
   "@backToWelcome": {
     "description": "Back to welcome screen"
   },
-  "male": "Masculino",
+  "male": "Macho",
   "@male": {
     "description": "Male"
   },
-  "female": "Femenino",
+  "female": "Hembra",
   "@female": {
     "description": "Female"
   },
@@ -446,7 +450,7 @@
   "@services": {
     "description": "Services"
   },
-  "scheduleAppointment": "Agendar",
+  "scheduleAppointment": "Agendar cita",
   "@scheduleAppointment": {
     "description": "Schedule appointment"
   },
@@ -503,5 +507,49 @@
     "placeholders": {
       "exceededBy": {}
     }
+  },
+  "filters": "Filtros",
+  "@filters": {
+    "description": "Filters"
+  },
+  "apply": "Aplicar",
+  "@apply": {
+    "description": "Apply"
+  },
+  "resendCode": "Podrás reenviar el código después de ",
+  "@resendCode": {
+    "description": "Resend code after"
+  },
+  "resend": "Reenviar",
+  "@resend": {
+    "description": "Resend"
+  },
+  "confirm": "Confirmar",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "weSentCode": "Hemos enviado el código de verificación a",
+  "@weSentCode": {
+    "description": "We sent verification code"
+  },
+  "verificationCode": "Código de verificación",
+  "@verificationCode": {
+    "description": "Verification code"
+  },
+  "wrongCodeTitle": "Código incorrecto",
+  "@wrongCodeTitle": {
+    "description": "Wrong code title"
+  },
+  "wrongCodeBody": "El código ingresado no es correcto. Intente de nuevo.",
+  "@wrongCodeBody": {
+    "description": "Wrong code body"
+  },
+  "wrongEmailFormatTitle": "Email inválido",
+  "@wrongEmailFormatTitle": {
+    "description": "Wrong email format title"
+  },
+  "wrongEmailFormatBody": "La dirección de correo proporcionada no es válida. Intente de nuevo.",
+  "@wrongEmailFormatBody": {
+    "description": "Wrong email format body"
   }
 }

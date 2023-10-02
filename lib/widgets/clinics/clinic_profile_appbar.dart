@@ -12,7 +12,6 @@ import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/clinics/clinic_profile.dart';
-import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/sign_utils.dart';
@@ -56,12 +55,7 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
             Theme.of(context).colorScheme.surfaceVariant),
       ),
       onPressed: () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NavigationBarTemplate(index: 0),
-            ),
-            (route) => false);
+        Navigator.pop(context);
       },
       icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
     );

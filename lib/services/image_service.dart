@@ -10,7 +10,8 @@ class ImageService {
   static Future<QueryResult> uploadImage(
       String token, File image, bool isPetImage) async {
     final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
-    final Link link = authLink.concat(HttpLink(dotenv.env['API_LINK']!,
+    final Link link = authLink.concat(HttpLink(
+        '${dotenv.env['SERVER_LINK']!}/graphql',
         defaultHeaders: {'apollo-require-preflight': 'true'}));
 
     const String savePetImageMutation = '''

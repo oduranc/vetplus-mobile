@@ -19,5 +19,7 @@ ThemeData buildAppTheme(bool isTablet) {
         foregroundColor: MaterialStateProperty.all(Color(0xFFACACAD)),
       ),
     ),
+    searchBarTheme: searchBarThemeData(isTablet),
+    checkboxTheme: checkboxThemeData(isTablet),
   );
 }

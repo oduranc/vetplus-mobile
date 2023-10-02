@@ -29,6 +29,7 @@
   "myPets": "My pets",
   "topRated": "Top rated",
   "closeToYou": "Close to you",
+  "trending": "Trending",
   "discover": "Discover",
   "favorites": "Favorites",
   "removeFromFavorites": "Remove from favorites",
@@ -119,5 +120,16 @@
   "seconds": "seconds",
   "ago": "{field} ago",
   "justNow": "Just now",
-  "textLengthExceeded": "Your message is too long. Please shorten it by {exceededBy} characters."
+  "textLengthExceeded": "Your message is too long. Please shorten it by {exceededBy} characters.",
+  "filters": "Filters",
+  "apply": "Apply",
+  "resendCode": "Resend code after ",
+  "resend": "Resend",
+  "confirm": "Confirm",
+  "weSentCode": "We have sent the code verification to",
+  "verificationCode": "Verification code",
+  "wrongCodeTitle": "Wrong code",
+  "wrongCodeBody": "Code submitted is incorrect. Please, try again.",
+  "wrongEmailFormatTitle": "Invalid email",
+  "wrongEmailFormatBody": "The email address provided is not valid. Please, try again."
 }

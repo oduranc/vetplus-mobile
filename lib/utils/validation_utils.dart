@@ -91,7 +91,7 @@ String? validatePasswordConfirmation(value, passwordController, context) {
 }
 
 String? validateComment(String? value, context) {
-  int maxLength = 150;
+  int maxLength = 191;
   if (value == null || value.isEmpty) {
     return AppLocalizations.of(context)!
         .isRequired(AppLocalizations.of(context)!.comments);

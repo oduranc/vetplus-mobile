@@ -4,7 +4,6 @@ import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/validation_utils.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
-import 'package:vetplus/widgets/common/custom_snack_bar.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 
 class RestorePasswordScreen extends StatelessWidget {
@@ -23,7 +22,6 @@ class RestorePasswordScreen extends StatelessWidget {
       title: AppLocalizations.of(context)!.restorePasswordTitle,
       buttonChild: Text(AppLocalizations.of(context)!.sendLink),
       onSubmit: () {
-        _buildSnackBar(context, isTablet);
         Navigator.pop(context);
         _buildSecondRestorePasswordModal(context, isTablet);
       },
@@ -45,18 +43,6 @@ class RestorePasswordScreen extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _buildSnackBar(
-      BuildContext context, bool isTablet) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      CustomSnackBar(
-        icon: Icons.email_outlined,
-        title: AppLocalizations.of(context)!.checkEmailTitle,
-        body:
-            AppLocalizations.of(context)!.checkEmailBody(emailController.text),
-      ) as SnackBar,
     );
   }
 

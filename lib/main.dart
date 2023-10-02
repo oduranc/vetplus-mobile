@@ -17,12 +17,22 @@ import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/services/graphql_client.dart';
 import 'package:vetplus/themes/theme_data.dart';
 
+// class MyHttpOverrides extends HttpOverrides {
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context) {
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback =
+//           (X509Certificate cert, String host, int port) => true;
+//   }
+// }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await ScreenUtil.ensureScreenSize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  //HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -122,6 +132,6 @@ void initializeApp(BuildContext context) {
   // Initialize ScreenUtil
   ScreenUtil.init(context, designSize: const Size(392.7, 826.9));
 
-  final HttpLink httpLink = HttpLink(dotenv.env['API_LINK']!);
+  final HttpLink httpLink = HttpLink('${dotenv.env['SERVER_LINK']!}/graphql');
   initializeGraphQLClient(httpLink);
 }

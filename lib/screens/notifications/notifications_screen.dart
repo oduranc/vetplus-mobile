@@ -12,6 +12,7 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet = Responsive.isTablet(context);
+
     return SkeletonScreen(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.notifications)),
       body: Padding(
