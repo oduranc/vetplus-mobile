@@ -16,6 +16,8 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Column(
       children: <Widget>[
         CarouselSlider(
@@ -34,7 +36,7 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             viewportFraction: 1,
-            aspectRatio: 16 / 16,
+            aspectRatio: (size.width / size.height) * 1.75,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;

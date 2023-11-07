@@ -13,7 +13,7 @@ class FormTemplate extends StatefulWidget {
     this.btnActive = false,
   });
   final List<Widget> children;
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
   final Widget buttonChild;
   final EdgeInsetsGeometry padding;
   final double? formRunSpacing;

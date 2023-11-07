@@ -118,23 +118,25 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
           return AlertDialog(
             actions: [
               TextButton(
-                onPressed: () async {
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  await ClinicService.scoreClinic(
-                      accessToken, widget.id, ratingValue);
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  Navigator.of(context)
-                      .popUntil(ModalRoute.withName(ClinicProfile.route));
-                  Navigator.pushReplacementNamed(
-                    context,
-                    ClinicProfile.route,
-                    arguments: {'id': widget.id},
-                  );
-                },
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await ClinicService.scoreClinic(
+                            accessToken, widget.id, ratingValue);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Navigator.of(context)
+                            .popUntil(ModalRoute.withName(ClinicProfile.route));
+                        Navigator.pushReplacementNamed(
+                          context,
+                          ClinicProfile.route,
+                          arguments: {'id': widget.id},
+                        );
+                      },
                 child: _isLoading
                     ? const SizedBox(
                         height: 20,
@@ -201,16 +203,18 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
   ElevatedButton _buildFavoriteButton(
       StateSetter setState, String accessToken, BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
-        setState(() {
-          _isLoading = true;
-        });
-        await _toggleFavorite(accessToken, context);
-        setState(() {
-          _isLoading = false;
-          _isFavorite = !_isFavorite;
-        });
-      },
+      onPressed: _isLoading
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              await _toggleFavorite(accessToken, context);
+              setState(() {
+                _isLoading = false;
+                _isFavorite = !_isFavorite;
+              });
+            },
       style: _buildFavoriteButtonStyle(context),
       child: _isLoading
           ? SizedBox(

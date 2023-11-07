@@ -9,6 +9,7 @@ class CommentOwnerWidget extends StatelessWidget {
     required this.names,
     required this.surnames,
     required this.image,
+    required this.points,
     required this.appLocalizations,
     required this.isTablet,
     required this.timePassed,
@@ -17,6 +18,7 @@ class CommentOwnerWidget extends StatelessWidget {
   final String names;
   final String? surnames;
   final String? image;
+  final int? points;
   final AppLocalizations appLocalizations;
   final bool isTablet;
   final String timePassed;
@@ -52,6 +54,9 @@ class CommentOwnerWidget extends StatelessWidget {
             ),
           ),
         ),
+        if (points != null)
+          Text('⭐ ${double.parse(points.toString()).toStringAsFixed(1)}',
+              style: getClinicDetailsTextStyle(isTablet)),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplus/providers/favorites_provider.dart';
 import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
@@ -62,6 +63,10 @@ Future<dynamic> buildLogoutSheet(BuildContext context) {
               Provider.of<PetsProvider>(context, listen: false).clearPets();
               Provider.of<FavoritesProvider>(context, listen: false)
                   .clearFavorites();
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.remove('SHARED_LOGGED');
+              await prefs.remove('SHARED_ACCESS_TOKEN');
+              await prefs.remove('SHARED_PROVIDER');
               Navigator.pushNamedAndRemoveUntil(
                   context, WelcomeScreen.route, (route) => false);
             },

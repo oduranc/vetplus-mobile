@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql/src/core/query_result.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/clinic_model.dart';
 import 'package:vetplus/models/procedure_model.dart';
-import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/clinics/clinic_profile.dart';
 import 'package:vetplus/services/clinic_service.dart';
@@ -208,9 +206,7 @@ class _SearchScreenState extends State<SearchScreen> {
           isScrollControlled: true,
           context: context,
           builder: (context) {
-            final accessToken =
-                Provider.of<UserProvider>(context, listen: false).accessToken!;
-            return _buildFilterSheet(accessToken, isTablet);
+            return _buildFilterSheet(isTablet);
           },
         ).then((value) => setState(() {}));
       },
@@ -221,10 +217,9 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  FutureBuilder<QueryResult<Object?>> _buildFilterSheet(
-      String accessToken, bool isTablet) {
+  FutureBuilder<QueryResult<Object?>> _buildFilterSheet(bool isTablet) {
     return FutureBuilder(
-      future: ProcedureService.getAllProcedures(accessToken),
+      future: ProcedureService.getAllProcedures(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoadingIndicator();

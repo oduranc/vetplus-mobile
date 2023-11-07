@@ -88,6 +88,7 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
                 names: user.names,
                 surnames: user.surnames,
                 image: user.image,
+                points: null,
                 appLocalizations: appLocalizations,
                 isTablet: widget.isTablet,
                 timePassed: appLocalizations.justNow,

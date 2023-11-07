@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
@@ -47,7 +48,7 @@ class _PetDashboardState extends State<PetDashboard> {
         toolbarHeight: isTablet ? 78 + 23 : (65 + 23).sp,
         titleSpacing: 0,
         actions: [
-          _buildAppBarActions(isTablet, context, arguments),
+          _buildAppBarActions(isTablet, context, arguments, pet),
         ],
         title: FutureBuilder(
           future: getBreedName(pet, context),
@@ -140,7 +141,7 @@ class _PetDashboardState extends State<PetDashboard> {
   }
 
   Padding _buildAppBarActions(
-      bool isTablet, BuildContext context, Map arguments) {
+      bool isTablet, BuildContext context, Map arguments, PetModel pet) {
     return Padding(
       padding: EdgeInsets.only(right: isTablet ? 37 : 24.sp),
       child: isTablet
@@ -155,7 +156,9 @@ class _PetDashboardState extends State<PetDashboard> {
                   color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _sharePetProfile(pet);
+                  },
                   icon: const Icon(Icons.send_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
@@ -193,7 +196,9 @@ class _PetDashboardState extends State<PetDashboard> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF6EC6EB),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            _sharePetProfile(pet);
+                          },
                           child: Text(AppLocalizations.of(context)!.sendToVet),
                         ),
                         ElevatedButton(
@@ -208,6 +213,13 @@ class _PetDashboardState extends State<PetDashboard> {
               },
               icon: const Icon(Icons.more_horiz),
             ),
+    );
+  }
+
+  Future<void> _sharePetProfile(PetModel pet) {
+    return Share.share(
+      pet.id,
+      subject: 'Historial clínico de Coco',
     );
   }
 

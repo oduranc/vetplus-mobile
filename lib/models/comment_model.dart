@@ -52,20 +52,38 @@ class CommentModel {
 
 class Owner {
   final String names;
-  final String surnames;
+  final String? surnames;
   final String? image;
+  final List<UserClinicPoint>? clinicUsers;
 
   Owner({
     required this.names,
     required this.surnames,
     this.image,
+    this.clinicUsers,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) {
+    final clinicUsers = List<UserClinicPoint>.from(
+        json['ClinicUsers'].map((x) => UserClinicPoint.fromJson(x)));
+
     return Owner(
       names: json['names'],
       surnames: json['surnames'],
       image: json['image'],
+      clinicUsers: clinicUsers,
+    );
+  }
+}
+
+class UserClinicPoint {
+  final int? points;
+
+  UserClinicPoint({this.points});
+
+  factory UserClinicPoint.fromJson(Map<String, dynamic> json) {
+    return UserClinicPoint(
+      points: json['points'],
     );
   }
 }

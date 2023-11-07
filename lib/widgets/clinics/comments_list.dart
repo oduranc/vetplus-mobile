@@ -38,6 +38,9 @@ class CommentsList extends StatelessWidget {
               names: owner.names,
               surnames: owner.surnames,
               image: owner.image,
+              points: owner.clinicUsers!.isEmpty
+                  ? null
+                  : owner.clinicUsers![0].points,
               appLocalizations: appLocalizations,
               isTablet: widget.isTablet,
               timePassed: timePassed,

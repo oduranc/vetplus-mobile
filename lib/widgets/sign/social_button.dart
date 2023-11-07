@@ -14,7 +14,7 @@ class SocialButton extends StatelessWidget {
   });
   final Widget iconData;
   final Widget child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color? textColor;
   final bool? hasBorder;

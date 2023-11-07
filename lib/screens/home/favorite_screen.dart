@@ -111,28 +111,31 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           return ButtonsBottomSheet(
             children: [
               ElevatedButton(
-                onPressed: () async {
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  await ClinicService.markClinicAsFavorite(
-                    Provider.of<UserProvider>(context, listen: false)
-                        .accessToken!,
-                    clinic.idClinic,
-                    false,
-                  ).then((value) async {
-                    final accessToken =
-                        Provider.of<UserProvider>(context, listen: false)
-                            .accessToken!;
-                    final favorites = await getFavorites(context, accessToken);
-                    Provider.of<FavoritesProvider>(context, listen: false)
-                        .setFavorites(favorites.list);
-                    Navigator.pop(context);
-                  });
-                  setState(() {
-                    _isLoading = false;
-                  });
-                },
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await ClinicService.markClinicAsFavorite(
+                          Provider.of<UserProvider>(context, listen: false)
+                              .accessToken!,
+                          clinic.idClinic,
+                          false,
+                        ).then((value) async {
+                          final accessToken =
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .accessToken!;
+                          final favorites =
+                              await getFavorites(context, accessToken);
+                          Provider.of<FavoritesProvider>(context, listen: false)
+                              .setFavorites(favorites.list);
+                          Navigator.pop(context);
+                        });
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Theme.of(context).colorScheme.error,

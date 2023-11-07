@@ -135,6 +135,9 @@ class ClinicService {
           names
           surnames
           image
+          ClinicUsers {
+            points
+          }
         }
       }
     }
@@ -153,6 +156,7 @@ class ClinicService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+    print(result);
     return result;
   }
 

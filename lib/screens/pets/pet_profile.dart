@@ -274,20 +274,22 @@ class _PetProfileState extends State<PetProfile> {
                     child: CircularProgressIndicator(color: Colors.white),
                   )
                 : Text(appLocalizations.update),
-            onSubmit: () async {
-              setState(() {
-                _isLoading = true;
-              });
-              updatedValue ??= editFieldController.text == ''
-                  ? null
-                  : editFieldController.text;
-              final fieldName = field.key;
-              await _tryEditField(
-                  pet, fieldName, updatedValue, context, appLocalizations);
-              setState(() {
-                _isLoading = false;
-              });
-            },
+            onSubmit: _isLoading
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    updatedValue ??= editFieldController.text == ''
+                        ? null
+                        : editFieldController.text;
+                    final fieldName = field.key;
+                    await _tryEditField(pet, fieldName, updatedValue, context,
+                        appLocalizations);
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
             footer: showDatePicker
                 ? buildCalendar(
                     isTablet,

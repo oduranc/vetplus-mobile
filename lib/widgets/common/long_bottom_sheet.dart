@@ -18,7 +18,7 @@ class LongBottomSheet extends StatelessWidget {
   });
   final String title;
   final Widget buttonChild;
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
   final List<Widget> children;
   final double? formRunSpacing;
   final bool btnActive;

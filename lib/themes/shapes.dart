@@ -6,7 +6,7 @@ import 'package:vetplus/themes/typography.dart';
 TextButtonThemeData textButtonTheme(bool isTablet) => TextButtonThemeData(
         style: TextButton.styleFrom(
       minimumSize: const Size.fromHeight(0),
-      padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15),
+      padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15.sp),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -19,7 +19,7 @@ ElevatedButtonThemeData elevatedButtonTheme(bool isTablet) =>
         minimumSize: const Size.fromHeight(0),
         foregroundColor: Colors.white,
         backgroundColor: lightColorScheme.primary,
-        padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15),
+        padding: EdgeInsets.symmetric(vertical: isTablet ? 18 : 15.sp),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:vetplus/responsive/responsive_layout.dart';
-import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
@@ -35,23 +34,8 @@ class _AuthCodeScreenState extends State<AuthCodeScreen>
   IO.Socket? socket;
   List<int?> pins = [null, null, null, null, null, null];
   bool _isInitialized = true;
+  bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String secondsToMinutes(int seconds) {
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds % 60;
-    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
-
-  String extractNumericPart(String input) {
-    RegExp regex = RegExp(r'\d+');
-    Match? match = regex.firstMatch(input);
-    if (match != null) {
-      return match.group(0)!;
-    } else {
-      return '';
-    }
-  }
 
   void connectToRoomAndListen() {
     final socketURL = dotenv.env['SERVER_LINK']!;
@@ -111,125 +95,48 @@ class _AuthCodeScreenState extends State<AuthCodeScreen>
 
     return SkeletonScreen(
       appBar: AppBar(),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Wrap(
-              runSpacing: isTablet ? 60 : 40.sp,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/vetplus-logo.png',
-                      height: MediaQuery.of(context).size.height * 0.0774,
-                    ),
-                  ],
-                ),
-                Text(AppLocalizations.of(context)!.verificationCode,
-                    style: getAppbarTitleStyle(isTablet)),
-                RichText(
-                  text: TextSpan(
-                    style: getCarouselBodyStyle(isTablet),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text:
-                              '${AppLocalizations.of(context)!.weSentCode}\n'),
-                      TextSpan(
-                        text: widget.email,
-                        style: getCarouselBodyStyle(isTablet).copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    6,
-                    (index) => PinInputField(
-                      isTablet: isTablet,
-                      onChanged: (value) {
-                        if (value.length == 1 && index != 5) {
-                          FocusScope.of(context).nextFocus();
-                        }
-                        print(value);
-                        setState(() {
-                          pins[index] = int.tryParse(value);
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: getCarouselBodyStyle(isTablet),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: AppLocalizations.of(context)!.resendCode),
-                          TextSpan(
-                            text: timeRemaining,
-                            style: getCarouselBodyStyle(isTablet).copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: (seconds == null || seconds! > 0)
-                        ? null
-                        : () async {
-                            await trySignUpWithEmail(
-                                widget.name,
-                                widget.lastname,
-                                widget.email,
-                                widget.password,
-                                context);
-                          },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onSurfaceVariant,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.surfaceVariant,
-                    ),
-                    child: Text(AppLocalizations.of(context)!.resend),
-                  ),
-                ),
-                SizedBox(
-                  width: isTablet ? 60 : 20,
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: (pins.any((element) => element == null))
-                        ? null
-                        : () async {
-                            _formKey.currentState!.save();
-                            var pinsString = pins.join('');
-                            int pin = int.parse(pinsString);
-                            await signUpWithCode(pin, widget.room, context);
-                          },
-                    child: Text(AppLocalizations.of(context)!.confirm),
-                  ),
-                ),
-              ],
-            ),
-          ],
+      body: buildCodeForm(
+        isTablet,
+        false,
+        context,
+        _formKey,
+        widget.email,
+        (index) => PinInputField(
+          isTablet: isTablet,
+          onChanged: (value) {
+            if (value.length == 1 && index != 5) {
+              FocusScope.of(context).nextFocus();
+            }
+            print(value);
+            setState(() {
+              pins[index] = int.tryParse(value);
+            });
+          },
         ),
+        timeRemaining,
+        (seconds == null || seconds! > 0)
+            ? null
+            : () async {
+                await trySignUpWithEmail(widget.name, widget.lastname,
+                    widget.email, widget.password, context);
+              },
+        (pins.any((element) => element == null))
+            ? null
+            : () async {
+                _isLoading = true;
+                _formKey.currentState!.save();
+                var pinsString = pins.join('');
+                int pin = int.parse(pinsString);
+                await signUpWithCode(pin, widget.room, context);
+                _isLoading = false;
+              },
+        _isLoading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(color: Colors.white),
+              )
+            : Text(AppLocalizations.of(context)!.confirm),
       ),
     );
   }

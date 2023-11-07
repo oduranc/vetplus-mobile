@@ -27,11 +27,15 @@ class UserService {
         .copyWith(link: link)
         .query(QueryOptions(document: gql(googleLoginQuery)))
         .timeout(const Duration(seconds: 10));
+
     return result;
   }
 
   static Future<QueryResult> signUpWithGoogle() async {
+    print('AAAAAAAAAAAAAAAAAA');
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    print(googleUser);
+    print('klk');
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
