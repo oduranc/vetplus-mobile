@@ -23,8 +23,8 @@ class ClinicModel {
   final String createdAt;
   final String updatedAt;
   final bool status;
-  final ClinicSummaryScoreModel clinicSummaryScore;
-  final String clinicRating;
+  final ClinicSummaryScoreModel? clinicSummaryScore;
+  final String? clinicRating;
   final List<Object?>? services;
   final Schedule? schedule;
 
@@ -47,12 +47,15 @@ class ClinicModel {
   });
 
   factory ClinicModel.fromJson(Map<String, dynamic> json) {
-    final clinicSummaryScore =
-        ClinicSummaryScoreModel.fromJson(json['ClinicSummaryScore']);
-    final clinicRating = double.parse(
-            (clinicSummaryScore.totalPoints / clinicSummaryScore.totalUsers)
-                .toString())
-        .toStringAsFixed(1);
+    final clinicSummaryScore = json['ClinicSummaryScore'] != null
+        ? ClinicSummaryScoreModel.fromJson(json['ClinicSummaryScore'])
+        : null;
+    final clinicRating = clinicSummaryScore != null
+        ? double.parse(
+                (clinicSummaryScore.totalPoints / clinicSummaryScore.totalUsers)
+                    .toString())
+            .toStringAsFixed(1)
+        : null;
 
     Schedule? schedule;
     if (json['schedule'] != null) {

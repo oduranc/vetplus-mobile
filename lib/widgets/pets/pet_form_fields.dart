@@ -95,7 +95,7 @@ SizedBox buildCalendar(bool isTablet, DateTime now, DateTime minDate,
       children: [
         const Divider(),
         CustomCalendar(
-          now: now,
+          maxDate: now,
           minDate: minDate,
           initialDate: initialDate ?? DateTime(now.year, now.month, now.day),
           isTablet: isTablet,

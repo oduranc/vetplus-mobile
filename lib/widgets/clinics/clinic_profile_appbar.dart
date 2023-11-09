@@ -35,6 +35,7 @@ class ClinicProfileAppBar extends StatefulWidget
 class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
   bool _isLoading = false;
   bool _isFavorite = false;
+  bool _isDialogOpened = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +71,21 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
         backgroundColor: MaterialStatePropertyAll(
             Theme.of(context).colorScheme.surfaceVariant),
       ),
-      onPressed: () async {
-        final currentFavorites = await getFavorites(context, accessToken);
-        for (final element in currentFavorites.list) {
-          if (element.idClinic == widget.id) {
-            _isFavorite = true;
-            break;
-          }
-        }
-        _buildModalBottomSheet(context, accessToken, isTablet);
-      },
+      onPressed: _isDialogOpened
+          ? null
+          : () async {
+              setState(() {
+                _isDialogOpened = true;
+              });
+              final currentFavorites = await getFavorites(context, accessToken);
+              for (final element in currentFavorites.list) {
+                if (element.idClinic == widget.id) {
+                  _isFavorite = true;
+                  break;
+                }
+              }
+              _buildModalBottomSheet(context, accessToken, isTablet);
+            },
       icon: const Icon(Icons.more_horiz),
     );
   }
@@ -103,7 +109,11 @@ class _ClinicProfileAppBarState extends State<ClinicProfileAppBar> {
           );
         });
       },
-    );
+    ).then((value) {
+      setState(() {
+        _isDialogOpened = false;
+      });
+    });
   }
 
   Future<void> _showScoreDialog(

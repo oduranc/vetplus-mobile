@@ -131,5 +131,14 @@
   "wrongCodeTitle": "Wrong code",
   "wrongCodeBody": "Code submitted is incorrect. Please, try again.",
   "wrongEmailFormatTitle": "Invalid email",
-  "wrongEmailFormatBody": "The email address provided is not valid. Please, try again."
+  "wrongEmailFormatBody": "The email address provided is not valid. Please, try again.",
+  "appointments": "Appointments",
+  "time": "Time",
+  "schedule": "Schedule",
+  "confirmation": "Confirmation",
+  "confirmAppointment": "Confirm Appointment",
+  "clinic": "Clinic",
+  "date": "Date",
+  "pet": "Pet",
+  "appointmentsHistory": "Appointments history"
 }

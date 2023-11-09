@@ -551,5 +551,41 @@
   "wrongEmailFormatBody": "La dirección de correo proporcionada no es válida. Intente de nuevo.",
   "@wrongEmailFormatBody": {
     "description": "Wrong email format body"
+  },
+  "appointments": "Citas",
+  "@appointments": {
+    "description": "Appointments"
+  },
+  "time": "Hora",
+  "@time": {
+    "description": "Time"
+  },
+  "schedule": "Agendar",
+  "@schedule": {
+    "description": "Schedule"
+  },
+  "confirmation": "Confirmación",
+  "@confirmation": {
+    "description": "Confirmation"
+  },
+  "confirmAppointment": "Confirmar Cita",
+  "@confirmAppointment": {
+    "description": "Confirm appointment"
+  },
+  "clinic": "Clínica",
+  "@clinic": {
+    "description": "Clinic"
+  },
+  "date": "Fecha",
+  "@date": {
+    "description": "Date"
+  },
+  "pet": "Mascota",
+  "@pet": {
+    "description": "Pet"
+  },
+  "appointmentsHistory": "Historial de citas",
+  "@appointmentHistory": {
+    "description": "Appointments history"
   }
 }

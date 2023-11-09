@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "442731666407-7fv8scd4dgl0ffm2c3u121o2m9g39koc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vetplus",
+            "certificate_hash": "4d986f64d41343616b6918c621020e6dad5e2e34"
+          }
+        },
+        {
           "client_id": "442731666407-9opok297a59ghvrf730ophmb9ilqobu3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.vetplus",
             "certificate_hash": "aaa1cb74e0107f245a85b745593803cefdfe2270"
+          }
+        },
+        {
+          "client_id": "442731666407-f3ga17guapr0uopi48ibdpngir603c5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vetplus",
+            "certificate_hash": "594aefd73efd884451d3ac4a0315e82967e561ac"
           }
         },
         {
@@ -45,6 +61,13 @@
             {
               "client_id": "442731666407-1mpl7nq7eh1050orjfbmsrcn5cght7ao.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "442731666407-dcqi21hodnqnef4c5uvpd1uvk7bb3hkt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vetplus"
+              }
             }
           ]
         }

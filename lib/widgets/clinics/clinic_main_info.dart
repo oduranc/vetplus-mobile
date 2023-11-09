@@ -23,7 +23,7 @@ class ClinicMainInfo extends StatelessWidget {
             width: double.infinity,
             child: Text(clinic.name, style: getClinicNameTextStyle(isTablet))),
         Text(
-          ' ⭐ ${clinic.clinicRating} • ${clinic.clinicSummaryScore.totalUsers} ${AppLocalizations.of(context)!.ratings}',
+          ' ⭐ ${clinic.clinicRating} • ${clinic.clinicSummaryScore!.totalUsers} ${AppLocalizations.of(context)!.ratings}',
           style: getClinicDetailsTextStyle(isTablet),
         ),
         Text(

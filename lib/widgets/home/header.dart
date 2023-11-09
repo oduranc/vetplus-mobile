@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/screens/appointments/appointments_history_screen.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/themes/typography.dart';
@@ -86,7 +87,14 @@ class Header extends StatelessWidget {
               ),
               IconButton(
                 iconSize: isTablet ? 30 : 25.sp,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppointmentsHistoryScreen(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.receipt_long_outlined),
               ),
             ],

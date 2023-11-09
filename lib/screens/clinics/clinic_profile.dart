@@ -64,7 +64,7 @@ class ClinicProfile extends StatelessWidget {
             final sectionsToShow =
                 _buildSections(isTablet, clinic, employees, comments, clinicId);
             return _buildClinicProfileContent(
-                clinic, isTablet, sectionsToShow, user);
+                clinic, isTablet, sectionsToShow, user, employees);
           }
         },
       ),
@@ -102,8 +102,12 @@ class ClinicProfile extends StatelessWidget {
     ]);
   }
 
-  Column _buildClinicProfileContent(ClinicModel clinic, bool isTablet,
-      List<Widget> sectionsToShow, UserModel? user) {
+  Column _buildClinicProfileContent(
+      ClinicModel clinic,
+      bool isTablet,
+      List<Widget> sectionsToShow,
+      UserModel? user,
+      List<EmployeeModel>? employees) {
     return Column(
       children: [
         Expanded(
@@ -128,7 +132,13 @@ class ClinicProfile extends StatelessWidget {
             ),
           ),
         ),
-        if (user != null) ScheduleButtonFooter(isTablet: isTablet),
+        if (user != null)
+          ScheduleButtonFooter(
+            isTablet: isTablet,
+            clinic: clinic,
+            user: user,
+            employees: employees,
+          ),
       ],
     );
   }

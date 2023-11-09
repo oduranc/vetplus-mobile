@@ -8,14 +8,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class CustomCalendar extends StatelessWidget {
   const CustomCalendar({
     super.key,
-    required this.now,
+    this.maxDate,
     required this.minDate,
     required this.initialDate,
     required this.isTablet,
     required this.onChanged,
   });
 
-  final DateTime now;
+  final DateTime? maxDate;
   final DateTime minDate;
   final DateTime initialDate;
   final bool isTablet;
@@ -28,12 +28,12 @@ class CustomCalendar extends StatelessWidget {
           ? CupertinoDatePicker(
               onDateTimeChanged: onChanged,
               mode: CupertinoDatePickerMode.date,
-              maximumDate: now,
+              maximumDate: maxDate,
               initialDateTime: initialDate,
               minimumDate: minDate,
             )
           : SfDateRangePicker(
-              maxDate: now,
+              maxDate: maxDate,
               minDate: minDate,
               initialDisplayDate: initialDate,
               initialSelectedDate: initialDate,

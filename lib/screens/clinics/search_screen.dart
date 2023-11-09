@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql/src/core/query_result.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/clinic_model.dart';
 import 'package:vetplus/models/procedure_model.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/clinics/clinic_profile.dart';
 import 'package:vetplus/services/clinic_service.dart';
@@ -148,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   List<ClinicModel> _sortAndFilterClinics(List<ClinicModel> clinics) {
-    clinics.sort((a, b) => b.clinicRating.compareTo(a.clinicRating));
+    clinics.sort((a, b) => b.clinicRating!.compareTo(a.clinicRating!));
 
     clinics = clinics.where((element) {
       final search = _searchEditingController.text.toLowerCase();
@@ -160,7 +162,9 @@ class _SearchScreenState extends State<SearchScreen> {
       clinics = clinics.where((element) {
         if (element.services != null) {
           return _filtersList.every((filter) {
-            return element.services!.contains(filter);
+            return element.services!
+                .map((e) => e.toString().toLowerCase())
+                .contains(filter);
           });
         } else {
           return false;
@@ -219,7 +223,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   FutureBuilder<QueryResult<Object?>> _buildFilterSheet(bool isTablet) {
     return FutureBuilder(
-      future: ProcedureService.getAllProcedures(),
+      future: ProcedureService.getAllProcedures(
+          Provider.of<UserProvider>(context, listen: false).accessToken!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoadingIndicator();
@@ -296,8 +301,9 @@ class _SearchScreenState extends State<SearchScreen> {
             setState(() {
               _checkedList![index] = value;
               value!
-                  ? _filtersList.add(services[index].name)
-                  : _filtersList.remove(services[index].name);
+                  ? _filtersList.add(services[index].name.toLowerCase().trim())
+                  : _filtersList
+                      .remove(services[index].name.toLowerCase().trim());
             });
           },
         );

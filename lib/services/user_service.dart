@@ -9,6 +9,7 @@ class UserService {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
+    print(googleAuth!.idToken);
 
     const String googleLoginQuery = '''
     query {
@@ -28,14 +29,13 @@ class UserService {
         .query(QueryOptions(document: gql(googleLoginQuery)))
         .timeout(const Duration(seconds: 10));
 
+    print(result);
+
     return result;
   }
 
   static Future<QueryResult> signUpWithGoogle() async {
-    print('AAAAAAAAAAAAAAAAAA');
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    print(googleUser);
-    print('klk');
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
@@ -154,6 +154,9 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+
+    print(result);
+
     return result;
   }
 

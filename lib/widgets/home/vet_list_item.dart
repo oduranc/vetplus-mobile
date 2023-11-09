@@ -68,7 +68,7 @@ class VetListItem extends StatelessWidget {
                             ),
                             SizedBox(width: isTablet ? 2 : 2.sp),
                             Text(
-                              clinic.clinicRating,
+                              clinic.clinicRating!,
                               style: TextStyle(
                                 color: const Color(0xFF666666),
                                 fontSize: isTablet ? 16 : 13.sp,
