@@ -587,5 +587,19 @@
   "appointmentsHistory": "Historial de citas",
   "@appointmentHistory": {
     "description": "Appointments history"
+  },
+  "sharePetQrSubject": "Código QR de {name}",
+  "@sharePetQrSubject": {
+    "description": "Share pet QR subject",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "sharePetQrBody": "Este es el perfil de {name}. ¡Dale un vistazo!.",
+  "@sharePetQrBody": {
+    "description": "Share pet QR body",
+    "placeholders": {
+      "name": {}
+    }
   }
 }

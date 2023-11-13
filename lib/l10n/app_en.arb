@@ -140,5 +140,7 @@
   "clinic": "Clinic",
   "date": "Date",
   "pet": "Pet",
-  "appointmentsHistory": "Appointments history"
+  "appointmentsHistory": "Appointments history",
+  "sharePetQrSubject": "{name} QR Code",
+  "sharePetQrBody": "Here's {name}'s profile. Please check it out!"
 }
