@@ -88,6 +88,7 @@ class AppointmentsHistoryScreen extends StatelessWidget {
                       snapshot.data!.data!, 'getAppointmentDetailAllRoles')
                   .getAppointmentDetails;
             }
+            appointments.sort((a, b) => a.startAt.compareTo(b.startAt));
             return SeparatedListView(
                 isTablet: isTablet,
                 itemCount: appointments.length,

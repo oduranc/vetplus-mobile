@@ -48,6 +48,11 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
   List<bool?>? _checkedList;
   bool isLoading = false;
 
+  String getFormattedTime(TimeOfDay time) {
+    DateTime dateTime = DateTime(2000, 12, 12, time.hour, time.minute);
+    return DateFormat('h:mm a', 'en_US').format(dateTime);
+  }
+
   @override
   void initState() {
     _checkedList =
@@ -142,7 +147,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                       widget.clinic.id,
                       DateFormat('yyyy-MM-dd, h:mm a')
                           .parse(
-                              '${selectedDate!.substring(0, 10)}, ${selectedTime!.format(context)}')
+                              '${selectedDate!.substring(0, 10)}, ${getFormattedTime(selectedTime!)}')
                           .toIso8601String(),
                     );
                     if (result.data != null &&
@@ -201,20 +206,20 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                 AppLocalizations.of(context)!.clinic,
                 [widget.clinic.name],
               ),
-              Divider(),
+              const Divider(),
               buildConfirmationDetail(
                 context,
                 isTablet,
                 AppLocalizations.of(context)!.veterinarian,
                 [selectedEmployee!.employee.names],
               ),
-              Divider(),
+              const Divider(),
               buildConfirmationDetail(
                 context,
                 isTablet,
                 AppLocalizations.of(context)!.date,
                 [
-                  '${selectedDate!.substring(0, 10)}, ${selectedTime!.format(context)}'
+                  '${selectedDate!.substring(0, 10)}, ${getFormattedTime(selectedTime!)}'
                 ],
               ),
               Divider(),
@@ -273,8 +278,8 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                         children: [
                           CircleAvatar(
                             radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-                            backgroundColor: Color(0xFFDCDCDD),
-                            foregroundColor: Color(0xFFFBFBFB),
+                            backgroundColor: const Color(0xFFDCDCDD),
+                            foregroundColor: const Color(0xFFFBFBFB),
                             backgroundImage: pets[index].image != null
                                 ? NetworkImage(pets[index].image!)
                                 : null,
@@ -404,7 +409,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
               text: DateFormat('h:mm a')
                   .format(DateTime(2000, 12, 12, updatedHour, updatedMinute)),
               selectedTime:
-                  selectedTime != null ? selectedTime!.format(context) : null,
+                  selectedTime != null ? getFormattedTime(selectedTime!) : null,
             ),
           );
         },
@@ -525,10 +530,10 @@ class TimeCard extends StatelessWidget {
     return Card(
       color: isSelected
           ? Theme.of(context).colorScheme.primary
-          : Color(0xFFFAFAFA),
+          : const Color(0xFFFAFAFA),
       surfaceTintColor: isSelected
           ? Theme.of(context).colorScheme.primary
-          : Color(0xFFFAFAFA),
+          : const Color(0xFFFAFAFA),
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: isTablet ? 20 : 14.sp,
