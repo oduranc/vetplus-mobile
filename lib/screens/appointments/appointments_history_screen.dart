@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/appointments_model.dart';
@@ -8,6 +9,7 @@ import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/services/appointments_service.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/appointment_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
@@ -35,41 +37,55 @@ class AppointmentsHistoryScreen extends StatelessWidget {
             return Shimmer.fromColors(
               baseColor: Colors.grey.shade300,
               highlightColor: Colors.grey.shade100,
-              child: Wrap(
-                spacing: 8,
-                children: [
-                  CircleAvatar(
-                      radius: Responsive.isTablet(context) ? 39 : 32.5.sp),
-                  Wrap(
-                    direction: Axis.vertical,
-                    spacing: 10,
-                    children: [
-                      Container(
-                        color: Colors.black,
-                        height: 14,
-                        width: 100,
+              child: SeparatedListView(
+                  isTablet: isTablet,
+                  itemCount: 1,
+                  separator: const Divider(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {},
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.black,
                       ),
-                      Container(
-                        color: Colors.black,
-                        height: 12,
-                        width: 150,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            color: Colors.black,
+                            height: isTablet ? 16 : 14.sp,
+                            width: isTablet ? 100 : 100.sp,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: isTablet ? 12 : 10.sp,
+                                bottom: isTablet ? 9 : 7.sp),
+                            child: Container(
+                              color: Colors.black,
+                              height: isTablet ? 14 : 12.sp,
+                              width: isTablet ? 100 : 200.sp,
+                            ),
+                          ),
+                          Container(
+                            color: Colors.black,
+                            height: isTablet ? 14 : 12.sp,
+                            width: isTablet ? 100 : 150.sp,
+                          ),
+                        ],
                       ),
-                      Container(
-                        color: Colors.black,
-                        height: 12,
-                        width: 100,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    );
+                  }),
             );
           } else if (snapshot.hasError) {
             return Text(AppLocalizations.of(context)!.internetConnection);
           } else {
             List<AppointmentDetails> appointments = [];
             if (snapshot.data!.data != null) {
-              appointments = AppointmentList.fromJson(snapshot.data!.data!)
+              appointments = AppointmentList.fromJson(
+                      snapshot.data!.data!, 'getAppointmentDetailAllRoles')
                   .getAppointmentDetails;
             }
             return SeparatedListView(
@@ -78,7 +94,10 @@ class AppointmentsHistoryScreen extends StatelessWidget {
                 separator: const Divider(),
                 itemBuilder: (context, index) {
                   return ListTile(
-                    onTap: () {},
+                    onTap: appointments[index].state !=
+                            AppointmentState.FINISHED.name
+                        ? null
+                        : () {},
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
                       radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
@@ -115,10 +134,29 @@ class AppointmentsHistoryScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Theme.of(context).colorScheme.onInverseSurface,
-                      size: isTablet ? 35 : 25.sp,
+                    trailing: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          appointments[index].state,
+                          style: getSnackBarTitleStyle(isTablet).copyWith(
+                              color: mapStateToColor(AppointmentState.values
+                                  .where((element) =>
+                                      element.name == appointments[index].state)
+                                  .first)),
+                        ),
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(
+                              DateTime.parse(appointments[index].startAt)),
+                          style: getSnackBarBodyStyle(isTablet),
+                        ),
+                        Text(
+                          DateFormat('h:mm a').format(
+                              DateTime.parse(appointments[index].startAt)),
+                          style: getSnackBarBodyStyle(isTablet),
+                        )
+                      ],
                     ),
                   );
                 });

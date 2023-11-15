@@ -6,11 +6,11 @@ class AppointmentList {
 
   AppointmentList({required this.getAppointmentDetails});
 
-  factory AppointmentList.fromJson(Map<String, dynamic> json) {
+  factory AppointmentList.fromJson(
+      Map<String, dynamic> json, String objectName) {
     return AppointmentList(
         getAppointmentDetails: List<AppointmentDetails>.from(
-            json['getAppointmentDetailAllRoles']
-                .map((x) => AppointmentDetails.fromJson(x))));
+            json[objectName].map((x) => AppointmentDetails.fromJson(x))));
   }
 }
 
@@ -79,106 +79,12 @@ class AppointmentDetails {
   }
 }
 
-class Clinic {
-  String id;
-  String idOwner;
-  String name;
-  String telephoneNumber;
-  String? googleMapsUrl;
-  String? email;
-  String? image;
-  String address;
-  String createdAt;
-  String updatedAt;
-  bool status;
-
-  Clinic({
-    required this.id,
-    required this.idOwner,
-    required this.name,
-    required this.telephoneNumber,
-    required this.googleMapsUrl,
-    required this.email,
-    required this.image,
-    required this.address,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.status,
-  });
-
-  factory Clinic.fromJson(Map<String, dynamic> json) {
-    return Clinic(
-      id: json['id'],
-      idOwner: json['id_owner'],
-      name: json['name'],
-      telephoneNumber: json['telephone_number'],
-      googleMapsUrl: json['google_maps_url'],
-      email: json['email'],
-      image: json['image'],
-      address: json['address'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      status: json['status'],
-    );
-  }
-}
-
-class Pet {
-  String id;
-  String idOwner;
-  int idSpecie;
-  int idBreed;
-  String name;
-  String? image;
-  String gender;
-  bool castrated;
-  String? dob;
-  String? observations;
-  String createdAt;
-  String updatedAt;
-  bool status;
-
-  Pet({
-    required this.id,
-    required this.idOwner,
-    required this.idSpecie,
-    required this.idBreed,
-    required this.name,
-    required this.image,
-    required this.gender,
-    required this.castrated,
-    required this.dob,
-    required this.observations,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.status,
-  });
-
-  factory Pet.fromJson(Map<String, dynamic> json) {
-    return Pet(
-      id: json['id'],
-      idOwner: json['id_owner'],
-      idSpecie: json['id_specie'],
-      idBreed: json['id_breed'],
-      name: json['name'],
-      image: json['image'],
-      gender: json['gender'],
-      castrated: json['castrated'],
-      dob: json['dob'],
-      observations: json['observations'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      status: json['status'],
-    );
-  }
-}
-
 class Veterinarian {
   String id;
   String names;
   String? surnames;
-  String email;
-  String provider;
+  String? email;
+  String? provider;
   String? document;
   String? address;
   String? telephoneNumber;
@@ -227,11 +133,11 @@ class Owner {
   String id;
   String names;
   String? surnames;
-  String email;
-  String provider;
-  String document;
-  String address;
-  String telephoneNumber;
+  String? email;
+  String? provider;
+  String? document;
+  String? address;
+  String? telephoneNumber;
   String? image;
   String role;
   String createdAt;

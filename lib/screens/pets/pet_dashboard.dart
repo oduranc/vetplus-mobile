@@ -1,8 +1,9 @@
+import 'package:davinci/core/davinci_capture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
@@ -129,12 +130,12 @@ class _PetDashboardState extends State<PetDashboard> {
             AppLocalizations.of(context)!.wellnessPanel,
             style: getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
           ),
-          _buildWellnessWidgets(isTablet),
+          _buildWellnessWidgets(isTablet, pet),
           Text(
             AppLocalizations.of(context)!.careHistory,
             style: getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
           ),
-          _buildWellnessWidgets(isTablet),
+          _buildWellnessWidgets(isTablet, pet),
         ],
       ),
     );
@@ -157,7 +158,7 @@ class _PetDashboardState extends State<PetDashboard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    _sharePetProfile(pet);
+                    _sharePetProfile(context, pet);
                   },
                   icon: const Icon(Icons.send_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
@@ -197,7 +198,7 @@ class _PetDashboardState extends State<PetDashboard> {
                             backgroundColor: const Color(0xFF6EC6EB),
                           ),
                           onPressed: () {
-                            _sharePetProfile(pet);
+                            _sharePetProfile(context, pet);
                           },
                           child: Text(AppLocalizations.of(context)!.sendToVet),
                         ),
@@ -216,14 +217,25 @@ class _PetDashboardState extends State<PetDashboard> {
     );
   }
 
-  Future<void> _sharePetProfile(PetModel pet) {
-    return Share.share(
-      pet.id,
-      subject: 'Historial clínico de Coco',
+  Future<void> _sharePetProfile(BuildContext context, PetModel pet) async {
+    // Generate QR
+    final qr = QrImageView(
+      data: '1234567890',
+      version: QrVersions.auto,
+      size: 200.0,
     );
+
+    // Convert the QR into an image
+    await DavinciCapture.offStage(qr, context: context);
+
+    // Share the image
+    // return Share.share(
+    //   pet.id,
+    //   subject: 'Historial clínico de Coco',
+    // );
   }
 
-  SizedBox _buildWellnessWidgets(bool isTablet) {
+  SizedBox _buildWellnessWidgets(bool isTablet, PetModel pet) {
     return SizedBox(
       height: isTablet ? 410 : null,
       child: Flex(
@@ -234,8 +246,10 @@ class _PetDashboardState extends State<PetDashboard> {
               : WeightWidget(isTablet: isTablet),
           SizedBox(width: isTablet ? 40 : 0, height: isTablet ? 0 : 20),
           isTablet
-              ? Expanded(child: NextAppointmentsWidget(isTablet: isTablet))
-              : NextAppointmentsWidget(isTablet: isTablet),
+              ? Expanded(
+                  child:
+                      NextAppointmentsWidget(isTablet: isTablet, petId: pet.id))
+              : NextAppointmentsWidget(isTablet: isTablet, petId: pet.id),
         ],
       ),
     );

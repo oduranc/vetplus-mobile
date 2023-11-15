@@ -142,9 +142,113 @@ class AppointmentsService {
             document: gql(getAppointmentsQuery),
             variables: {
               "filterAppointmentBySSInput": {
-                "state": "PENDING",
+                "state": null,
                 "appointment_status": null
               }
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+
+    print(result);
+
+    return result;
+  }
+
+  static Future<QueryResult> getPetAppointments(
+      String token, String petId) async {
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    const String getPetAppointmentsQuery = '''
+    query (\$filterAppointmentByIdInput: FilterAppointmentByIdInput!) {
+      getAppointmentPerPet(
+        filterAppointmentByIdInput: \$filterAppointmentByIdInput
+      ) {
+        start_at
+        end_at
+        id
+        id_owner
+        id_veterinarian
+        id_pet
+        services
+        id_clinic
+        observations
+        appointment_status
+        state
+        created_at
+        updated_at
+        status
+        Clinic {
+          id
+          id_owner
+          name
+          telephone_number
+          google_maps_url
+          email
+          image
+          address
+          created_at
+          updated_at
+          status
+        }
+        Pet {
+          id
+          id_owner
+          id_specie
+          id_breed
+          name
+          image
+          gender
+          castrated
+          dob
+          observations
+          created_at
+          updated_at
+          status
+        }
+        Veterinarian {
+          id
+          names
+          surnames
+          email
+          provider
+          document
+          address
+          telephone_number
+          image
+          role
+          created_at
+          updated_at
+          status
+        }
+        Owner {
+          id
+          names
+          surnames
+          email
+          provider
+          document
+          address
+          telephone_number
+          image
+          role
+          created_at
+          updated_at
+          status
+        }
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(getPetAppointmentsQuery),
+            variables: {
+              "filterAppointmentByIdInput": {"id": petId, "state": null}
             },
           ),
         )

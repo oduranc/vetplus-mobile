@@ -140,5 +140,7 @@
   "clinic": "Clinic",
   "date": "Date",
   "pet": "Pet",
-  "appointmentsHistory": "Appointments history"
+  "appointmentsHistory": "Appointments history",
+  "appointmentScheduledBody": "The appointment has been scheduled successfully!",
+  "errorAppointmentScheduledBody": "Server error. Please try again."
 }

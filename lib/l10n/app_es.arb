@@ -587,5 +587,13 @@
   "appointmentsHistory": "Historial de citas",
   "@appointmentHistory": {
     "description": "Appointments history"
+  },
+  "appointmentScheduledBody": "¡La cita ha sido reservada con éxito!",
+  "@appointmentScheduledBody": {
+    "description": "Appointment scheduled body"
+  },
+  "errorAppointmentScheduledBody": "Error en el servidor. Intente de nuevo más tarde.",
+  "@errorAppointmentScheduledBody": {
+    "description": "Error appointment scheduled body"
   }
 }
