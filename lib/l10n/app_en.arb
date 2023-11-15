@@ -142,5 +142,7 @@
   "pet": "Pet",
   "appointmentsHistory": "Appointments history",
   "appointmentScheduledBody": "The appointment has been scheduled successfully!",
-  "errorAppointmentScheduledBody": "Server error. Please try again."
+  "errorAppointmentScheduledBody": "Server error. Please try again.",
+  "sharePetQrSubject": "{name} QR Code",
+  "sharePetQrBody": "Here's {name}'s profile. Please check it out!"
 }

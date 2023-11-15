@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
@@ -158,7 +159,7 @@ class _PetDashboardState extends State<PetDashboard> {
                 ),
                 IconButton(
                   onPressed: () {
-                    _sharePetProfile(context, pet);
+                    _sharePetProfile(pet, context, isTablet);
                   },
                   icon: const Icon(Icons.send_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
@@ -198,7 +199,7 @@ class _PetDashboardState extends State<PetDashboard> {
                             backgroundColor: const Color(0xFF6EC6EB),
                           ),
                           onPressed: () {
-                            _sharePetProfile(context, pet);
+                            _sharePetProfile(pet, context, isTablet);
                           },
                           child: Text(AppLocalizations.of(context)!.sendToVet),
                         ),
@@ -217,22 +218,64 @@ class _PetDashboardState extends State<PetDashboard> {
     );
   }
 
-  Future<void> _sharePetProfile(BuildContext context, PetModel pet) async {
-    // Generate QR
-    final qr = QrImageView(
-      data: '1234567890',
-      version: QrVersions.auto,
-      size: 200.0,
-    );
+  Future<void> _sharePetProfile(
+      PetModel pet, BuildContext context, bool isTablet) async {
+    try {
+      // Generate QR
+      final qr = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: (View.of(context).physicalSize /
+                    View.of(context).devicePixelRatio)
+                .height,
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(AppLocalizations.of(context)!.sharePetQrSubject(pet.name),
+                    style: getClinicNameTextStyle(isTablet)),
+                QrImageView(
+                  data: pet.id,
+                  version: QrVersions.auto,
+                  size: 200.0,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
 
-    // Convert the QR into an image
-    await DavinciCapture.offStage(qr, context: context);
+      // Generate image
+      final qrImage = await DavinciCapture.offStage(
+        qr,
+        context: context,
+        fileName: pet.name,
+        openFilePreview: false,
+        returnImageUint8List: true,
+      );
 
-    // Share the image
-    // return Share.share(
-    //   pet.id,
-    //   subject: 'Historial clínico de Coco',
-    // );
+      if (qrImage != null) {
+        final xFile = XFile.fromData(
+          qrImage,
+          name: '${pet.name}_profile.png',
+          mimeType: 'image/png',
+        );
+
+        // Share image
+        Share.shareXFiles(
+          [xFile],
+          // ignore: use_build_context_synchronously
+          subject: AppLocalizations.of(context)!.sharePetQrSubject(pet.name),
+          // ignore: use_build_context_synchronously
+          text: AppLocalizations.of(context)!.sharePetQrBody(pet.name),
+        );
+      } else {
+        print('Error generating QR image.');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   SizedBox _buildWellnessWidgets(bool isTablet, PetModel pet) {

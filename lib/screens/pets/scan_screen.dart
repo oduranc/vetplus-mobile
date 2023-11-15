@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:vetplus/screens/pets/pet_dashboard.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -31,6 +32,14 @@ class _ScanScreenState extends State<ScanScreen> {
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
+
+    Navigator.pushNamed(
+      context,
+      PetDashboard.route,
+      arguments: {
+        'id': _scanBarcode,
+      },
+    );
   }
 
   @override

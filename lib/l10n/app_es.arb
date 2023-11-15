@@ -595,5 +595,19 @@
   "errorAppointmentScheduledBody": "Error en el servidor. Intente de nuevo más tarde.",
   "@errorAppointmentScheduledBody": {
     "description": "Error appointment scheduled body"
+  },
+  "sharePetQrSubject": "Código QR de {name}",
+  "@sharePetQrSubject": {
+    "description": "Share pet QR subject",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "sharePetQrBody": "Este es el perfil de {name}. ¡Dale un vistazo!.",
+  "@sharePetQrBody": {
+    "description": "Share pet QR body",
+    "placeholders": {
+      "name": {}
+    }
   }
 }
