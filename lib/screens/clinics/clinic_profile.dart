@@ -81,10 +81,11 @@ class ClinicProfile extends StatelessWidget {
       ClinicMainInfo(isTablet: isTablet, clinic: clinic),
       if (employees.isNotEmpty)
         ClinicVeterinariansInfo(isTablet: isTablet, employees: employees),
-      ClinicServicesInfo(
-        isTablet: isTablet,
-        services: clinic.services,
-      ),
+      if (clinic.services != null)
+        ClinicServicesInfo(
+          isTablet: isTablet,
+          services: clinic.services,
+        ),
       if (clinic.googleMapsUrl != null)
         ClinicMapInfo(
           isTablet: isTablet,
@@ -132,7 +133,7 @@ class ClinicProfile extends StatelessWidget {
             ),
           ),
         ),
-        if (user != null)
+        if (user != null && clinic.services != null && employees != null)
           ScheduleButtonFooter(
             isTablet: isTablet,
             clinic: clinic,
