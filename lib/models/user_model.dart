@@ -12,6 +12,7 @@ class UserModel {
   final String createdAt;
   final String updatedAt;
   final bool status;
+  final UserFmcModel? userFmc;
 
   UserModel({
     required this.id,
@@ -27,6 +28,7 @@ class UserModel {
     required this.createdAt,
     required this.updatedAt,
     required this.status,
+    this.userFmc,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,26 @@ class UserModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       status: json['status'],
+      userFmc: json['User_Fmc'] != null
+          ? UserFmcModel.fromJson(json['User_Fmc'])
+          : null,
+    );
+  }
+}
+
+class UserFmcModel {
+  String? idUser;
+  String? tokenFmc;
+
+  UserFmcModel({
+    this.idUser,
+    this.tokenFmc,
+  });
+
+  factory UserFmcModel.fromJson(Map<String, dynamic> json) {
+    return UserFmcModel(
+      idUser: json['id_user'],
+      tokenFmc: json['token_fmc'],
     );
   }
 }

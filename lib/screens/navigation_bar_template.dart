@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:vetplus/models/notification_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
@@ -13,10 +14,12 @@ import 'package:vetplus/screens/notifications/notifications_screen.dart';
 import 'package:vetplus/screens/pets/scan_screen.dart';
 import 'package:vetplus/screens/profile/profile_screen.dart';
 import 'package:vetplus/screens/sign/welcome_screen.dart';
+import 'package:vetplus/services/notification_service.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
 class NavigationBarTemplate extends StatefulWidget {
   const NavigationBarTemplate({super.key, required this.index});
+
   static const route = 'navigation-template';
   final int index;
 
@@ -47,6 +50,36 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
       const ProfileScreen()
     ];
 
+    if (user != null) {
+      return FutureBuilder(
+        future: NotificationService.getAllNotifications(
+            Provider.of<UserProvider>(context, listen: false).accessToken!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return buildNavigationBar(context, isTablet, user, screens, null);
+          } else if (snapshot.hasError) {
+            return buildNavigationBar(context, isTablet, user, screens, null);
+          } else if (snapshot.data!.hasException) {
+            return buildNavigationBar(context, isTablet, user, screens, null);
+          } else {
+            final notificationsJson = snapshot.data!;
+            List<NotificationModel> notifications =
+                NotificationList.fromJson(notificationsJson.data!).list;
+            return buildNavigationBar(
+                context, isTablet, user, screens, notifications);
+          }
+        },
+      );
+    }
+    return buildNavigationBar(context, isTablet, null, screens, null);
+  }
+
+  Scaffold buildNavigationBar(
+      BuildContext context,
+      bool isTablet,
+      UserModel? user,
+      List<Widget> screens,
+      List<NotificationModel>? notifications) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         destinations: [
@@ -60,7 +93,18 @@ class _NavigationBarTemplateState extends State<NavigationBarTemplate> {
               label: AppLocalizations.of(context)!.search),
           _buildScanDestination(isTablet, user),
           NavigationDestination(
-            icon: const Icon(Icons.notifications_none_rounded),
+            icon: (notifications == null || notifications.isEmpty)
+                ? const Icon(Icons.notifications_none_rounded)
+                : Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      const Icon(Icons.notifications_none_rounded),
+                      CircleAvatar(
+                        radius: 6,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
+                  ),
             label: AppLocalizations.of(context)!.notifications,
             selectedIcon: const Icon(Icons.notifications),
           ),

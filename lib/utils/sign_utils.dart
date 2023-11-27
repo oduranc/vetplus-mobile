@@ -15,6 +15,7 @@ import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/auth_code_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/services/clinic_service.dart';
+import 'package:vetplus/services/firebase_service.dart';
 import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/pet_utils.dart';
@@ -35,6 +36,7 @@ Future<void> tryLoginWithGoogle(BuildContext context, String? token) async {
     }
   }
   final user = await getUserProfile(token!);
+  await FirebaseService().initNotifications(token, user);
   PetList pets = await getPets(context, token);
   FavoriteClinicList favorites = await getFavorites(context, token);
   await navigateToHome(context, user, token, pets, favorites);
@@ -95,6 +97,7 @@ Future<void> tryLoginWithEmail(BuildContext context, String? email,
     }
   }
   final user = await getUserProfile(token!);
+  await FirebaseService().initNotifications(token, user);
   PetList pets = await getPets(context, token);
   FavoriteClinicList favorites = await getFavorites(context, token);
   await navigateToHome(context, user, token, pets, favorites);

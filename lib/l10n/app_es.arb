@@ -609,5 +609,9 @@
     "placeholders": {
       "name": {}
     }
+  },
+  "markNotification": "Marcar como leído",
+  "@markNotification": {
+    "description": "Mark as read"
   }
 }

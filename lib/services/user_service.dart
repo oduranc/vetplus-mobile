@@ -177,6 +177,10 @@ class UserService {
         created_at
         updated_at
         status
+        User_Fmc {
+          id_user
+          token_fmc
+        }
       }
     }
     ''';
@@ -194,6 +198,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+    print(result);
     return result;
   }
 

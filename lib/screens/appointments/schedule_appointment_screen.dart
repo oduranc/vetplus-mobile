@@ -385,7 +385,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 45,
+        itemCount: 53,
         itemBuilder: (BuildContext context, int index) {
           int updatedHour = startTime.hour;
           int updatedMinute = startTime.minute + 15 * index;

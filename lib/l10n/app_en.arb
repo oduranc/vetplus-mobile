@@ -2,11 +2,11 @@
   "language": "English",
   "login": "Log In",
   "register": "Create account",
-  "carouselFirstTitle":  "You're closer",
+  "carouselFirstTitle": "You're closer",
   "carouselFirstDescription": "Now you will follow up on appointments and procedures performed on your pets.",
-  "carouselSecondTitle":  "More connected",
+  "carouselSecondTitle": "More connected",
   "carouselSecondDescription": "You can search for the nearest centers filtered by their services offered and their specialties.",
-  "carouselThirdTitle":  "We listen to your feedback",
+  "carouselThirdTitle": "We listen to your feedback",
   "carouselThirdDescription": "We have a space for suggestions and evaluation of our veterinary centers",
   "googleButton": "Continue with Google",
   "emailButton": "Continue with Email",
@@ -144,5 +144,6 @@
   "appointmentScheduledBody": "The appointment has been scheduled successfully!",
   "errorAppointmentScheduledBody": "Server error. Please try again.",
   "sharePetQrSubject": "{name} QR Code",
-  "sharePetQrBody": "Here's {name}'s profile. Please check it out!"
+  "sharePetQrBody": "Here's {name}'s profile. Please check it out!",
+  "markNotification": "Mark as read"
 }
