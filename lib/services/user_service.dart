@@ -26,7 +26,7 @@ class UserService {
     final QueryResult result = await globalGraphQLClient.value
         .copyWith(link: link)
         .query(QueryOptions(document: gql(googleLoginQuery)))
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     print(result);
     return result;
@@ -64,7 +64,7 @@ class UserService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -92,7 +92,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -122,7 +122,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -149,7 +149,7 @@ class UserService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -191,7 +191,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -223,7 +223,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     print(result);
     return result;
@@ -270,7 +270,7 @@ class UserService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     if (result.hasException) {
       throw Exception();
     }
@@ -301,7 +301,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -329,7 +329,7 @@ class UserService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }

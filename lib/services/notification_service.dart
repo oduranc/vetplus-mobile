@@ -33,7 +33,7 @@ class NotificationService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -66,7 +66,7 @@ class NotificationService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     print(result);
     return result;
@@ -95,7 +95,7 @@ class NotificationService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -126,7 +126,7 @@ class NotificationService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }

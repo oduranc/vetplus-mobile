@@ -629,5 +629,9 @@
   "states": "Estados",
   "@states": {
     "description": "States"
+  },
+  "rescan": "Volver a escanear",
+  "@rescan": {
+    "description": "Scan again"
   }
 }

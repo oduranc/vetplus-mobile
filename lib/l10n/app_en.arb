@@ -149,5 +149,6 @@
   "accept": "Accept",
   "decline": "Decline",
   "specialty": "Specialty",
-  "states": "States"
+  "states": "States",
+  "rescan": "Scan again"
 }

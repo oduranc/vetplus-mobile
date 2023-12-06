@@ -28,7 +28,7 @@ class BreedService {
             document: gql(getAllBreedQuery),
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 }

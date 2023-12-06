@@ -27,7 +27,7 @@ class ProcedureService {
             document: gql(getAllProceduresQuery),
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 }

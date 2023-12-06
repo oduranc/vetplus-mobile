@@ -40,7 +40,7 @@ class PetService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -90,7 +90,7 @@ class PetService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -141,7 +141,7 @@ class PetService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     if (result.hasException) {
       throw Exception();
     }

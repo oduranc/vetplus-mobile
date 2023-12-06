@@ -40,7 +40,7 @@ class ScheduleAppointmentScreen extends StatefulWidget {
 
 class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
   EmployeeModel? selectedEmployee;
-  String? selectedDate;
+  String? selectedDate = DateTime.now().toIso8601String();
   TimeOfDay? selectedTime;
   List<String?> selectedServices = [];
   PetModel? selectedPet;
@@ -97,8 +97,11 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                     style: getClinicTitleStyle(isTablet)),
               ),
               _buildServicesList(isTablet),
-              Text(AppLocalizations.of(context)!.myPets,
-                  style: getClinicTitleStyle(isTablet)),
+              SizedBox(
+                width: double.infinity,
+                child: Text(AppLocalizations.of(context)!.myPets,
+                    style: getClinicTitleStyle(isTablet)),
+              ),
               if (pets != null) _buildPetsList(isTablet, pets),
               ElevatedButton(
                 onPressed: selectedDate == null ||
@@ -455,7 +458,9 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
               if (date is DateRangePickerSelectionChangedArgs) {
                 date = date.value;
               }
-              selectedDate = date.toIso8601String();
+              setState(() {
+                selectedDate = date.toIso8601String();
+              });
             },
           ),
         ],

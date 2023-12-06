@@ -34,7 +34,7 @@ class ClinicService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -77,7 +77,7 @@ class ClinicService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -116,7 +116,7 @@ class ClinicService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -155,7 +155,7 @@ class ClinicService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -189,7 +189,7 @@ class ClinicService {
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -217,7 +217,7 @@ class ClinicService {
             },
           }),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -245,7 +245,7 @@ class ClinicService {
             },
           }),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 
@@ -273,7 +273,7 @@ class ClinicService {
             },
           }),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
     return result;
   }
 }

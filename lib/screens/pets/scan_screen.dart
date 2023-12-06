@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/screens/pets/pet_dashboard.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -32,13 +34,18 @@ class _ScanScreenState extends State<ScanScreen> {
       _scanBarcode = barcodeScanRes;
     });
 
-    Navigator.pushNamed(
-      context,
-      PetDashboard.route,
-      arguments: {
-        'id': _scanBarcode,
-      },
-    );
+    RegExp identifierRegex =
+        RegExp(r'^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$');
+
+    if (identifierRegex.hasMatch(_scanBarcode)) {
+      Navigator.pushNamed(
+        context,
+        PetDashboard.route,
+        arguments: {
+          'id': _scanBarcode,
+        },
+      );
+    }
   }
 
   @override
@@ -49,6 +56,16 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text(_scanBarcode));
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 35.sp),
+      child: Center(
+        child: _scanBarcode == 'Unknown'
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                onPressed: scanQR,
+                child: Text(AppLocalizations.of(context)!.rescan),
+              ),
+      ),
+    );
   }
 }

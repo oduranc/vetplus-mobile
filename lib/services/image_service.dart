@@ -54,7 +54,7 @@ class ImageService {
                 },
               ),
             )
-            .timeout(const Duration(seconds: 10))
+            .timeout(const Duration(seconds: 300))
         : await globalGraphQLClient.value
             .copyWith(link: link)
             .mutate(
@@ -67,7 +67,7 @@ class ImageService {
                 },
               ),
             )
-            .timeout(const Duration(seconds: 10));
+            .timeout(const Duration(seconds: 300));
     return imageResult;
   }
 }

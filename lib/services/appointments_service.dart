@@ -40,7 +40,7 @@ class AppointmentsService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -146,7 +146,7 @@ class AppointmentsService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
@@ -248,7 +248,7 @@ class AppointmentsService {
             },
           ),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 300));
 
     return result;
   }
