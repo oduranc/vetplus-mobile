@@ -157,7 +157,7 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
                                 if (value.length == 1 && index != 5) {
                                   FocusScope.of(context).nextFocus();
                                 }
-                                print(value);
+
                                 setState(() {
                                   pins[index] = int.tryParse(value);
                                 });

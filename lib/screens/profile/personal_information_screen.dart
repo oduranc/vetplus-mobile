@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
+import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
@@ -17,6 +18,7 @@ import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
+
   static const route = 'personal-information';
 
   @override
@@ -39,8 +41,17 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
       appLocalizations.idCard: user.document ?? appLocalizations.add,
       appLocalizations.address: user.address ?? appLocalizations.add,
       appLocalizations.telephoneNumber:
-          user.telephoneNumber ?? appLocalizations.add
+          user.telephoneNumber ?? appLocalizations.add,
     };
+
+    final vetEditableFields = {
+      appLocalizations.specialty:
+          user.vetSpecialty?.specialty ?? appLocalizations.add,
+    };
+
+    if (user.role == 'VETERINARIAN') {
+      editableFields.addEntries(vetEditableFields.entries);
+    }
 
     return SkeletonScreen(
       providedPadding: EdgeInsets.symmetric(
@@ -132,8 +143,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   ? null
                   : editFieldController.text;
               final fieldName = field.key;
-              await _tryEditField(
-                  user, fieldName, updatedValue, context, appLocalizations);
+              if (fieldName == appLocalizations.specialty) {
+                await _addSpecialty(fieldName, updatedValue, appLocalizations);
+              } else {
+                await _tryEditField(
+                    user, fieldName, updatedValue, context, appLocalizations);
+              }
               setState(() {
                 _isLoading = false;
               });
@@ -149,6 +164,43 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         });
       },
     );
+  }
+
+  Future<void> _addSpecialty(
+    String fieldName,
+    String? specialty,
+    AppLocalizations appLocalizations,
+  ) async {
+    try {
+      final accessToken =
+          Provider.of<UserProvider>(context, listen: false).accessToken!;
+
+      await UserService.registerSpecialty(accessToken, specialty);
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            title: appLocalizations.successEditDialogTitle,
+            body: appLocalizations.successEditDialogBody(fieldName),
+            color: Theme.of(context).colorScheme.primary,
+            icon: Icons.check_circle_outline,
+          );
+        },
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            title: appLocalizations.errorEditDialogTitle,
+            body: appLocalizations.errorEditDialogBody(fieldName),
+            color: Theme.of(context).colorScheme.error,
+            icon: Icons.error_outline,
+          );
+        },
+      );
+    }
   }
 
   Future<void> _tryEditField(

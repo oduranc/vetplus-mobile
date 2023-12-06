@@ -22,6 +22,7 @@ class NotificationModel {
   final String createdAt;
   final String updatedAt;
   final bool status;
+  final String? idEntity;
 
   NotificationModel({
     required this.id,
@@ -33,6 +34,7 @@ class NotificationModel {
     required this.createdAt,
     required this.updatedAt,
     required this.status,
+    this.idEntity,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class NotificationModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       status: json['status'],
+      idEntity: json['id_entity'],
     );
   }
 }

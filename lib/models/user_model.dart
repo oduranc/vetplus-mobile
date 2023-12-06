@@ -13,6 +13,7 @@ class UserModel {
   final String updatedAt;
   final bool status;
   final UserFmcModel? userFmc;
+  final VetSpecialty? vetSpecialty;
 
   UserModel({
     required this.id,
@@ -29,6 +30,7 @@ class UserModel {
     required this.updatedAt,
     required this.status,
     this.userFmc,
+    this.vetSpecialty,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,21 @@ class UserModel {
       userFmc: json['User_Fmc'] != null
           ? UserFmcModel.fromJson(json['User_Fmc'])
           : null,
+      vetSpecialty: json['VeterinariaSpecialties'] != null
+          ? VetSpecialty.fromJson(json['VeterinariaSpecialties'])
+          : null,
+    );
+  }
+}
+
+class VetSpecialty {
+  String? specialty;
+
+  VetSpecialty({this.specialty});
+
+  factory VetSpecialty.fromJson(Map<String, dynamic> json) {
+    return VetSpecialty(
+      specialty: json['specialties'],
     );
   }
 }

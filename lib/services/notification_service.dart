@@ -20,6 +20,7 @@ class NotificationService {
         created_at
         updated_at
         status
+        id_entity
       }
     }
     ''';
@@ -33,6 +34,40 @@ class NotificationService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+    return result;
+  }
+
+  static Future<QueryResult> handleEmployeeRequest(
+      String token, String idEntity, String status) async {
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    const String handleRequestMutation = '''
+    mutation (\$handleEmployeeRequestInput: HandleEmployeeRequestInput!) {
+      handleEmployeeRequest(
+        handleEmployeeRequestInput: \$handleEmployeeRequestInput
+      ) {
+        access_token
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(handleRequestMutation),
+            variables: {
+              "handleEmployeeRequestInput": {
+                "id": idEntity,
+                "employee_invitation_status": status
+              },
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+
     print(result);
     return result;
   }
@@ -61,7 +96,7 @@ class NotificationService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 
@@ -92,7 +127,7 @@ class NotificationService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 }

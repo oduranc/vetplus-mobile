@@ -131,9 +131,6 @@ _AppointmentDataSource _getCalendarDataSource(
     ),
   );
 
-  print(appointments.length);
-  print(calendarDataSource.length);
-
   return _AppointmentDataSource(calendarDataSource);
 }
 

@@ -613,5 +613,21 @@
   "markNotification": "Marcar como leído",
   "@markNotification": {
     "description": "Mark as read"
+  },
+  "accept": "Aceptar",
+  "@accept": {
+    "description": "Accept"
+  },
+  "decline": "Rechazar",
+  "@decline": {
+    "description": "Decline"
+  },
+  "specialty": "Especialidad",
+  "@specialty": {
+    "description": "Specialty"
+  },
+  "states": "Estados",
+  "@states": {
+    "description": "States"
   }
 }

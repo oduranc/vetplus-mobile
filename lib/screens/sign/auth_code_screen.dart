@@ -77,7 +77,7 @@ class _AuthCodeScreenState extends State<AuthCodeScreen>
   @override
   void didUpdateWidget(covariant AuthCodeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print('UPDATE');
+
     if (widget.room != oldWidget.room) {
       _isInitialized = false;
       connectToRoomAndListen();
@@ -107,7 +107,7 @@ class _AuthCodeScreenState extends State<AuthCodeScreen>
             if (value.length == 1 && index != 5) {
               FocusScope.of(context).nextFocus();
             }
-            print(value);
+
             setState(() {
               pins[index] = int.tryParse(value);
             });

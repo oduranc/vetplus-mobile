@@ -145,5 +145,9 @@
   "errorAppointmentScheduledBody": "Server error. Please try again.",
   "sharePetQrSubject": "{name} QR Code",
   "sharePetQrBody": "Here's {name}'s profile. Please check it out!",
-  "markNotification": "Mark as read"
+  "markNotification": "Mark as read",
+  "accept": "Accept",
+  "decline": "Decline",
+  "specialty": "Specialty",
+  "states": "States"
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplus/models/favorite_clinic_model.dart';
@@ -14,6 +15,7 @@ import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/screens/sign/auth_code_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
+import 'package:vetplus/screens/sign/welcome_screen.dart';
 import 'package:vetplus/services/clinic_service.dart';
 import 'package:vetplus/services/firebase_service.dart';
 import 'package:vetplus/services/user_service.dart';
@@ -55,7 +57,6 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
       await navigateToHome(context, user, accessToken, pets, favorites);
     }
   } catch (e) {
-    print(e.toString());
     if (e.toString() == 'Null check operator used on a null value') {
       _showCustomDialog(
         AppLocalizations.of(context)!.canceledAction,
@@ -112,7 +113,7 @@ Future<String?> recoverWithCode(
       await _showServerErrorDialog(context);
     } else {
       final token = result.data!['recoveryAccount']['access_token'];
-      print('token: $token');
+
       return token;
     }
   } catch (e) {
@@ -140,8 +141,7 @@ Future<void> signUpWithCode(int code, String room, BuildContext context) async {
     } else {
       final res = result.data!['signUp']['result'];
       final message = result.data!['signUp']['message'];
-      print('result: $res');
-      print('message: $message');
+
       if (res == 'FAILED') {
         _showCustomDialog(
           AppLocalizations.of(context)!.wrongCodeTitle,
@@ -171,7 +171,6 @@ Future<String?> tryRecoverPassword(String email, BuildContext context) async {
     final result = await UserService.recoverPasswordVerificationCode(email);
 
     if (result.hasException) {
-      print(result.exception!.graphqlErrors[0].message);
       if (result.exception!.graphqlErrors[0].message ==
           'VALIDATION_FIELDS_FAIL') {
         await _showCustomDialog(
@@ -195,7 +194,6 @@ Future<String?> tryRecoverPassword(String email, BuildContext context) async {
       return room;
     }
   } catch (e) {
-    print(e);
     await _showServerErrorDialog(context);
   }
   return null;
@@ -208,7 +206,6 @@ Future<void> trySignUpWithEmail(String name, String lastname, String email,
         name, lastname, email, password);
 
     if (result.hasException) {
-      print(result.exception!.graphqlErrors[0].message);
       if (result.exception!.graphqlErrors[0].message ==
           'VALIDATION_FIELDS_FAIL') {
         await _showCustomDialog(
@@ -316,6 +313,19 @@ String extractNumericPart(String input) {
   } else {
     return '';
   }
+}
+
+void signOut(BuildContext context) async {
+  await GoogleSignIn().signOut();
+  Provider.of<UserProvider>(context, listen: false).clearUser();
+  Provider.of<PetsProvider>(context, listen: false).clearPets();
+  Provider.of<FavoritesProvider>(context, listen: false).clearFavorites();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('SHARED_LOGGED');
+  await prefs.remove('SHARED_ACCESS_TOKEN');
+  await prefs.remove('SHARED_PROVIDER');
+  Navigator.pushNamedAndRemoveUntil(
+      context, WelcomeScreen.route, (route) => false);
 }
 
 Form buildCodeForm(

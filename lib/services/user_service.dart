@@ -9,7 +9,6 @@ class UserService {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-    print(googleAuth!.idToken);
 
     const String googleLoginQuery = '''
     query {
@@ -30,7 +29,6 @@ class UserService {
         .timeout(const Duration(seconds: 10));
 
     print(result);
-
     return result;
   }
 
@@ -80,8 +78,6 @@ class UserService {
       }
     }
     ''';
-    print(verificationCode);
-    print(room);
 
     final QueryResult result = await globalGraphQLClient.value
         .mutate(
@@ -97,7 +93,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 
@@ -127,7 +123,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 
@@ -154,8 +150,6 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-
-    print(result);
 
     return result;
   }
@@ -198,6 +192,39 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
+
+    return result;
+  }
+
+  static Future<QueryResult> registerSpecialty(
+      String token, String? specialty) async {
+    const String registerSpecialtyMutation = '''
+    mutation (\$addSpecialtyInput: AddSpecialtyInput!) {
+      registerSpecialty(addSpecialtyInput: \$addSpecialtyInput) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql/'));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(registerSpecialtyMutation),
+            variables: {
+              'addSpecialtyInput': {
+                'specialties': specialty,
+              }
+            },
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 10));
+
     print(result);
     return result;
   }
@@ -275,7 +302,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 
@@ -288,8 +315,6 @@ class UserService {
       }
     }
     ''';
-    print(verificationCode);
-    print(room);
 
     final QueryResult result = await globalGraphQLClient.value
         .mutate(
@@ -305,7 +330,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 }

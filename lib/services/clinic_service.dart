@@ -156,7 +156,7 @@ class ClinicService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-    print(result);
+
     return result;
   }
 

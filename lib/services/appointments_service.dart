@@ -42,8 +42,6 @@ class AppointmentsService {
         )
         .timeout(const Duration(seconds: 10));
 
-    print(result);
-
     return result;
   }
 
@@ -150,8 +148,6 @@ class AppointmentsService {
         )
         .timeout(const Duration(seconds: 10));
 
-    print(result);
-
     return result;
   }
 
@@ -253,8 +249,6 @@ class AppointmentsService {
           ),
         )
         .timeout(const Duration(seconds: 10));
-
-    print(result);
 
     return result;
   }

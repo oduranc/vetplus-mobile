@@ -5,11 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/services/notification_service.dart';
 
-Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  print(message.notification?.title);
-  print(message.notification?.body);
-  print(message.data);
-}
+Future<void> handleBackgroundMessage(RemoteMessage message) async {}
 
 class FirebaseService {
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -79,7 +75,7 @@ class FirebaseService {
 
   Future<void> initNotifications(String accessToken, UserModel user) async {
     await _firebaseMessaging.requestPermission();
-    print('TOKEN FMC: ${user.userFmc?.tokenFmc}');
+
     final fcmToken =
         user.userFmc?.tokenFmc ?? await _firebaseMessaging.getToken();
     if (user.userFmc?.tokenFmc == null) {

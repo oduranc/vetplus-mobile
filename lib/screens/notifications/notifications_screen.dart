@@ -8,6 +8,7 @@ import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/appointments/item_shimmer.dart';
 import 'package:vetplus/services/notification_service.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
@@ -85,7 +86,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                   .colorScheme
                                   .onInverseSurface,
                               onPressed: () {
-                                buildDangerModal(context, notifications[index]);
+                                notifications[index].category ==
+                                        'INVITE_TO_CLINIC'
+                                    ? buildInvitationModal(
+                                        context, notifications[index])
+                                    : buildMarkAsReadModal(
+                                        context, notifications[index]);
                               },
                               icon: const Icon(Icons.more_horiz),
                             ),
@@ -98,7 +104,94 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Future<dynamic> buildDangerModal(
+  Future<dynamic> buildInvitationModal(
+      BuildContext context, NotificationModel notification) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return ButtonsBottomSheet(
+            children: [
+              ElevatedButton(
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await NotificationService.markNotificationAsRead(
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .accessToken!,
+                                notification.id)
+                            .then((value) {
+                          NotificationService.handleEmployeeRequest(
+                            Provider.of<UserProvider>(context, listen: false)
+                                .accessToken!,
+                            notification.idEntity!,
+                            'DECLINED',
+                          );
+                        }).then((value) {
+                          Navigator.pop(context);
+                        });
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+                child: _isLoading
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      )
+                    : Text(AppLocalizations.of(context)!.decline),
+              ),
+              ElevatedButton(
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await NotificationService.markNotificationAsRead(
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .accessToken!,
+                                notification.id)
+                            .then((value) {
+                          NotificationService.handleEmployeeRequest(
+                            Provider.of<UserProvider>(context, listen: false)
+                                .accessToken!,
+                            notification.idEntity!,
+                            'ACCEPTED',
+                          );
+                        }).then((value) {
+                          signOut(context);
+                        });
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      },
+                child: Text(AppLocalizations.of(context)!.accept),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<dynamic> buildMarkAsReadModal(
       BuildContext context, NotificationModel notification) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,

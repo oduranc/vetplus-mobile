@@ -127,7 +127,6 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
       Navigator.pushReplacementNamed(context, ClinicProfile.route,
           arguments: {'id': widget.id});
     } catch (e) {
-      print('Error submitting comment: $e');
     } finally {
       setState(() {
         _isLoading = false;

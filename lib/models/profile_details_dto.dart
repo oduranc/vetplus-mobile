@@ -2,15 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vetplus/providers/favorites_provider.dart';
-import 'package:vetplus/providers/pets_provider.dart';
-import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/screens/pets/my_pets_screen.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
-import 'package:vetplus/screens/sign/welcome_screen.dart';
+import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 
 class ProfileDetailsDTO {
@@ -57,18 +51,8 @@ Future<dynamic> buildLogoutSheet(BuildContext context) {
       return ButtonsBottomSheet(
         children: [
           ElevatedButton(
-            onPressed: () async {
-              await GoogleSignIn().signOut();
-              Provider.of<UserProvider>(context, listen: false).clearUser();
-              Provider.of<PetsProvider>(context, listen: false).clearPets();
-              Provider.of<FavoritesProvider>(context, listen: false)
-                  .clearFavorites();
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.remove('SHARED_LOGGED');
-              await prefs.remove('SHARED_ACCESS_TOKEN');
-              await prefs.remove('SHARED_PROVIDER');
-              Navigator.pushNamedAndRemoveUntil(
-                  context, WelcomeScreen.route, (route) => false);
+            onPressed: () {
+              signOut(context);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,

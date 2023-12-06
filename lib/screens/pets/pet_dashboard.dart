@@ -164,11 +164,11 @@ class _PetDashboardState extends State<PetDashboard> {
                   icon: const Icon(Icons.send_outlined),
                   color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.insert_drive_file_outlined),
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.insert_drive_file_outlined),
+                //   color: Theme.of(context).colorScheme.onInverseSurface,
+                // ),
               ],
             )
           : IconButton(
@@ -203,11 +203,11 @@ class _PetDashboardState extends State<PetDashboard> {
                           },
                           child: Text(AppLocalizations.of(context)!.sendToVet),
                         ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child:
-                              Text(AppLocalizations.of(context)!.createReport),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: () {},
+                        //   child:
+                        //       Text(AppLocalizations.of(context)!.createReport),
+                        // ),
                       ],
                     );
                   },
@@ -270,12 +270,8 @@ class _PetDashboardState extends State<PetDashboard> {
           // ignore: use_build_context_synchronously
           text: AppLocalizations.of(context)!.sharePetQrBody(pet.name),
         );
-      } else {
-        print('Error generating QR image.');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
+      } else {}
+    } catch (e) {}
   }
 
   SizedBox _buildWellnessWidgets(bool isTablet, PetModel pet) {
