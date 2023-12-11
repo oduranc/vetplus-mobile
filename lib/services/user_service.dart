@@ -150,6 +150,7 @@ class UserService {
           ),
         )
         .timeout(const Duration(seconds: 300));
+    print(result);
 
     return result;
   }
@@ -174,6 +175,9 @@ class UserService {
         User_Fmc {
           id_user
           token_fmc
+        }
+        VeterinariaSpecialties {
+          specialties
         }
       }
     }

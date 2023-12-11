@@ -10,6 +10,7 @@ import 'package:vetplus/widgets/common/form_template.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   static const String route = '/login';
 
   @override
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     await tryLoginWithEmail(
-        context, _emailController.text, _passwordController.text, null);
+        context, _emailController.text, _passwordController.text);
 
     setState(() {
       _isLoading = false;

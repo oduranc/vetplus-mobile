@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetplus/models/favorite_clinic_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
@@ -24,31 +23,25 @@ import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/utils/user_utils.dart';
 import 'package:vetplus/widgets/common/custom_dialog.dart';
 
-Future<void> tryLoginWithGoogle(BuildContext context, String? token) async {
-  if (token == null) {
-    try {
-      final result = await UserService.loginWithGoogle();
-      token = result.data!['googleLogin']['access_token'];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('SHARED_LOGGED', true);
-      await prefs.setBool('SHARED_PROVIDER', true);
-      await prefs.setString('SHARED_ACCESS_TOKEN', token!);
-    } catch (e) {
-      await _showServerErrorDialog(context);
-    }
+Future<void> tryLoginWithGoogle(BuildContext context) async {
+  try {
+    final result = await UserService.loginWithGoogle();
+    final token = result.data!['googleLogin']['access_token'];
+    final user = await getUserProfile(token!);
+    await FirebaseService().initNotifications(token, user);
+    PetList pets = await getPets(context, token);
+    FavoriteClinicList favorites = await getFavorites(context, token);
+    await navigateToHome(context, user, token, pets, favorites);
+  } catch (e) {
+    await _showServerErrorDialog(context);
   }
-  final user = await getUserProfile(token!);
-  await FirebaseService().initNotifications(token, user);
-  PetList pets = await getPets(context, token);
-  FavoriteClinicList favorites = await getFavorites(context, token);
-  await navigateToHome(context, user, token, pets, favorites);
 }
 
 Future<void> trySignUpWithGoogle(BuildContext context) async {
   try {
     final result = await UserService.signUpWithGoogle();
     if (result.hasException) {
-      await tryLoginWithGoogle(context, null);
+      await tryLoginWithGoogle(context);
     } else {
       final accessToken = result.data!['googleLogin']['access_token'];
       final user = await getUserProfile(accessToken);
@@ -79,29 +72,24 @@ Future<FavoriteClinicList> getFavorites(
   return favorites;
 }
 
-Future<void> tryLoginWithEmail(BuildContext context, String? email,
-    String? password, String? token) async {
-  if (token == null) {
-    try {
-      final result = await UserService.loginWithEmail(email!, password!);
+Future<void> tryLoginWithEmail(
+    BuildContext context, String? email, String? password) async {
+  try {
+    final result = await UserService.loginWithEmail(email!, password!);
 
-      if (result.hasException) {
-        await showCredentialsErrorDialog(context);
-      } else {
-        token = result.data!['signInWithEmail']['access_token'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('SHARED_LOGGED', true);
-        await prefs.setString('SHARED_ACCESS_TOKEN', token!);
-      }
-    } catch (e) {
-      await _showServerErrorDialog(context);
+    if (result.hasException) {
+      await showCredentialsErrorDialog(context);
+    } else {
+      final token = result.data!['signInWithEmail']['access_token'];
+      final user = await getUserProfile(token!);
+      await FirebaseService().initNotifications(token, user);
+      PetList pets = await getPets(context, token);
+      FavoriteClinicList favorites = await getFavorites(context, token);
+      await navigateToHome(context, user, token, pets, favorites);
     }
+  } catch (e) {
+    await _showServerErrorDialog(context);
   }
-  final user = await getUserProfile(token!);
-  await FirebaseService().initNotifications(token, user);
-  PetList pets = await getPets(context, token);
-  FavoriteClinicList favorites = await getFavorites(context, token);
-  await navigateToHome(context, user, token, pets, favorites);
 }
 
 Future<String?> recoverWithCode(
@@ -320,10 +308,6 @@ void signOut(BuildContext context) async {
   Provider.of<UserProvider>(context, listen: false).clearUser();
   Provider.of<PetsProvider>(context, listen: false).clearPets();
   Provider.of<FavoritesProvider>(context, listen: false).clearFavorites();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove('SHARED_LOGGED');
-  await prefs.remove('SHARED_ACCESS_TOKEN');
-  await prefs.remove('SHARED_PROVIDER');
   Navigator.pushNamedAndRemoveUntil(
       context, WelcomeScreen.route, (route) => false);
 }

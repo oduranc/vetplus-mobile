@@ -177,6 +177,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
       await UserService.registerSpecialty(accessToken, specialty);
 
+      final user = await getUserProfile(accessToken);
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.setUser(user, accessToken);
+
       showDialog(
         context: context,
         builder: (context) {
