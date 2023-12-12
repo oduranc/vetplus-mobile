@@ -82,7 +82,8 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
                     width: 20,
                     child: CircularProgressIndicator(color: Colors.white))
                 : Text(appLocalizations.publish),
-            onSubmit: () => _submitComment(context, setState),
+            onSubmit:
+                _isLoading ? null : () => _submitComment(context, setState),
             children: [
               CommentOwnerWidget(
                 names: user.names,

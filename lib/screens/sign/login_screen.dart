@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: CircularProgressIndicator(
                                   color: Colors.white))
                           : Text(AppLocalizations.of(context)!.continueText),
-                      onSubmit: _tryLogin,
+                      onSubmit: _isLoading ? null : _tryLogin,
                       padding:
                           EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
                       children: [

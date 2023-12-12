@@ -135,24 +135,27 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     height: 20,
                     child: CircularProgressIndicator(color: Colors.white))
                 : Text(appLocalizations.update),
-            onSubmit: () async {
-              setState(() {
-                _isLoading = true;
-              });
-              final updatedValue = editFieldController.text == ''
-                  ? null
-                  : editFieldController.text;
-              final fieldName = field.key;
-              if (fieldName == appLocalizations.specialty) {
-                await _addSpecialty(fieldName, updatedValue, appLocalizations);
-              } else {
-                await _tryEditField(
-                    user, fieldName, updatedValue, context, appLocalizations);
-              }
-              setState(() {
-                _isLoading = false;
-              });
-            },
+            onSubmit: _isLoading
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    final updatedValue = editFieldController.text == ''
+                        ? null
+                        : editFieldController.text;
+                    final fieldName = field.key;
+                    if (fieldName == appLocalizations.specialty) {
+                      await _addSpecialty(
+                          fieldName, updatedValue, appLocalizations);
+                    } else {
+                      await _tryEditField(user, fieldName, updatedValue,
+                          context, appLocalizations);
+                    }
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
             children: [
               CustomFormField(
                 controller: editFieldController,

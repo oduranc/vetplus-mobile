@@ -54,9 +54,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: CircularProgressIndicator(color: Colors.white))
             : Text(AppLocalizations.of(context)!.continueText),
         padding: EdgeInsets.symmetric(vertical: isTablet ? 99 : 15),
-        onSubmit: () {
-          _tryRegister(context);
-        },
+        onSubmit: _isLoading
+            ? null
+            : () {
+                _tryRegister(context);
+              },
         children: <Widget>[
           CustomFormField(
             labelText: AppLocalizations.of(context)!.nameText,

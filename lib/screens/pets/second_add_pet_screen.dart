@@ -54,9 +54,11 @@ class _SecondAddPetScreenState extends State<SecondAddPetScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           FormTemplate(
-            onSubmit: () {
-              _tryRegisterPet(context);
-            },
+            onSubmit: _isLoading
+                ? null
+                : () {
+                    _tryRegisterPet(context);
+                  },
             buttonChild: _isLoading
                 ? const SizedBox(
                     width: 20,

@@ -113,17 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 textColor: Colors.white,
-                onPressed: _isLoading
-                    ? null
-                    : () async {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        await trySignUpWithGoogle(context);
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      },
+                onPressed: _isLoading ? null : _tryGoogleLogin,
                 child: _isLoading
                     ? const SizedBox(
                         height: 20,
@@ -150,5 +140,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         );
       },
     );
+  }
+
+  Future<void> _tryGoogleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await trySignUpWithGoogle(context);
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
