@@ -23,7 +23,7 @@ class AppointmentDetails {
   String idPet;
   List<String> services;
   String idClinic;
-  String? observations;
+  Observations observations;
   String? appointmentStatus;
   String state;
   String createdAt;
@@ -65,7 +65,7 @@ class AppointmentDetails {
       idPet: json['id_pet'],
       services: List<String>.from(json['services']),
       idClinic: json['id_clinic'],
-      observations: json['observations'],
+      observations: Observations.fromJson(json['observations']),
       appointmentStatus: json['appointment_status'],
       state: json['state'],
       createdAt: json['created_at'],
@@ -75,6 +75,22 @@ class AppointmentDetails {
       pet: PetModel.fromJson(json['Pet']),
       veterinarian: Veterinarian.fromJson(json['Veterinarian']),
       owner: json['Owner'] != null ? Owner.fromJson(json['Owner']) : null,
+    );
+  }
+}
+
+class Observations {
+  List<dynamic>? suffering;
+  String? treatment;
+  String? feed;
+
+  Observations({this.suffering, this.treatment, this.feed});
+
+  factory Observations.fromJson(Map<String, dynamic> json) {
+    return Observations(
+      suffering: json['suffering'],
+      treatment: json['treatment'],
+      feed: json['feed'],
     );
   }
 }

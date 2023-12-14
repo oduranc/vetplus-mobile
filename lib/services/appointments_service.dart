@@ -6,6 +6,7 @@ class AppointmentsService {
   static Future<QueryResult> scheduleAppointment(
     String token,
     String vetId,
+    String ownerId,
     String petId,
     List<String?> services,
     String clinicId,
@@ -31,6 +32,7 @@ class AppointmentsService {
             variables: {
               "scheduleAppointmentInput": {
                 "id_veterinarian": vetId,
+                "id_clinicOwner": ownerId,
                 "id_pet": petId,
                 "services": services,
                 "id_clinic": clinicId,
@@ -65,7 +67,11 @@ class AppointmentsService {
         id_pet
         services
         id_clinic
-        observations
+        observations {
+          suffering
+          treatment
+          feed
+        }
         appointment_status
         state
         created_at
@@ -142,6 +148,116 @@ class AppointmentsService {
               "filterAppointmentBySSInput": {
                 "state": null,
                 "appointment_status": null
+              }
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 300));
+
+    return result;
+  }
+
+  static Future<QueryResult> getVetAppointments(
+    String token,
+  ) async {
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    const String getAppointmentsQuery = '''
+    query (\$filterAppointmentByDateRangeInput: FilterAppointmentByDateRangeInput!) {
+      getAppointmentPerRangeDateTime(
+        filterAppointmentByDateRangeInput: \$filterAppointmentByDateRangeInput
+      ) {
+        start_at
+        end_at
+        id
+        id_owner
+        id_veterinarian
+        id_pet
+        services
+        id_clinic
+        observations {
+          suffering
+          treatment
+          feed
+        }
+        appointment_status
+        state
+        created_at
+        updated_at
+        status
+        Clinic {
+          id
+          id_owner
+          name
+          telephone_number
+          google_maps_url
+          email
+          image
+          address
+          created_at
+          updated_at
+          status
+        }
+        Pet {
+          id
+          id_owner
+          id_specie
+          id_breed
+          name
+          image
+          gender
+          castrated
+          dob
+          observations
+          created_at
+          updated_at
+          status
+        }
+        Veterinarian {
+          id
+          names
+          surnames
+          email
+          provider
+          document
+          address
+          telephone_number
+          image
+          role
+          created_at
+          updated_at
+          status
+        }
+        Owner {
+          id
+          names
+          surnames
+          email
+          provider
+          document
+          address
+          telephone_number
+          image
+          role
+          created_at
+          updated_at
+          status
+        }
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(getAppointmentsQuery),
+            variables: {
+              "filterAppointmentByDateRangeInput": {
+                "start_at": null,
+                "end_at": null
               }
             },
           ),

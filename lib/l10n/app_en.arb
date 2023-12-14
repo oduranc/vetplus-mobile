@@ -150,5 +150,11 @@
   "decline": "Decline",
   "specialty": "Specialty",
   "states": "States",
-  "rescan": "Scan again"
+  "rescan": "Scan again",
+  "appointmentDetails": "Appointment details",
+  "diagnostics": "Diagnostics",
+  "treatment": "Treatment",
+  "feed": "Diet and medications",
+  "myAppointments": "My appointments",
+  "clientsAppointments": "Clients appointments"
 }

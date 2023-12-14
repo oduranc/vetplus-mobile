@@ -145,6 +145,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                       Provider.of<UserProvider>(context, listen: false)
                           .accessToken!,
                       selectedEmployee!.idEmployee,
+                      widget.clinic.idOwner,
                       selectedPet!.id,
                       selectedServices,
                       widget.clinic.id,
@@ -179,10 +180,14 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                       ).then((value) {
                         Navigator.pop(context);
                         Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const AppointmentsHistoryScreen()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const AppointmentsHistoryScreen(
+                              listRole: 'PET_OWNER',
+                            ),
+                          ),
+                        );
                       });
                     } else {
                       setState(() {

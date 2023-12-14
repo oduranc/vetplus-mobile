@@ -41,6 +41,7 @@ class PetService {
           ),
         )
         .timeout(const Duration(seconds: 300));
+    print(result);
     return result;
   }
 

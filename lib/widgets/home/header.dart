@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/appointments/appointments_history_screen.dart';
+import 'package:vetplus/screens/appointments/select_appointments_list.dart';
 import 'package:vetplus/screens/home/favorite_screen.dart';
 import 'package:vetplus/screens/navigation_bar_template.dart';
 import 'package:vetplus/themes/typography.dart';
 
 class Header extends StatelessWidget {
   final UserModel user;
+
   const Header({
     super.key,
     required this.user,
@@ -79,7 +81,7 @@ class Header extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context, rootNavigator: false).push(
                     MaterialPageRoute(
-                        builder: (context) => FavoriteScreen(),
+                        builder: (context) => const FavoriteScreen(),
                         maintainState: false),
                   );
                 },
@@ -91,7 +93,9 @@ class Header extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AppointmentsHistoryScreen(),
+                      builder: (context) => user.role == 'PET_OWNER'
+                          ? AppointmentsHistoryScreen(listRole: user.role)
+                          : const SelectAppointmentsList(),
                     ),
                   );
                 },

@@ -633,5 +633,29 @@
   "rescan": "Volver a escanear",
   "@rescan": {
     "description": "Scan again"
+  },
+  "appointmentDetails": "Detalle de cita",
+  "@appointmentDetails": {
+    "description": "Appointment details"
+  },
+  "diagnostics": "Diagnósticos",
+  "@diagnostics": {
+    "description": "Diagnostics"
+  },
+  "treatment": "Tratamiento",
+  "@treatment": {
+    "description": "Treatment"
+  },
+  "feed": "Dieta y medicamentos",
+  "@feed": {
+    "description": "Feed"
+  },
+  "myAppointments": "Mis citas",
+  "@myAppointments": {
+    "description": "My appointments"
+  },
+  "clientsAppointments": "Citas de clientes",
+  "@clientsAppointments": {
+    "description": "Clients appointments"
   }
 }
