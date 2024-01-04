@@ -29,7 +29,8 @@ class ClinicVeterinariansInfo extends StatelessWidget {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => const Divider(),
+          separatorBuilder: (context, index) =>
+              Divider(height: isTablet ? 96 : 40.sp),
           itemBuilder: (context, index) {
             final employee = employees.elementAt(index).employee;
             return ListTile(

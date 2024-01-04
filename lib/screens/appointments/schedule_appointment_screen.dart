@@ -467,6 +467,12 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                 selectedDate = date.toIso8601String();
               });
             },
+            selectableDayPredicate: (DateTime date) {
+              if (date.weekday == DateTime.sunday) {
+                return false;
+              }
+              return true;
+            },
           ),
         ],
       ),
@@ -477,6 +483,8 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     return DropdownButtonFormField(
       value: selectedEmployee!.idEmployee,
       isDense: false,
+      padding: EdgeInsets.zero,
+      isExpanded: true,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
           horizontal: isTablet ? 14 : 12.sp,
@@ -484,7 +492,8 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
         ),
       ),
       items: widget.employees
-          ?.map(
+          ?.where((element) => element.idEmployee != widget.user.id)
+          .map(
             (e) => DropdownMenuItem(
               value: e.idEmployee,
               child: Padding(

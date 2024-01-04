@@ -13,6 +13,7 @@ class CustomCalendar extends StatelessWidget {
     required this.initialDate,
     required this.isTablet,
     required this.onChanged,
+    this.selectableDayPredicate,
   });
 
   final DateTime? maxDate;
@@ -20,6 +21,7 @@ class CustomCalendar extends StatelessWidget {
   final DateTime initialDate;
   final bool isTablet;
   final void Function(dynamic) onChanged;
+  final bool Function(DateTime)? selectableDayPredicate;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,7 @@ class CustomCalendar extends StatelessWidget {
               ),
               showNavigationArrow: true,
               onSelectionChanged: onChanged,
+              selectableDayPredicate: selectableDayPredicate,
             ),
     );
   }

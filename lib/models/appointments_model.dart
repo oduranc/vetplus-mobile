@@ -83,14 +83,87 @@ class Observations {
   List<dynamic>? suffering;
   String? treatment;
   String? feed;
+  Deworming? deworming;
+  Vaccines? vaccines;
+  ReproductiveTimeline? reproductiveTimeline;
 
-  Observations({this.suffering, this.treatment, this.feed});
+  Observations({
+    this.suffering,
+    this.treatment,
+    this.feed,
+    this.deworming,
+    this.vaccines,
+    this.reproductiveTimeline,
+  });
 
   factory Observations.fromJson(Map<String, dynamic> json) {
+    print(json);
     return Observations(
       suffering: json['suffering'],
       treatment: json['treatment'],
       feed: json['feed'],
+      deworming: json['deworming'] != null
+          ? Deworming.fromJson(json['deworming'])
+          : null,
+      vaccines:
+          json['vaccines'] != null ? Vaccines.fromJson(json['vaccines']) : null,
+      reproductiveTimeline: json['reproductiveTimeline'] != null
+          ? ReproductiveTimeline.fromJson(json['reproductiveTimeline'])
+          : null,
+    );
+  }
+}
+
+class Deworming {
+  String? date;
+  String? product;
+
+  Deworming({required this.date, required this.product});
+
+  factory Deworming.fromJson(Map<String, dynamic> json) {
+    return Deworming(
+      date: json['date'],
+      product: json['product'],
+    );
+  }
+}
+
+class Vaccines {
+  String? date;
+  String? vaccineBrand;
+  String? vaccineBatch;
+
+  Vaccines({
+    this.date,
+    this.vaccineBrand,
+    this.vaccineBatch,
+  });
+
+  factory Vaccines.fromJson(Map<String, dynamic> json) {
+    return Vaccines(
+      date: json['date'],
+      vaccineBrand: json['vaccineBrand'],
+      vaccineBatch: json['vaccineBatch'],
+    );
+  }
+}
+
+class ReproductiveTimeline {
+  String? reproductiveHistory;
+  String? dateLastHeat;
+  String? dateLastBirth;
+
+  ReproductiveTimeline({
+    this.reproductiveHistory,
+    this.dateLastHeat,
+    this.dateLastBirth,
+  });
+
+  factory ReproductiveTimeline.fromJson(Map<String, dynamic> json) {
+    return ReproductiveTimeline(
+      reproductiveHistory: json['reproductiveHistory'],
+      dateLastHeat: json['dateLastHeat'],
+      dateLastBirth: json['dateLastBirth'],
     );
   }
 }

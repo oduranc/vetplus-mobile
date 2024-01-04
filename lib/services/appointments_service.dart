@@ -71,6 +71,20 @@ class AppointmentsService {
           suffering
           treatment
           feed
+          deworming {
+            date
+            product
+          }
+          vaccines {
+            date
+            vaccineBrand
+            vaccineBatch
+          }
+          reproductiveTimeline {
+            reproductiveHistory
+            dateLastHeat
+            dateLastBirth
+          }
         }
         appointment_status
         state
@@ -154,6 +168,7 @@ class AppointmentsService {
         )
         .timeout(const Duration(seconds: 300));
 
+    print(result);
     return result;
   }
 
@@ -181,6 +196,20 @@ class AppointmentsService {
           suffering
           treatment
           feed
+          deworming {
+            date
+            product
+          }
+          vaccines {
+            date
+            vaccineBrand
+            vaccineBatch
+          }
+          reproductiveTimeline {
+            reproductiveHistory
+            dateLastHeat
+            dateLastBirth
+          }
         }
         appointment_status
         state

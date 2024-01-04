@@ -150,16 +150,21 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
                     ? appointments[index].owner!.surnames
                     : appointments[index].veterinarian.surnames;
 
-                return _buildAppointmentListItem(
-                    context, isTablet, appointments[index], names, surnames);
+                return _buildAppointmentListItem(context, isTablet,
+                    appointments[index], names, surnames, listRole);
               });
         }
       },
     );
   }
 
-  Widget _buildAppointmentListItem(BuildContext context, bool isTablet,
-      AppointmentDetails appointment, String names, String? surnames) {
+  Widget _buildAppointmentListItem(
+      BuildContext context,
+      bool isTablet,
+      AppointmentDetails appointment,
+      String names,
+      String? surnames,
+      String listRole) {
     final String appointmentState = appointment.state == 'PENDING'
         ? appointment.appointmentStatus ?? appointment.state
         : appointment.state;
@@ -173,6 +178,9 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
                 MaterialPageRoute(
                   builder: (context) => AppointmentObservationsScreen(
                     appointment: appointment,
+                    names: names,
+                    surnames: surnames,
+                    listRole: listRole,
                   ),
                 ),
               );

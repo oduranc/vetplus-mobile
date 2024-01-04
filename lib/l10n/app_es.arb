@@ -657,5 +657,145 @@
   "clientsAppointments": "Citas de clientes",
   "@clientsAppointments": {
     "description": "Clients appointments"
+  },
+  "deworming": "Desparasitación",
+  "@deworming": {
+    "description": "Deworming"
+  },
+  "vaccines": "Vacunas",
+  "@vaccines": {
+    "description": "Vaccines"
+  },
+  "reproductiveTimeline": "Línea de tiempo reproductiva",
+  "@reproductiveTimeline": {
+    "description": "Reproductive timeline"
+  },
+  "vaccineBrand": "Marca de vacuna",
+  "@vaccineBrand": {
+    "description": "Vaccine brand"
+  },
+  "vaccineBatch": "Lote de vacuna",
+  "@vaccineBatch": {
+    "description": "Vaccine batch"
+  },
+  "help": "Ayuda",
+  "@help": {
+    "description": "Help"
+  },
+  "help1": "Empezando en Vetplus",
+  "@help1": {
+    "description": "Help1"
+  },
+  "help2": "Encontrar un centro veterinario adecuado para ti",
+  "@help2": {
+    "description": "Help2"
+  },
+  "help3": "Ver el historial clínico de tu mascota",
+  "@help3": {
+    "description": "Help3"
+  },
+  "help4": "Agendar cita en un centro veterinario",
+  "@help4": {
+    "description": "Help4"
+  },
+  "help5": "Ver el historial de citas",
+  "@help5": {
+    "description": "Help5"
+  },
+  "help6": "Ver el dashboard de tu mascota",
+  "@help6": {
+    "description": "Help6"
+  },
+  "helpDtoOne1": "VetPlus simplifica tu experiencia en el mundo veterinario. Encuentra rápidamente veterinarios, programa citas en línea y accede a información crucial sobre el bienestar de tu mascota.",
+  "@helpDtoOne1": {
+    "description": "helpDto1-1"
+  },
+  "helpDtoOne2": "Para tener una experiencia completa es recomendable:",
+  "@helpDtoOne2": {
+    "description": "helpDto1-2"
+  },
+  "helpDtoOne3": "Crea tu Cuenta o Inicia Sesión: Disfruta de todas las funciones al crear una cuenta o iniciar sesión si ya tienes una desde la vista de bienvenida.",
+  "@helpDtoOne3": {
+    "description": "helpDto1-3"
+  },
+  "helpDtoOne4": "Registra a tu Mascota: ¡No olvides agregar a tu peludo amigo! Esto te permitirá realizar citas, ver historiales clínicos y más. Al momento de ingresar a la aplicacion o desde tu perfil dirígete a a la sección de mascotas para tocar \"Añadir\" para agregar una mascota.",
+  "@helpDtoOne4": {
+    "description": "helpDto1-4"
+  },
+  "helpDtoOne5": "Añadir tu toque personal : En el perfil del centro veterinario puedes ir a la parte superior derecha para tocar \"Mas opciones\" para \"Añadir reseña\" o \"Añadir a favoritos\". Además de comentar sobre tu experiencia en la sección de comentarios.",
+  "@helpDtoOne5": {
+    "description": "helpDto1-5"
+  },
+  "helpDtoTwo1": "Puedes encontrar un centro veterinario en cualquiera de las siguientes opciones:",
+  "@helpDtoTwo1": {
+    "description": "helpDto2-1"
+  },
+  "helpDtoTwo2": "Al momento de ingresar a la aplicación hay 3 secciones principales y de esas puedes tocar o elegir cuál es de tu preferencia.",
+  "@helpDtoTwo2": {
+    "description": "helpDto2-2"
+  },
+  "helpDtoTwo3": "Toca Buscar en la barra de navegación y desde esa pantalla puedes empezar a realizar tu búsqueda. También puedes utilizar los filtros de búsqueda según los servicios que desees.",
+  "@helpDtoTwo3": {
+    "description": "helpDto2-3"
+  },
+  "helpDtoThree1": "En la barra de navegación puedes ir al Botón de escanear. Aparecerá una pantalla para escanear el código QR del collar de tu mascota.",
+  "@helpDtoThree1": {
+    "description": "helpDto3-1"
+  },
+  "helpDtoThree2": "Asegúrate de que el código esté dentro del marco en la pantalla de escaneo. Después de cargar, se mostrará el historial clínico de tu mascota. ¡Es una forma rápida y conveniente de acceder a toda la información importante de tu compañero peludo!",
+  "@helpDtoThree2": {
+    "description": "helpDto3-2"
+  },
+  "helpDtoFour1": "Luego de buscar tu centro veterinario adecuado. Toca el botón \"Agendar cita\" al fondo.",
+  "@helpDtoFour1": {
+    "description": "helpDto4-1"
+  },
+  "helpDtoFour2": "Elige la fecha y hora de tu cita de viaje, así como los servicios que deseas realizar. Además, no olvides elegir la mascota a la que se le realizará la cita. Despues espera a que el el centro veterinario pueda verificar su disponiblidad para evitar inconvenientes ¡Queremos asegurarnos de proporcionar el mejor cuidado para tu compañero peludo!",
+  "@helpDtoFour2": {
+    "description": "helpDto4-2"
+  },
+  "helpDtoFive1": "Al momento de ingresar a la aplicación o Dirigiéndote a Inicio en la barra de navegación. Toca \"Historial de citas\" en la parte superior derecha para ir a la vista del historial de citas de tus mascotas.",
+  "@helpDtoFive1": {
+    "description": "helpDto5-1"
+  },
+  "helpDtoFive2": "En esa vista, también tienes la opción de filtrar según el estado de las citas. Esto te permitirá organizar y visualizar fácilmente las citas en función de su situación actual. ¡Hazlo aún más conveniente según tus necesidades!",
+  "@helpDtoFive2": {
+    "description": "helpDto5-2"
+  },
+  "helpDtoSix1": "Al elegir una mascota, accederás a un dashboard  panel dedicado exclusivamente a ella.",
+  "@helpDtoSix1": {
+    "description": "helpDto6-1"
+  },
+  "helpDtoSix2": "Este dashboard incluye:",
+  "@helpDtoSix2": {
+    "description": "helpDto6-2"
+  },
+  "helpDtoSix3": "Un detallado panel de bienestar sobre el peso ideal  para garantizar la salud a largo plazo de tu mascota.",
+  "@helpDtoSix3": {
+    "description": "helpDto6-3"
+  },
+  "helpDtoSix4": "Información sobre las próximas citas médicas.",
+  "@helpDtoSix4": {
+    "description": "helpDto6-4"
+  },
+  "helpDtoSix5": "Estas funciones facilitan el monitoreo continuo, ayudan en la prevención de problemas y te permiten tomar decisiones informadas sobre el cuidado de tu mascota.",
+  "@helpDtoSix5": {
+    "description": "helpDto6-5"
+  },
+  "helpDtoSix6": "Además, al tocar \"Más opciones\" en la parte superior derecha, podrás explorar funcionalidades adicionales, como ver el perfil de tu mascota con datos generales, compartir su historial clínico y generar un reporte del mismo.",
+  "@helpDtoSix6": {
+    "description": "helpDto6-6"
+  },
+  "dateLastHeat": "Último celo",
+  "@dateLastHeat": {
+    "description": "Date last heat"
+  },
+  "dateLastBirth": "Último parto",
+  "@dateLastBirth": {
+    "description": "Date last birth"
+  },
+  "reproductiveHistory": "Historial reproductivo",
+  "@reproductiveHistory": {
+    "description": "Reproductive history"
   }
 }

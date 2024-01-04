@@ -7,6 +7,7 @@ import 'package:vetplus/screens/pets/my_pets_screen.dart';
 import 'package:vetplus/screens/pets/pet_dashboard.dart';
 import 'package:vetplus/screens/pets/pet_profile.dart';
 import 'package:vetplus/screens/pets/second_add_pet_screen.dart';
+import 'package:vetplus/screens/profile/help_screen.dart';
 import 'package:vetplus/screens/profile/personal_information_screen.dart';
 import 'package:vetplus/screens/sign/login_screen.dart';
 import 'package:vetplus/screens/sign/register_screen.dart';
@@ -30,5 +31,6 @@ Map<String, WidgetBuilder> getAppRoutes() {
     PetProfile.route: (context) => const PetProfile(),
     ImageScreen.route: (context) => const ImageScreen(),
     ClinicProfile.route: (context) => const ClinicProfile(),
+    HelpScreen.route: (context) => const HelpScreen(),
   };
 }

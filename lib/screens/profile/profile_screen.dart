@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final bool isTablet = Responsive.isTablet(context);
     final UserModel? user = Provider.of<UserProvider>(context).user;
-    final items = getItems(context);
+    final items = getProfileItems(context);
 
     if (user == null) {
       return const Center(child: CircularProgressIndicator());

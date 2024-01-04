@@ -1,4 +1,5 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:vetplus/models/comment_model.dart';
 
 String formatTimePassed(
@@ -21,4 +22,8 @@ String formatTimePassed(
     timePassed = '${(time.inDays / 365).floor()} ${appLocalizations.years}';
   }
   return timePassed;
+}
+
+String formatDateTime(String date) {
+  return DateFormat('yyyy-MM-dd').format(DateTime.parse(date));
 }

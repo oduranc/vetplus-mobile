@@ -14,6 +14,7 @@ import 'package:vetplus/widgets/home/vet_section.dart';
 class HomeScreen extends StatelessWidget {
   final UserModel? user;
   final List<PetModel>? pets;
+
   const HomeScreen({super.key, required this.user, required this.pets});
 
   @override
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
     return SkeletonScreen(
       providedPadding: EdgeInsets.only(
         left: isTablet ? 37 : 24.sp,
+        top: user == null ? (isTablet ? 40 : 27.sp) : 0,
       ),
       body: FutureBuilder(
           future: ClinicService.getAllClinic(),

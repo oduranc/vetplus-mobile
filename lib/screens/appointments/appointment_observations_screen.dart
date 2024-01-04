@@ -4,13 +4,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/models/appointments_model.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/themes/typography.dart';
+import 'package:vetplus/utils/date_utils.dart';
 import 'package:vetplus/widgets/common/separated_list_view.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 
 class AppointmentObservationsScreen extends StatelessWidget {
-  const AppointmentObservationsScreen({super.key, required this.appointment});
+  const AppointmentObservationsScreen({
+    super.key,
+    required this.appointment,
+    required this.names,
+    this.surnames,
+    required this.listRole,
+  });
 
   final AppointmentDetails appointment;
+  final String names;
+  final String? surnames;
+  final String listRole;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +47,22 @@ class AppointmentObservationsScreen extends StatelessWidget {
 
   List<Widget> buildChildren(BuildContext context, bool isTablet) {
     return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Column(
         children: [
-          Text(AppLocalizations.of(context)!.veterinarian,
-              style: getClinicTitleStyle(isTablet)),
-          Text(
-            '${appointment.veterinarian.names} ${appointment.veterinarian.surnames ?? ''}',
-            style: getClinicDetailsTextStyle(isTablet)
-                .copyWith(color: Colors.black),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                  listRole == 'VETERINARIAN'
+                      ? AppLocalizations.of(context)!.petOwner
+                      : AppLocalizations.of(context)!.veterinarian,
+                  style: getClinicTitleStyle(isTablet)),
+              Text(
+                '$names ${surnames ?? ''}',
+                style: getClinicDetailsTextStyle(isTablet)
+                    .copyWith(color: Colors.black),
+              ),
+            ],
           ),
         ],
       ),
@@ -72,7 +89,10 @@ class AppointmentObservationsScreen extends StatelessWidget {
             Text(AppLocalizations.of(context)!.treatment,
                 style: getClinicTitleStyle(isTablet)),
             SizedBox(height: isTablet ? 22 : 18.sp),
-            Text(appointment.observations.treatment!,
+            Text(
+                appointment.observations.treatment! == ''
+                    ? 'N/A'
+                    : appointment.observations.treatment!,
                 style: getClinicDetailsTextStyle(isTablet)
                     .copyWith(color: Colors.black)),
           ],
@@ -84,9 +104,141 @@ class AppointmentObservationsScreen extends StatelessWidget {
             Text(AppLocalizations.of(context)!.feed,
                 style: getClinicTitleStyle(isTablet)),
             SizedBox(height: isTablet ? 22 : 18.sp),
-            Text(appointment.observations.feed!,
+            Text(
+                appointment.observations.feed! == ''
+                    ? 'N/A'
+                    : appointment.observations.feed!,
                 style: getClinicDetailsTextStyle(isTablet)
                     .copyWith(color: Colors.black)),
+          ],
+        ),
+      if (appointment.observations.deworming != null)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.deworming,
+              style: getClinicTitleStyle(isTablet),
+            ),
+            SizedBox(height: isTablet ? 22 : 18.sp),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(appointment.observations.deworming!.product! == ''
+                    ? 'N/A'
+                    : appointment.observations.deworming!.product!),
+                Text(appointment.observations.deworming!.date! == ''
+                    ? 'N/A'
+                    : formatDateTime(
+                        appointment.observations.deworming!.date!)),
+              ],
+            ),
+          ],
+        ),
+      if (appointment.observations.vaccines != null)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.vaccines,
+              style: getClinicTitleStyle(isTablet),
+            ),
+            SizedBox(height: isTablet ? 22 : 18.sp),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.date,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.vaccines!.date! == ''
+                    ? 'N/A'
+                    : formatDateTime(appointment.observations.vaccines!.date!)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.vaccineBrand,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.vaccines!.vaccineBrand! == ''
+                    ? 'N/A'
+                    : appointment.observations.vaccines!.vaccineBrand!),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.vaccineBatch,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.vaccines!.vaccineBatch! == ''
+                    ? 'N/A'
+                    : appointment.observations.vaccines!.vaccineBatch!),
+              ],
+            ),
+          ],
+        ),
+      if (appointment.observations.reproductiveTimeline != null)
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.reproductiveTimeline,
+              style: getClinicTitleStyle(isTablet),
+            ),
+            SizedBox(height: isTablet ? 22 : 18.sp),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.dateLastHeat,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.reproductiveTimeline!
+                                .dateLastHeat ==
+                            null ||
+                        appointment.observations.reproductiveTimeline!
+                                .dateLastHeat ==
+                            ''
+                    ? 'N/A'
+                    : formatDateTime(appointment
+                        .observations.reproductiveTimeline!.dateLastHeat!)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.dateLastBirth,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.reproductiveTimeline!
+                                .dateLastBirth ==
+                            null ||
+                        appointment.observations.reproductiveTimeline!
+                                .dateLastBirth! ==
+                            ''
+                    ? 'N/A'
+                    : formatDateTime(appointment
+                        .observations.reproductiveTimeline!.dateLastBirth!)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context)!.reproductiveHistory,
+                    style: const TextStyle()
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(appointment.observations.reproductiveTimeline!
+                                .reproductiveHistory ==
+                            null ||
+                        appointment.observations.reproductiveTimeline!
+                                .reproductiveHistory! ==
+                            ''
+                    ? 'N/A'
+                    : appointment.observations.reproductiveTimeline!
+                        .reproductiveHistory!),
+              ],
+            ),
           ],
         ),
     ];
