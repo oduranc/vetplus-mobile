@@ -307,6 +307,7 @@ class UserService {
         )
         .timeout(const Duration(seconds: 300));
 
+    print(result);
     return result;
   }
 

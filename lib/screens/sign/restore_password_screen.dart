@@ -11,6 +11,7 @@ import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/utils/validation_utils.dart';
+import 'package:vetplus/widgets/common/custom_dialog.dart';
 import 'package:vetplus/widgets/common/custom_form_field.dart';
 import 'package:vetplus/widgets/common/long_bottom_sheet.dart';
 
@@ -88,11 +89,11 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
     );
   }
 
-  Future<dynamic> _buildCodeScreen(BuildContext context, Key key) {
-    bool isTablet = Responsive.isTablet(context);
+  Future<dynamic> _buildCodeScreen(BuildContext ctx, Key key) {
+    bool isTablet = Responsive.isTablet(ctx);
 
     return showModalBottomSheet(
-        context: context,
+        context: ctx,
         backgroundColor: Colors.white,
         isScrollControlled: true,
         builder: (context) {
@@ -125,6 +126,7 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
                             children: <Widget>[
                               IconButton(
                                 onPressed: () {
+                                  socket!.disconnect();
                                   Navigator.pop(context);
                                 },
                                 icon: const Icon(Icons.close),
@@ -168,7 +170,7 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
                             (seconds == null || seconds! > 0)
                                 ? null
                                 : () async {
-                                    Navigator.pop(context);
+                                    print('Seconds: $seconds');
                                     room = await tryRecoverPassword(
                                         widget.emailController.text, context);
                                     _buildCodeScreen(context, UniqueKey());
@@ -182,8 +184,29 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
                                     int pin = int.parse(pinsString);
                                     token = await recoverWithCode(
                                         pin, room!, context);
-                                    _buildSecondRestorePasswordModal(
-                                        context, isTablet, token);
+                                    print(token);
+                                    if (token != null) {
+                                      _buildSecondRestorePasswordModal(
+                                          context, isTablet, token);
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return CustomDialog(
+                                              title:
+                                                  AppLocalizations.of(context)!
+                                                      .wrongCodeTitle,
+                                              body:
+                                                  AppLocalizations.of(context)!
+                                                      .wrongCodeBody,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .error,
+                                              icon:
+                                                  Icons.error_outline_outlined,
+                                            );
+                                          });
+                                    }
                                     _isLoading = false;
                                   },
                             _isLoading
@@ -219,8 +242,28 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
           title: AppLocalizations.of(context)!.restorePasswordTitle,
           buttonChild: Text(AppLocalizations.of(context)!.update),
           onSubmit: () async {
-            await UserService.updateCredentialsRecoveryAccount(
+            final result = await UserService.updateCredentialsRecoveryAccount(
                 token!, passwordController.text);
+            showDialog(
+              context: context,
+              builder: (context) => result.data != null &&
+                      result.data!['updateCredentialsRecoveryAccount']
+                              ['result'] ==
+                          'COMPLETED'
+                  ? CustomDialog(
+                      title: AppLocalizations.of(context)!.restorePasswordTitle,
+                      body: AppLocalizations.of(context)!.changePasswordSuccess,
+                      color: Colors.green,
+                      icon: Icons.check_circle_outline,
+                    )
+                  : CustomDialog(
+                      title: AppLocalizations.of(context)!.restorePasswordTitle,
+                      body: AppLocalizations.of(context)!.changePasswordFailure,
+                      color: Theme.of(context).colorScheme.error,
+                      icon: Icons.error_outline,
+                    ),
+            ).then((value) => Navigator.popUntil(
+                context, ModalRoute.withName(Navigator.defaultRouteName)));
           },
           children: <Widget>[
             Text(

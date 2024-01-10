@@ -805,5 +805,13 @@
   "latestAppointment": "Última cita",
   "@latestAppointment": {
     "description": "Latest appointment"
+  },
+  "changePasswordSuccess": "La contraseña ha sido modificada con éxito.",
+  "@changePasswordSuccess": {
+    "description": "Change password success"
+  },
+  "changePasswordFailure": "La contraseña no pudo ser modificada. Intente nuevamente.",
+  "@changePasswordFailure": {
+    "description": "Change password failure"
   }
 }

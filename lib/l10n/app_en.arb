@@ -193,5 +193,7 @@
   "dateLastBirth": "Latest birth",
   "reproductiveHistory": "Reproductive history",
   "nonWorkingDays": "Non-working days:",
-  "latestAppointment": "Latest appointment"
+  "latestAppointment": "Latest appointment",
+  "changePasswordSuccess": "Password was modified successfully.",
+  "changePasswordFailure": "Password could not be modified. Try again later."
 }
