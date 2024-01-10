@@ -5,7 +5,6 @@ import 'package:vetplus/services/graphql_client.dart';
 class AppointmentsService {
   static Future<QueryResult> scheduleAppointment(
     String token,
-    String vetId,
     String ownerId,
     String petId,
     List<String?> services,
@@ -31,7 +30,6 @@ class AppointmentsService {
             document: gql(scheduleAppointmentMutation),
             variables: {
               "scheduleAppointmentInput": {
-                "id_veterinarian": vetId,
                 "id_clinicOwner": ownerId,
                 "id_pet": petId,
                 "services": services,
@@ -43,6 +41,8 @@ class AppointmentsService {
           ),
         )
         .timeout(const Duration(seconds: 300));
+
+    print(result);
 
     return result;
   }
@@ -293,6 +293,7 @@ class AppointmentsService {
         )
         .timeout(const Duration(seconds: 300));
 
+    print(result);
     return result;
   }
 
@@ -315,9 +316,13 @@ class AppointmentsService {
         id_pet
         services
         id_clinic
-        observations
         appointment_status
         state
+        observations {
+          suffering
+          treatment
+          feed
+        }
         created_at
         updated_at
         status
@@ -395,6 +400,7 @@ class AppointmentsService {
         )
         .timeout(const Duration(seconds: 300));
 
+    print(result);
     return result;
   }
 }

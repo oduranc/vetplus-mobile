@@ -191,5 +191,7 @@
   "helpDtoSix6": "Additionally, by tapping \"More options\" at the top right, you can explore additional features, such as viewing your pet's profile with general data, sharing its medical history, and generating a report.",
   "dateLastHeat": "Latest heat",
   "dateLastBirth": "Latest birth",
-  "reproductiveHistory": "Reproductive history"
+  "reproductiveHistory": "Reproductive history",
+  "nonWorkingDays": "Non-working days:",
+  "latestAppointment": "Latest appointment"
 }

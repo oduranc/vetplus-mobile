@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vetplus/models/clinic_model.dart';
-import 'package:vetplus/models/employee_model.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/screens/appointments/schedule_appointment_screen.dart';
 
@@ -12,13 +11,11 @@ class ScheduleButtonFooter extends StatelessWidget {
     required this.isTablet,
     required this.clinic,
     required this.user,
-    required this.employees,
   });
 
   final bool isTablet;
   final ClinicModel clinic;
   final UserModel user;
-  final List<EmployeeModel>? employees;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,6 @@ class ScheduleButtonFooter extends StatelessWidget {
               builder: (context) => ScheduleAppointmentScreen(
                 clinic: clinic,
                 user: user,
-                employees: employees,
               ),
             ),
           );

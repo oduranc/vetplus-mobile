@@ -133,12 +133,13 @@ class ClinicProfile extends StatelessWidget {
             ),
           ),
         ),
-        if (user != null && clinic.services != null && employees != null)
+        if (user != null &&
+            clinic.services != null &&
+            clinic.services!.isNotEmpty)
           ScheduleButtonFooter(
             isTablet: isTablet,
             clinic: clinic,
             user: user,
-            employees: employees,
           ),
       ],
     );

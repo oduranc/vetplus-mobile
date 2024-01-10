@@ -30,6 +30,21 @@ class ClinicMainInfo extends StatelessWidget {
           clinic.address,
           style: getClinicDetailsTextStyle(isTablet),
         ),
+        if (clinic.schedule != null)
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              AppLocalizations.of(context)!.nonWorkingDays,
+              style: getClinicDetailsTextStyle(isTablet),
+            ),
+          ),
+        if (clinic.schedule != null)
+          ...clinic.schedule!.nonWorkingDays.map(
+            (e) => Text(
+              '  • ${e.toString()}',
+              style: getClinicDetailsTextStyle(isTablet),
+            ),
+          ),
       ],
     );
   }

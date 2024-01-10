@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/sign/auth_code_screen.dart';
+import 'package:vetplus/services/user_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/sign_utils.dart';
 import 'package:vetplus/utils/validation_utils.dart';
@@ -182,7 +183,7 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
                                     token = await recoverWithCode(
                                         pin, room!, context);
                                     _buildSecondRestorePasswordModal(
-                                        context, isTablet);
+                                        context, isTablet, token);
                                     _isLoading = false;
                                   },
                             _isLoading
@@ -205,7 +206,8 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
         });
   }
 
-  void _buildSecondRestorePasswordModal(BuildContext context, bool isTablet) {
+  void _buildSecondRestorePasswordModal(
+      BuildContext context, bool isTablet, String? token) {
     final TextEditingController passwordController = TextEditingController();
 
     showModalBottomSheet(
@@ -216,8 +218,9 @@ class _RestorePasswordScreenState extends State<RestorePasswordScreen>
         return LongBottomSheet(
           title: AppLocalizations.of(context)!.restorePasswordTitle,
           buttonChild: Text(AppLocalizations.of(context)!.update),
-          onSubmit: () {
-            Navigator.pop(context);
+          onSubmit: () async {
+            await UserService.updateCredentialsRecoveryAccount(
+                token!, passwordController.text);
           },
           children: <Widget>[
             Text(

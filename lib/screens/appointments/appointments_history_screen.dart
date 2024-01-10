@@ -142,13 +142,13 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
               itemCount: appointments.length,
               separator: const Divider(),
               itemBuilder: (context, index) {
-                String names = listRole == 'VETERINARIAN'
+                String? names = listRole == 'VETERINARIAN'
                     ? appointments[index].owner!.names
-                    : appointments[index].veterinarian.names;
+                    : appointments[index].veterinarian?.names;
 
                 String? surnames = listRole == 'VETERINARIAN'
                     ? appointments[index].owner!.surnames
-                    : appointments[index].veterinarian.surnames;
+                    : appointments[index].veterinarian?.surnames;
 
                 return _buildAppointmentListItem(context, isTablet,
                     appointments[index], names, surnames, listRole);
@@ -162,7 +162,7 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
       BuildContext context,
       bool isTablet,
       AppointmentDetails appointment,
-      String names,
+      String? names,
       String? surnames,
       String listRole) {
     final String appointmentState = appointment.state == 'PENDING'
@@ -214,7 +214,7 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
             ),
           ),
           Text(
-            '${names} ${surnames ?? ''}',
+            '${names ?? ''} ${surnames ?? ''}',
             style: getSnackBarBodyStyle(isTablet),
           )
         ],

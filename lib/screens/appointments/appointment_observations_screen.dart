@@ -12,13 +12,13 @@ class AppointmentObservationsScreen extends StatelessWidget {
   const AppointmentObservationsScreen({
     super.key,
     required this.appointment,
-    required this.names,
+    this.names,
     this.surnames,
     required this.listRole,
   });
 
   final AppointmentDetails appointment;
-  final String names;
+  final String? names;
   final String? surnames;
   final String listRole;
 
@@ -66,15 +66,15 @@ class AppointmentObservationsScreen extends StatelessWidget {
           ),
         ],
       ),
-      if (appointment.observations.suffering != null &&
-          appointment.observations.suffering!.isNotEmpty)
+      if (appointment.observations!.suffering != null &&
+          appointment.observations!.suffering!.isNotEmpty)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(AppLocalizations.of(context)!.diagnostics,
                 style: getClinicTitleStyle(isTablet)),
             SizedBox(height: isTablet ? 22 : 18.sp),
-            for (var item in appointment.observations.suffering!)
+            for (var item in appointment.observations!.suffering!)
               Text(
                 item,
                 style: getClinicDetailsTextStyle(isTablet)
@@ -82,7 +82,7 @@ class AppointmentObservationsScreen extends StatelessWidget {
               )
           ],
         ),
-      if (appointment.observations.treatment != null)
+      if (appointment.observations!.treatment != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -90,14 +90,14 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 style: getClinicTitleStyle(isTablet)),
             SizedBox(height: isTablet ? 22 : 18.sp),
             Text(
-                appointment.observations.treatment! == ''
+                appointment.observations!.treatment! == ''
                     ? 'N/A'
-                    : appointment.observations.treatment!,
+                    : appointment.observations!.treatment!,
                 style: getClinicDetailsTextStyle(isTablet)
                     .copyWith(color: Colors.black)),
           ],
         ),
-      if (appointment.observations.feed != null)
+      if (appointment.observations!.feed != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -105,14 +105,14 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 style: getClinicTitleStyle(isTablet)),
             SizedBox(height: isTablet ? 22 : 18.sp),
             Text(
-                appointment.observations.feed! == ''
+                appointment.observations!.feed! == ''
                     ? 'N/A'
-                    : appointment.observations.feed!,
+                    : appointment.observations!.feed!,
                 style: getClinicDetailsTextStyle(isTablet)
                     .copyWith(color: Colors.black)),
           ],
         ),
-      if (appointment.observations.deworming != null)
+      if (appointment.observations!.deworming != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -124,18 +124,19 @@ class AppointmentObservationsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(appointment.observations.deworming!.product! == ''
+                Text(appointment.observations!.deworming!.product! == ''
                     ? 'N/A'
-                    : appointment.observations.deworming!.product!),
-                Text(appointment.observations.deworming!.date! == ''
+                    : appointment.observations!.deworming!.product!),
+                Text(appointment.observations!.deworming!.date == null ||
+                        appointment.observations!.deworming!.date! == ''
                     ? 'N/A'
                     : formatDateTime(
-                        appointment.observations.deworming!.date!)),
+                        appointment.observations!.deworming!.date!)),
               ],
             ),
           ],
         ),
-      if (appointment.observations.vaccines != null)
+      if (appointment.observations!.vaccines != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -150,9 +151,11 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.date,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.vaccines!.date! == ''
+                Text(appointment.observations!.vaccines!.date == null ||
+                        appointment.observations!.vaccines!.date! == ''
                     ? 'N/A'
-                    : formatDateTime(appointment.observations.vaccines!.date!)),
+                    : formatDateTime(
+                        appointment.observations!.vaccines!.date!)),
               ],
             ),
             Row(
@@ -161,9 +164,9 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.vaccineBrand,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.vaccines!.vaccineBrand! == ''
+                Text(appointment.observations!.vaccines!.vaccineBrand! == ''
                     ? 'N/A'
-                    : appointment.observations.vaccines!.vaccineBrand!),
+                    : appointment.observations!.vaccines!.vaccineBrand!),
               ],
             ),
             Row(
@@ -172,14 +175,14 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.vaccineBatch,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.vaccines!.vaccineBatch! == ''
+                Text(appointment.observations!.vaccines!.vaccineBatch! == ''
                     ? 'N/A'
-                    : appointment.observations.vaccines!.vaccineBatch!),
+                    : appointment.observations!.vaccines!.vaccineBatch!),
               ],
             ),
           ],
         ),
-      if (appointment.observations.reproductiveTimeline != null)
+      if (appointment.observations!.reproductiveTimeline != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -194,15 +197,15 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.dateLastHeat,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.reproductiveTimeline!
+                Text(appointment.observations!.reproductiveTimeline!
                                 .dateLastHeat ==
                             null ||
-                        appointment.observations.reproductiveTimeline!
+                        appointment.observations!.reproductiveTimeline!
                                 .dateLastHeat ==
                             ''
                     ? 'N/A'
                     : formatDateTime(appointment
-                        .observations.reproductiveTimeline!.dateLastHeat!)),
+                        .observations!.reproductiveTimeline!.dateLastHeat!)),
               ],
             ),
             Row(
@@ -211,15 +214,15 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.dateLastBirth,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.reproductiveTimeline!
+                Text(appointment.observations!.reproductiveTimeline!
                                 .dateLastBirth ==
                             null ||
-                        appointment.observations.reproductiveTimeline!
+                        appointment.observations!.reproductiveTimeline!
                                 .dateLastBirth! ==
                             ''
                     ? 'N/A'
                     : formatDateTime(appointment
-                        .observations.reproductiveTimeline!.dateLastBirth!)),
+                        .observations!.reproductiveTimeline!.dateLastBirth!)),
               ],
             ),
             Row(
@@ -228,14 +231,14 @@ class AppointmentObservationsScreen extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.reproductiveHistory,
                     style: const TextStyle()
                         .copyWith(fontWeight: FontWeight.bold)),
-                Text(appointment.observations.reproductiveTimeline!
+                Text(appointment.observations!.reproductiveTimeline!
                                 .reproductiveHistory ==
                             null ||
-                        appointment.observations.reproductiveTimeline!
+                        appointment.observations!.reproductiveTimeline!
                                 .reproductiveHistory! ==
                             ''
                     ? 'N/A'
-                    : appointment.observations.reproductiveTimeline!
+                    : appointment.observations!.reproductiveTimeline!
                         .reproductiveHistory!),
               ],
             ),

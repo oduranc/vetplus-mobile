@@ -6,17 +6,20 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:vetplus/models/appointments_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
+import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/pet_profile.dart';
+import 'package:vetplus/services/appointments_service.dart';
 import 'package:vetplus/themes/typography.dart';
 import 'package:vetplus/utils/pet_utils.dart';
 import 'package:vetplus/widgets/common/buttons_bottom_sheet.dart';
 import 'package:vetplus/widgets/common/skeleton_screen.dart';
 import 'package:vetplus/widgets/pets/dashboard_app_bar_title.dart';
+import 'package:vetplus/widgets/pets/latest_appointment_widget.dart';
 import 'package:vetplus/widgets/pets/next_appointments_widget.dart';
-import 'package:vetplus/widgets/pets/weight_widget.dart';
 
 class PetDashboard extends StatefulWidget {
   const PetDashboard({super.key});
@@ -39,6 +42,7 @@ class _PetDashboardState extends State<PetDashboard> {
         .pets!
         .where((pet) => pet.id == arguments['id'])
         .first;
+    final bool isNotFromScanner = arguments['isNotFromScanner'] ?? true;
     final String age = getFormattedAge(pet, context);
 
     return SkeletonScreen(
@@ -49,9 +53,11 @@ class _PetDashboardState extends State<PetDashboard> {
       appBar: AppBar(
         toolbarHeight: isTablet ? 78 + 23 : (65 + 23).sp,
         titleSpacing: 0,
-        actions: [
-          _buildAppBarActions(isTablet, context, arguments, pet),
-        ],
+        actions: isNotFromScanner
+            ? [
+                _buildAppBarActions(isTablet, context, arguments, pet),
+              ]
+            : null,
         title: FutureBuilder(
           future: getBreedName(pet, context),
           builder: (context, snapshot) {
@@ -129,11 +135,6 @@ class _PetDashboardState extends State<PetDashboard> {
         children: [
           Text(
             AppLocalizations.of(context)!.wellnessPanel,
-            style: getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
-          ),
-          _buildWellnessWidgets(isTablet, pet),
-          Text(
-            AppLocalizations.of(context)!.careHistory,
             style: getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
           ),
           _buildWellnessWidgets(isTablet, pet),
@@ -274,27 +275,56 @@ class _PetDashboardState extends State<PetDashboard> {
     } catch (e) {}
   }
 
-  SizedBox _buildWellnessWidgets(bool isTablet, PetModel pet) {
-    return SizedBox(
-      height: isTablet ? 410 : null,
-      child: Flex(
-        direction: isTablet ? Axis.horizontal : Axis.vertical,
-        children: [
-          isTablet
-              ? Expanded(child: WeightWidget(isTablet: isTablet))
-              : WeightWidget(isTablet: isTablet),
-          SizedBox(width: isTablet ? 40 : 0, height: isTablet ? 0 : 20),
-          isTablet
-              ? Expanded(
-                  child:
-                      NextAppointmentsWidget(isTablet: isTablet, petId: pet.id))
-              : NextAppointmentsWidget(isTablet: isTablet, petId: pet.id),
-        ],
-      ),
-    );
-  }
-
   void _sendToPetProfile(BuildContext context, Map arguments) {
     Navigator.pushNamed(context, PetProfile.route, arguments: arguments);
+  }
+
+  Widget _buildWellnessWidgets(bool isTablet, PetModel pet) {
+    return FutureBuilder(
+      future: AppointmentsService.getPetAppointments(
+          Provider.of<UserProvider>(context, listen: false).accessToken!,
+          pet.id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        }
+        List<AppointmentDetails>? appointments = [];
+        AppointmentDetails? latestAppointment;
+        if (snapshot.data!.data != null) {
+          appointments = AppointmentList.fromJson(
+                  snapshot.data!.data!, 'getAppointmentPerPet')
+              .getAppointmentDetails;
+        }
+        if (appointments.isNotEmpty) {
+          appointments.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+          latestAppointment =
+              appointments.where((element) => element.state == 'FINISHED').last;
+        }
+        return SizedBox(
+          height: isTablet ? 410 : null,
+          child: Flex(
+            direction: isTablet ? Axis.horizontal : Axis.vertical,
+            children: [
+              if (latestAppointment != null)
+                isTablet
+                    ? Expanded(
+                        child: LatestAppointmentWidget(
+                            isTablet: isTablet,
+                            latestAppointment: latestAppointment))
+                    : LatestAppointmentWidget(
+                        isTablet: isTablet,
+                        latestAppointment: latestAppointment),
+              SizedBox(width: isTablet ? 40 : 0, height: isTablet ? 0 : 20),
+              isTablet
+                  ? Expanded(
+                      child: NextAppointmentsWidget(
+                          isTablet: isTablet, appointments: appointments))
+                  : NextAppointmentsWidget(
+                      isTablet: isTablet, appointments: appointments),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

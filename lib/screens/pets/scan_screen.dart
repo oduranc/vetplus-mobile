@@ -43,6 +43,7 @@ class _ScanScreenState extends State<ScanScreen> {
         PetDashboard.route,
         arguments: {
           'id': _scanBarcode,
+          'isNotFromScanner': false,
         },
       );
     }

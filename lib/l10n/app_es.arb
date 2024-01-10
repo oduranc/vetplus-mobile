@@ -797,5 +797,13 @@
   "reproductiveHistory": "Historial reproductivo",
   "@reproductiveHistory": {
     "description": "Reproductive history"
+  },
+  "nonWorkingDays": "Días no laborables:",
+  "@nonWorkingDays": {
+    "description": "Non-working days"
+  },
+  "latestAppointment": "Última cita",
+  "@latestAppointment": {
+    "description": "Latest appointment"
   }
 }

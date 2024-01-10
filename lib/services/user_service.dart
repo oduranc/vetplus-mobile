@@ -337,4 +337,41 @@ class UserService {
 
     return result;
   }
+
+  static Future<QueryResult> updateCredentialsRecoveryAccount(
+      String token, String password) async {
+    const String recoverMutation = '''
+    mutation (
+      \$updateCredentialsRecoveryAccountInput: UpdateCredentialsRecoveryAccountInput!
+    ) {
+      updateCredentialsRecoveryAccount(
+        updateCredentialsRecoveryAccountInput: \$updateCredentialsRecoveryAccountInput
+      ) {
+        result
+      }
+    }
+    ''';
+
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .mutate(
+          MutationOptions(
+            document: gql(recoverMutation),
+            variables: {
+              'updateCredentialsRecoveryAccountInput': {
+                'password': password,
+              },
+            },
+            fetchPolicy: FetchPolicy.networkOnly,
+          ),
+        )
+        .timeout(const Duration(seconds: 300));
+
+    print(result);
+    return result;
+  }
 }

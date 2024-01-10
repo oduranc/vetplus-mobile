@@ -19,11 +19,11 @@ class AppointmentDetails {
   String? endAt;
   String id;
   String idOwner;
-  String idVeterinarian;
+  String? idVeterinarian;
   String idPet;
   List<String> services;
   String idClinic;
-  Observations observations;
+  Observations? observations;
   String? appointmentStatus;
   String state;
   String createdAt;
@@ -31,7 +31,7 @@ class AppointmentDetails {
   bool status;
   ClinicModel clinic;
   PetModel pet;
-  Veterinarian veterinarian;
+  Veterinarian? veterinarian;
   Owner? owner;
 
   AppointmentDetails({
@@ -43,7 +43,7 @@ class AppointmentDetails {
     required this.idPet,
     required this.services,
     required this.idClinic,
-    required this.observations,
+    this.observations,
     required this.appointmentStatus,
     required this.state,
     required this.createdAt,
@@ -65,7 +65,9 @@ class AppointmentDetails {
       idPet: json['id_pet'],
       services: List<String>.from(json['services']),
       idClinic: json['id_clinic'],
-      observations: Observations.fromJson(json['observations']),
+      observations: json['observations'] != null
+          ? Observations.fromJson(json['observations'])
+          : null,
       appointmentStatus: json['appointment_status'],
       state: json['state'],
       createdAt: json['created_at'],
@@ -73,7 +75,9 @@ class AppointmentDetails {
       status: json['status'],
       clinic: ClinicModel.fromJson(json['Clinic']),
       pet: PetModel.fromJson(json['Pet']),
-      veterinarian: Veterinarian.fromJson(json['Veterinarian']),
+      veterinarian: json['Veterinarian'] != null
+          ? Veterinarian.fromJson(json['Veterinarian'])
+          : null,
       owner: json['Owner'] != null ? Owner.fromJson(json['Owner']) : null,
     );
   }

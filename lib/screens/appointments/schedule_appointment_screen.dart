@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:vetplus/models/clinic_model.dart';
-import 'package:vetplus/models/employee_model.dart';
 import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/models/user_model.dart';
 import 'package:vetplus/providers/pets_provider.dart';
@@ -26,12 +25,10 @@ class ScheduleAppointmentScreen extends StatefulWidget {
     super.key,
     required this.clinic,
     required this.user,
-    required this.employees,
   });
 
   final ClinicModel clinic;
   final UserModel user;
-  final List<EmployeeModel>? employees;
 
   @override
   State<ScheduleAppointmentScreen> createState() =>
@@ -39,7 +36,6 @@ class ScheduleAppointmentScreen extends StatefulWidget {
 }
 
 class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
-  EmployeeModel? selectedEmployee;
   String? selectedDate = DateTime.now().toIso8601String();
   TimeOfDay? selectedTime;
   List<String?> selectedServices = [];
@@ -57,7 +53,6 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
   void initState() {
     _checkedList =
         _checkedList ?? widget.clinic.services!.map((e) => false).toList();
-    selectedEmployee = widget.employees?.first;
     super.initState();
   }
 
@@ -83,8 +78,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
             runSpacing: isTablet ? 30 : 23.sp,
             children: [
               Text(widget.clinic.name, style: getClinicTitleStyle(isTablet)),
-              _buildEmployeeSelector(isTablet),
-              _buildDatePicker(context, isTablet),
+              _buildDatePicker(context, isTablet, widget.clinic.schedule),
               SizedBox(
                 width: double.infinity,
                 child: Text(AppLocalizations.of(context)!.time,
@@ -144,7 +138,6 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                         await AppointmentsService.scheduleAppointment(
                       Provider.of<UserProvider>(context, listen: false)
                           .accessToken!,
-                      selectedEmployee!.idEmployee,
                       widget.clinic.idOwner,
                       selectedPet!.id,
                       selectedServices,
@@ -213,13 +206,6 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                 isTablet,
                 AppLocalizations.of(context)!.clinic,
                 [widget.clinic.name],
-              ),
-              const Divider(),
-              buildConfirmationDetail(
-                context,
-                isTablet,
-                AppLocalizations.of(context)!.veterinarian,
-                [selectedEmployee!.employee.names],
               ),
               const Divider(),
               buildConfirmationDetail(
@@ -450,7 +436,13 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     );
   }
 
-  SizedBox _buildDatePicker(BuildContext context, bool isTablet) {
+  SizedBox _buildDatePicker(
+      BuildContext context, bool isTablet, Schedule? schedule) {
+    if (schedule != null) {
+      schedule.nonWorkingDays.forEach((element) {
+        DateTime.parse(element.toString());
+      });
+    }
     return SizedBox(
       height: isTablet ? 409 : 356.sp,
       child: Row(
@@ -471,62 +463,16 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
               if (date.weekday == DateTime.sunday) {
                 return false;
               }
+              if (schedule != null &&
+                  schedule.nonWorkingDays
+                      .contains(DateFormat('yyyy-MM-dd').format(date))) {
+                return false;
+              }
               return true;
             },
           ),
         ],
       ),
-    );
-  }
-
-  DropdownButtonFormField<String> _buildEmployeeSelector(bool isTablet) {
-    return DropdownButtonFormField(
-      value: selectedEmployee!.idEmployee,
-      isDense: false,
-      padding: EdgeInsets.zero,
-      isExpanded: true,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: isTablet ? 14 : 12.sp,
-          vertical: isTablet ? 14 : 12.sp,
-        ),
-      ),
-      items: widget.employees
-          ?.where((element) => element.idEmployee != widget.user.id)
-          .map(
-            (e) => DropdownMenuItem(
-              value: e.idEmployee,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: isTablet ? 32.5 : 32.5.sp,
-                      backgroundImage: e.employee.image != null
-                          ? NetworkImage(e.employee.image!)
-                          : const AssetImage('assets/images/user.png')
-                              as ImageProvider,
-                      backgroundColor: Colors.transparent,
-                    ),
-                    SizedBox(width: isTablet ? 14 : 12.sp),
-                    Text(
-                      '${e.employee.names} ${e.employee.surnames ?? ''}',
-                      style: getClinicDetailsTextStyle(isTablet).copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
-          .toList(),
-      onChanged: (newValue) {
-        selectedEmployee = widget.employees!
-            .where((element) => element.idEmployee == newValue)
-            .first;
-      },
     );
   }
 }
