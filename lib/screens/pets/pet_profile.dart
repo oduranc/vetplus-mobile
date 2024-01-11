@@ -31,6 +31,7 @@ import 'package:vetplus/widgets/pets/pet_form_fields.dart';
 
 class PetProfile extends StatefulWidget {
   const PetProfile({super.key});
+
   static const route = 'pet-profile';
 
   @override
@@ -145,7 +146,7 @@ class _PetProfileState extends State<PetProfile> {
       child: AddImageButton(
         primaryIcon: Icons.pets,
         image: pet.image != null ? NetworkImage(pet.image!) : null,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         backgroundColor: Theme.of(context).colorScheme.outlineVariant,
         bigButtonAction: () {
           Navigator.pushNamed(

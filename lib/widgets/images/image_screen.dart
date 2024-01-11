@@ -5,6 +5,7 @@ import 'package:vetplus/providers/user_provider.dart';
 
 class ImageScreen extends StatelessWidget {
   const ImageScreen({super.key});
+
   static const route = 'image-screen';
 
   @override
@@ -31,8 +32,14 @@ class ImageScreen extends StatelessWidget {
                 fit: BoxFit.cover,
                 width: double.infinity,
               )
-            : Icon(isPet ? Icons.pets : Icons.person,
-                size: MediaQuery.of(context).size.width),
+            : Container(
+                color: Theme.of(context).colorScheme.outlineVariant,
+                child: Icon(
+                  isPet ? Icons.pets : Icons.person,
+                  size: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                ),
+              ),
       ),
     );
   }

@@ -39,9 +39,17 @@ class ClinicVeterinariansInfo extends StatelessWidget {
                 radius: isTablet ? 32.5 : 32.5.sp,
                 backgroundImage: employee.image != null
                     ? NetworkImage(employee.image!)
-                    : const AssetImage('assets/images/user.png')
-                        as ImageProvider,
-                backgroundColor: Colors.transparent,
+                    : null,
+                backgroundColor: employee.image != null
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.outlineVariant,
+                child: employee.image != null
+                    ? null
+                    : Icon(
+                        Icons.person,
+                        size: isTablet ? 32.5 : 32.5.sp,
+                        color: Colors.white,
+                      ),
               ),
               title: Text(
                 '${employee.names} ${employee.surnames ?? ''}',

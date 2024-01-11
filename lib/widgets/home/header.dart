@@ -36,11 +36,19 @@ class Header extends StatelessWidget {
               );
             },
             child: CircleAvatar(
-              backgroundImage: user.image != null
-                  ? NetworkImage(user.image!)
-                  : const AssetImage('assets/images/user.png') as ImageProvider,
-              backgroundColor: Colors.transparent,
+              backgroundImage:
+                  user.image != null ? NetworkImage(user.image!) : null,
+              backgroundColor: user.image != null
+                  ? Colors.transparent
+                  : Theme.of(context).colorScheme.outlineVariant,
               radius: (isTablet ? 66 : 55.sp) / 2,
+              child: user.image != null
+                  ? null
+                  : Icon(
+                      Icons.person,
+                      size: (isTablet ? 66 : 55.sp) / 2,
+                      color: Colors.white,
+                    ),
             ),
           ),
           SizedBox(width: isTablet ? 6 : 6.sp),

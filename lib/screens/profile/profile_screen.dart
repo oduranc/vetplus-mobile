@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: AddImageButton(
         primaryIcon: Icons.person,
         image: user.image != null ? NetworkImage(user.image!) : null,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         backgroundColor: Theme.of(context).colorScheme.outlineVariant,
         bigButtonAction: () {
           Navigator.pushNamed(context, ImageScreen.route);

@@ -29,9 +29,17 @@ class CommentOwnerWidget extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: isTablet ? 27.5 : 22.5.sp,
-          backgroundColor: Colors.transparent,
+          backgroundColor: image != null
+              ? Colors.transparent
+              : Theme.of(context).colorScheme.outlineVariant,
           backgroundImage: image != null ? NetworkImage(image!) : null,
-          child: image != null ? null : const Icon(Icons.person),
+          child: image != null
+              ? null
+              : Icon(
+                  Icons.person,
+                  size: isTablet ? 27.5 : 22.5.sp,
+                  color: Colors.white,
+                ),
         ),
         Expanded(
           child: Padding(

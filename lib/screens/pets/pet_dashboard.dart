@@ -289,16 +289,19 @@ class _PetDashboardState extends State<PetDashboard> {
           return Container();
         }
         List<AppointmentDetails>? appointments = [];
+        List<AppointmentDetails>? finishedAppointments = [];
         AppointmentDetails? latestAppointment;
         if (snapshot.data!.data != null) {
           appointments = AppointmentList.fromJson(
                   snapshot.data!.data!, 'getAppointmentPerPet')
               .getAppointmentDetails;
+          finishedAppointments = appointments
+              .where((element) => element.state == 'FINISHED')
+              .toList();
         }
-        if (appointments.isNotEmpty) {
+        if (finishedAppointments.isNotEmpty) {
           appointments.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-          latestAppointment =
-              appointments.where((element) => element.state == 'FINISHED').last;
+          latestAppointment = finishedAppointments.last;
         }
         return SizedBox(
           height: isTablet ? 410 : null,
