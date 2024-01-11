@@ -62,6 +62,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     List<PetModel>? pets = Provider.of<PetsProvider>(context).pets;
 
     TimeOfDay startTime = const TimeOfDay(hour: 8, minute: 0);
+    print(selectedDate);
 
     return Scaffold(
       appBar: AppBar(

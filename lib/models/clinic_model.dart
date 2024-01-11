@@ -100,15 +100,40 @@ class ClinicSummaryScoreModel {
 }
 
 class Schedule {
+  final List<WorkingDay> workingDays;
   final List<Object?> nonWorkingDays;
 
   Schedule({
+    required this.workingDays,
     required this.nonWorkingDays,
   });
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
+    print(json);
     return Schedule(
+      workingDays: List<WorkingDay>.from(
+          json['workingDays'].map((x) => WorkingDay.fromJson(x))),
       nonWorkingDays: json['nonWorkingDays'],
+    );
+  }
+}
+
+class WorkingDay {
+  final String day;
+  final String startTime;
+  final String endTime;
+
+  WorkingDay({
+    required this.day,
+    required this.startTime,
+    required this.endTime,
+  });
+
+  factory WorkingDay.fromJson(Map<String, dynamic> json) {
+    return WorkingDay(
+      day: json['day'],
+      startTime: json['startTime'],
+      endTime: json['endTime'],
     );
   }
 }

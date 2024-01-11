@@ -59,6 +59,11 @@ class ClinicService {
           total_users
         }
         schedule {
+          workingDays {
+            day
+            startTime
+            endTime
+          }
           nonWorkingDays
         }
       }
@@ -78,6 +83,8 @@ class ClinicService {
           ),
         )
         .timeout(const Duration(seconds: 300));
+
+    print(result);
     return result;
   }
 

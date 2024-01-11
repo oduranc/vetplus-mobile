@@ -16,6 +16,7 @@ class ClinicMainInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(clinic.schedule!.workingDays);
     return Wrap(
       runSpacing: isTablet ? 13 : 5.sp,
       children: [
@@ -30,6 +31,24 @@ class ClinicMainInfo extends StatelessWidget {
           clinic.address,
           style: getClinicDetailsTextStyle(isTablet),
         ),
+        if (clinic.schedule != null)
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              'Horario:',
+              style: getClinicDetailsTextStyle(isTablet),
+            ),
+          ),
+        if (clinic.schedule != null)
+          ...clinic.schedule!.workingDays.map(
+            (e) => SizedBox(
+              width: double.infinity,
+              child: Text(
+                '  • ${e.day}: ${e.startTime.substring(0, e.startTime.length - 3)} - ${e.endTime.substring(0, e.endTime.length - 3)}',
+                style: getClinicDetailsTextStyle(isTablet),
+              ),
+            ),
+          ),
         if (clinic.schedule != null)
           SizedBox(
             width: double.infinity,
