@@ -104,6 +104,8 @@ class _ClinicCommentsInfoState extends State<ClinicCommentsInfo> {
                   keyboardType: TextInputType.multiline,
                   labelText: appLocalizations.commentExperience,
                   isBig: true,
+                  textAlignVertical: TextAlignVertical.top,
+                  contentPadding: EdgeInsets.all(12.sp),
                 ),
               ),
             ],

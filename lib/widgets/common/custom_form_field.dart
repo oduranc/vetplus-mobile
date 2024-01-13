@@ -11,13 +11,18 @@ class CustomFormField extends StatefulWidget {
     this.validator,
     required this.labelText,
     this.isBig = false,
+    this.textAlignVertical,
+    this.contentPadding,
   });
+
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool isPasswordField;
   final String? Function(String?)? validator;
   final String labelText;
   final bool isBig;
+  final TextAlignVertical? textAlignVertical;
+  final EdgeInsets? contentPadding;
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -33,6 +38,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return TextFormField(
       minLines: widget.isBig ? null : 1,
       maxLines: widget.isBig ? null : 1,
+      textAlignVertical: widget.textAlignVertical,
       expands: widget.isBig ? true : false,
       controller: widget.controller,
       style: getFieldTextStyle(isTablet),
@@ -41,6 +47,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         errorMaxLines: 3,
+        contentPadding: widget.contentPadding,
         suffixIcon: widget.isPasswordField
             ? GestureDetector(
                 onTap: () {

@@ -813,5 +813,9 @@
   "changePasswordFailure": "La contraseña no pudo ser modificada. Intente nuevamente.",
   "@changePasswordFailure": {
     "description": "Change password failure"
+  },
+  "clinicSchedule": "Horario:",
+  "@clinicSchedule": {
+    "description": "Schedule"
   }
 }

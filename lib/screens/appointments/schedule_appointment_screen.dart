@@ -37,6 +37,7 @@ class ScheduleAppointmentScreen extends StatefulWidget {
 
 class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
   String? selectedDate = DateTime.now().toIso8601String();
+  int weekDay = DateTime.now().weekday;
   TimeOfDay? selectedTime;
   List<String?> selectedServices = [];
   PetModel? selectedPet;
@@ -61,8 +62,25 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     bool isTablet = Responsive.isTablet(context);
     List<PetModel>? pets = Provider.of<PetsProvider>(context).pets;
 
-    TimeOfDay startTime = const TimeOfDay(hour: 8, minute: 0);
-    print(selectedDate);
+    TimeOfDay startTime = TimeOfDay(
+      hour: int.parse(
+        widget.clinic.schedule!.workingDays[weekDay - 1].startTime
+            .split(":")[0],
+      ),
+      minute: int.parse(
+        widget.clinic.schedule!.workingDays[weekDay - 1].startTime
+            .split(":")[1],
+      ),
+    );
+
+    TimeOfDay endTime = TimeOfDay(
+      hour: int.parse(
+        widget.clinic.schedule!.workingDays[weekDay - 1].endTime.split(":")[0],
+      ),
+      minute: int.parse(
+        widget.clinic.schedule!.workingDays[weekDay - 1].endTime.split(":")[1],
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +103,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                 child: Text(AppLocalizations.of(context)!.time,
                     style: getClinicTitleStyle(isTablet)),
               ),
-              _buildTimePicker(isTablet, startTime),
+              _buildTimePicker(isTablet, startTime, endTime),
               SizedBox(
                 width: double.infinity,
                 child: Text(AppLocalizations.of(context)!.services,
@@ -374,13 +392,15 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     );
   }
 
-  SizedBox _buildTimePicker(bool isTablet, TimeOfDay startTime) {
+  SizedBox _buildTimePicker(
+      bool isTablet, TimeOfDay startTime, TimeOfDay endTime) {
+    final itemCount = (endTime.hour - startTime.hour) * 4;
     return SizedBox(
       height: isTablet ? 95 : 55.sp,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 53,
+        itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) {
           int updatedHour = startTime.hour;
           int updatedMinute = startTime.minute + 15 * index;
@@ -458,6 +478,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
               }
               setState(() {
                 selectedDate = date.toIso8601String();
+                weekDay = date.weekday;
               });
             },
             selectableDayPredicate: (DateTime date) {

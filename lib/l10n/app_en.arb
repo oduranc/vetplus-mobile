@@ -195,5 +195,6 @@
   "nonWorkingDays": "Non-working days:",
   "latestAppointment": "Latest appointment",
   "changePasswordSuccess": "Password was modified successfully.",
-  "changePasswordFailure": "Password could not be modified. Try again later."
+  "changePasswordFailure": "Password could not be modified. Try again later.",
+  "clinicSchedule": "Schedule:"
 }

@@ -28,14 +28,20 @@ class PersonalInformationScreen extends StatefulWidget {
 
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   bool _isLoading = false;
+  late UserModel user;
+  late AppLocalizations appLocalizations;
+  late Map<String, dynamic> editableFields;
 
-  @override
-  Widget build(BuildContext context) {
-    bool isTablet = Responsive.isTablet(context);
-    final UserModel user = Provider.of<UserProvider>(context).user!;
-    final appLocalizations = AppLocalizations.of(context)!;
+  Future<void> getUser() async {
+    final accessToken =
+        Provider.of<UserProvider>(context, listen: false).accessToken!;
+    user = await getUserProfile(accessToken);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setUser(user, accessToken);
 
-    final editableFields = {
+    appLocalizations = AppLocalizations.of(context)!;
+
+    editableFields = {
       appLocalizations.nameText: user.names,
       appLocalizations.surnameText: user.surnames ?? appLocalizations.add,
       appLocalizations.idCard: user.document ?? appLocalizations.add,
@@ -52,26 +58,43 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
     if (user.role == 'VETERINARIAN') {
       editableFields.addEntries(vetEditableFields.entries);
     }
+  }
 
-    return SkeletonScreen(
-      providedPadding: EdgeInsets.symmetric(
-        horizontal: isTablet ? 37 : 24.sp,
-        vertical: isTablet ? 60 : 35.sp,
-      ),
-      appBar: AppBar(
-        title: Text(appLocalizations.personalInformation),
-        centerTitle: false,
-      ),
-      body: SeparatedListView(
-        isTablet: isTablet,
-        itemCount: editableFields.length,
-        separator: const Divider(),
-        itemBuilder: (context, index) {
-          final field = editableFields.entries.elementAt(index);
-          return _buildEditableField(context, field, user, appLocalizations);
-        },
-      ),
-    );
+  @override
+  Widget build(BuildContext context) {
+    bool isTablet = Responsive.isTablet(context);
+
+    return FutureBuilder(
+        future: getUser(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          return SkeletonScreen(
+            providedPadding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 37 : 24.sp,
+              vertical: isTablet ? 60 : 35.sp,
+            ),
+            appBar: AppBar(
+              title: Text(appLocalizations.personalInformation),
+              centerTitle: false,
+            ),
+            body: SeparatedListView(
+              isTablet: isTablet,
+              itemCount: editableFields.length,
+              separator: const Divider(),
+              itemBuilder: (context, index) {
+                final field = editableFields.entries.elementAt(index);
+                return _buildEditableField(
+                    context, field, user, appLocalizations);
+              },
+            ),
+          );
+        });
   }
 
   Widget _buildEditableField(
