@@ -8,7 +8,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vetplus/models/appointments_model.dart';
 import 'package:vetplus/models/pet_model.dart';
-import 'package:vetplus/providers/pets_provider.dart';
 import 'package:vetplus/providers/user_provider.dart';
 import 'package:vetplus/responsive/responsive_layout.dart';
 import 'package:vetplus/screens/pets/pet_profile.dart';
@@ -38,109 +37,123 @@ class _PetDashboardState extends State<PetDashboard> {
     bool isTablet = Responsive.isTablet(context);
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    final PetModel pet = Provider.of<PetsProvider>(context)
-        .pets!
-        .where((pet) => pet.id == arguments['id'])
-        .first;
+    PetModel pet;
     final bool isNotFromScanner = arguments['isNotFromScanner'] ?? true;
-    final String age = getFormattedAge(pet, context);
+    String age;
 
-    return SkeletonScreen(
-      providedPadding: EdgeInsets.symmetric(
-        horizontal: isTablet ? 37 : 24.sp,
-        vertical: isTablet ? 60 : 35.sp,
-      ),
-      appBar: AppBar(
-        toolbarHeight: isTablet ? 78 + 23 : (65 + 23).sp,
-        titleSpacing: 0,
-        actions: isNotFromScanner
-            ? [
-                _buildAppBarActions(isTablet, context, arguments, pet),
-              ]
-            : null,
-        title: FutureBuilder(
-          future: getBreedName(pet, context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Row(
-                children: [
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: CircleAvatar(
-                      radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Wrap(
-                    direction: Axis.vertical,
-                    spacing: 5,
-                    children: [
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          color: Colors.black,
-                          width: 100,
-                          height: 14,
+    return FutureBuilder(
+        future: AppointmentsService.getPet(
+            Provider.of<UserProvider>(context, listen: false).accessToken!,
+            arguments['id']),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          pet = PetModel.fromJson(snapshot.data!.data!['getPet']);
+          age = getFormattedAge(pet, context);
+          return SkeletonScreen(
+            providedPadding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 37 : 24.sp,
+              vertical: isTablet ? 60 : 35.sp,
+            ),
+            appBar: AppBar(
+              toolbarHeight: isTablet ? 78 + 23 : (65 + 23).sp,
+              titleSpacing: 0,
+              actions: isNotFromScanner
+                  ? [
+                      _buildAppBarActions(isTablet, context, arguments, pet),
+                    ]
+                  : null,
+              title: FutureBuilder(
+                future: getBreedName(pet, context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Row(
+                      children: [
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: CircleAvatar(
+                            radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
+                          ),
                         ),
+                        const SizedBox(width: 5),
+                        Wrap(
+                          direction: Axis.vertical,
+                          spacing: 5,
+                          children: [
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                color: Colors.black,
+                                width: 100,
+                                height: 14,
+                              ),
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                color: Colors.black,
+                                width: 100,
+                                height: 12,
+                              ),
+                            ),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                color: Colors.black,
+                                width: 100,
+                                height: 12,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child:
+                          Text(AppLocalizations.of(context)!.serverFailedBody),
+                    );
+                  } else {
+                    _breedName = snapshot.data!;
+                    return GestureDetector(
+                      onTap: () {
+                        _sendToPetProfile(
+                            context, {...arguments, 'breed': _breedName});
+                      },
+                      child: DashboardAppBarTitle(
+                        pet: pet,
+                        isTablet: isTablet,
+                        breedName: snapshot.data!,
+                        age: age,
                       ),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          color: Colors.black,
-                          width: 100,
-                          height: 12,
-                        ),
-                      ),
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          color: Colors.black,
-                          width: 100,
-                          height: 12,
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(AppLocalizations.of(context)!.serverFailedBody),
-              );
-            } else {
-              _breedName = snapshot.data!;
-              return GestureDetector(
-                onTap: () {
-                  _sendToPetProfile(
-                      context, {...arguments, 'breed': _breedName});
+                    );
+                  }
                 },
-                child: DashboardAppBarTitle(
-                  pet: pet,
-                  isTablet: isTablet,
-                  breedName: snapshot.data!,
-                  age: age,
+              ),
+            ),
+            body: Wrap(
+              alignment: WrapAlignment.start,
+              runSpacing: isTablet ? 14 : 14.sp,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.wellnessPanel,
+                  style:
+                      getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
                 ),
-              );
-            }
-          },
-        ),
-      ),
-      body: Wrap(
-        alignment: WrapAlignment.start,
-        runSpacing: isTablet ? 14 : 14.sp,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.wellnessPanel,
-            style: getSectionTitle(isTablet).copyWith(fontFamily: 'Roboto'),
-          ),
-          _buildWellnessWidgets(isTablet, pet),
-        ],
-      ),
-    );
+                _buildWellnessWidgets(isTablet, pet),
+              ],
+            ),
+          );
+        });
   }
 
   Padding _buildAppBarActions(
@@ -281,7 +294,7 @@ class _PetDashboardState extends State<PetDashboard> {
 
   Widget _buildWellnessWidgets(bool isTablet, PetModel pet) {
     return FutureBuilder(
-      future: AppointmentsService.getPetAppointments(
+      future: AppointmentsService.getAppointmentPerPetByAnyone(
           Provider.of<UserProvider>(context, listen: false).accessToken!,
           pet.id),
       builder: (context, snapshot) {
@@ -293,7 +306,7 @@ class _PetDashboardState extends State<PetDashboard> {
         AppointmentDetails? latestAppointment;
         if (snapshot.data!.data != null) {
           appointments = AppointmentList.fromJson(
-                  snapshot.data!.data!, 'getAppointmentPerPet')
+                  snapshot.data!.data!, 'getAppointmentPerPetByAnyOne')
               .getAppointmentDetails;
           finishedAppointments = appointments
               .where((element) => element.state == 'FINISHED')
@@ -321,9 +334,11 @@ class _PetDashboardState extends State<PetDashboard> {
               isTablet
                   ? Expanded(
                       child: NextAppointmentsWidget(
-                          isTablet: isTablet, appointments: appointments))
+                          isTablet: isTablet,
+                          appointments: appointments,
+                          pet: pet))
                   : NextAppointmentsWidget(
-                      isTablet: isTablet, appointments: appointments),
+                      isTablet: isTablet, appointments: appointments, pet: pet),
             ],
           ),
         );

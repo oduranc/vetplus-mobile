@@ -29,8 +29,8 @@ class AppointmentDetails {
   String createdAt;
   String updatedAt;
   bool status;
-  ClinicModel clinic;
-  PetModel pet;
+  ClinicModel? clinic;
+  PetModel? pet;
   Veterinarian? veterinarian;
   Owner? owner;
 
@@ -49,10 +49,10 @@ class AppointmentDetails {
     required this.createdAt,
     required this.updatedAt,
     required this.status,
-    required this.clinic,
-    required this.pet,
-    required this.veterinarian,
-    required this.owner,
+    this.clinic,
+    this.pet,
+    this.veterinarian,
+    this.owner,
   });
 
   factory AppointmentDetails.fromJson(Map<String, dynamic> json) {
@@ -73,8 +73,9 @@ class AppointmentDetails {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       status: json['status'],
-      clinic: ClinicModel.fromJson(json['Clinic']),
-      pet: PetModel.fromJson(json['Pet']),
+      clinic:
+          json['Clinic'] != null ? ClinicModel.fromJson(json['Clinic']) : null,
+      pet: json['Pet'] != null ? PetModel.fromJson(json['Pet']) : null,
       veterinarian: json['Veterinarian'] != null
           ? Veterinarian.fromJson(json['Veterinarian'])
           : null,

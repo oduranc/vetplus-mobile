@@ -3,17 +3,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:vetplus/models/appointments_model.dart';
+import 'package:vetplus/models/pet_model.dart';
 import 'package:vetplus/utils/appointment_utils.dart';
 import 'package:vetplus/widgets/pets/dashboard_card.dart';
 
 class NextAppointmentsWidget extends StatelessWidget {
   final bool isTablet;
   final List<AppointmentDetails> appointments;
+  final PetModel pet;
 
   const NextAppointmentsWidget({
     super.key,
     required this.isTablet,
     required this.appointments,
+    required this.pet,
   });
 
   @override
@@ -22,7 +25,7 @@ class NextAppointmentsWidget extends StatelessWidget {
       title: AppLocalizations.of(context)!.upcomingAppointments,
       icon: Icons.event_outlined,
       child: SfCalendar(
-        dataSource: _getCalendarDataSource(appointments),
+        dataSource: _getCalendarDataSource(appointments, pet),
         selectionDecoration: const BoxDecoration(),
         view: CalendarView.month,
         headerStyle: CalendarHeaderStyle(
@@ -62,7 +65,7 @@ class NextAppointmentsWidget extends StatelessWidget {
 }
 
 _AppointmentDataSource _getCalendarDataSource(
-    List<AppointmentDetails> appointments) {
+    List<AppointmentDetails> appointments, PetModel pet) {
   List<Appointment> calendarDataSource = <Appointment>[];
   appointments.forEach(
     (e) => calendarDataSource.add(
@@ -71,7 +74,7 @@ _AppointmentDataSource _getCalendarDataSource(
         endTime: e.endAt != null
             ? DateTime.parse(e.endAt!)
             : DateTime.parse(e.startAt),
-        subject: e.pet.name,
+        subject: pet.name,
         color: mapStateToColor(AppointmentState.values
             .where((element) => element.name == e.state)
             .first),

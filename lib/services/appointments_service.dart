@@ -403,4 +403,108 @@ class AppointmentsService {
     print(result);
     return result;
   }
+
+  static Future<QueryResult> getAppointmentPerPetByAnyone(
+      String token, String petId) async {
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    const String getPetAppointmentsQuery = '''
+    query (\$filterAppointmentByIdInput: FilterAppointmentByIdInput!) {
+      getAppointmentPerPetByAnyOne(
+        filterAppointmentByIdInput: \$filterAppointmentByIdInput
+      ) {
+        start_at
+        end_at
+        id
+        id_owner
+        id_veterinarian
+        id_pet
+        services
+        id_clinic
+        observations {
+          suffering
+          treatment
+          feed
+          deworming {
+            date
+            product
+          }
+          vaccines {
+            date
+            vaccineBrand
+            vaccineBatch
+          }
+          reproductiveTimeline {
+            reproductiveHistory
+            dateLastHeat
+            dateLastBirth
+          }
+        }
+        appointment_status
+        state
+        created_at
+        updated_at
+        status
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .query(
+          QueryOptions(
+            document: gql(getPetAppointmentsQuery),
+            variables: {
+              "filterAppointmentByIdInput": {"id": petId, "state": null}
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 300));
+
+    print(result);
+    return result;
+  }
+
+  static Future<QueryResult> getPet(String token, String petId) async {
+    final AuthLink authLink = AuthLink(getToken: () async => 'Bearer $token');
+    final Link link =
+        authLink.concat(HttpLink('${dotenv.env['SERVER_LINK']!}/graphql'));
+
+    const String getPet = '''
+    query (\$genericByIdInput: GenericByIdInput!) {
+      getPet(genericByIdInput: \$genericByIdInput) {
+        id
+        id_owner
+        id_specie
+        id_breed
+        name
+        image
+        gender
+        castrated
+        dob
+        observations
+        created_at
+        updated_at
+        status
+      }
+    }
+    ''';
+
+    final QueryResult result = await globalGraphQLClient.value
+        .copyWith(link: link)
+        .query(
+          QueryOptions(
+            document: gql(getPet),
+            variables: {
+              "genericByIdInput": {"id": petId}
+            },
+          ),
+        )
+        .timeout(const Duration(seconds: 300));
+
+    print(result);
+    return result;
+  }
 }

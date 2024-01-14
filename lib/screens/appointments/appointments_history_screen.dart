@@ -190,10 +190,10 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
         radius: Responsive.isTablet(context) ? 39 : 32.5.sp,
         backgroundColor: Color(0xFFDCDCDD),
         foregroundColor: Color(0xFFFBFBFB),
-        backgroundImage: appointment.pet.image != null
-            ? NetworkImage(appointment.pet.image!)
+        backgroundImage: appointment.pet!.image != null
+            ? NetworkImage(appointment.pet!.image!)
             : null,
-        child: appointment.pet.image != null
+        child: appointment.pet!.image != null
             ? null
             : Icon(Icons.pets, size: Responsive.isTablet(context) ? 36 : 30.sp),
       ),
@@ -202,14 +202,14 @@ class _AppointmentsHistoryScreenState extends State<AppointmentsHistoryScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            appointment.pet.name,
+            appointment.pet!.name,
             style: getSnackBarTitleStyle(isTablet),
           ),
           Padding(
             padding: EdgeInsets.only(
                 top: isTablet ? 6 : 4.sp, bottom: isTablet ? 3 : 1.sp),
             child: Text(
-              appointment.clinic.name,
+              appointment.clinic!.name,
               style: getSnackBarBodyStyle(isTablet),
             ),
           ),
