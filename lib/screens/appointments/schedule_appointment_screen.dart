@@ -64,25 +64,35 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
     bool isTablet = Responsive.isTablet(context);
     List<PetModel>? pets = Provider.of<PetsProvider>(context).pets;
 
-    TimeOfDay startTime = TimeOfDay(
-      hour: int.parse(
-        widget.clinic.schedule!.workingDays[weekDay - 1].startTime
-            .split(":")[0],
-      ),
-      minute: int.parse(
-        widget.clinic.schedule!.workingDays[weekDay - 1].startTime
-            .split(":")[1],
-      ),
-    );
+    TimeOfDay startTime;
+    TimeOfDay endTime;
 
-    TimeOfDay endTime = TimeOfDay(
-      hour: int.parse(
-        widget.clinic.schedule!.workingDays[weekDay - 1].endTime.split(":")[0],
-      ),
-      minute: int.parse(
-        widget.clinic.schedule!.workingDays[weekDay - 1].endTime.split(":")[1],
-      ),
-    );
+    if (widget.clinic.schedule != null) {
+      startTime = TimeOfDay(
+        hour: int.parse(
+          widget.clinic.schedule!.workingDays[weekDay - 1].startTime
+              .split(":")[0],
+        ),
+        minute: int.parse(
+          widget.clinic.schedule!.workingDays[weekDay - 1].startTime
+              .split(":")[1],
+        ),
+      );
+
+      endTime = TimeOfDay(
+        hour: int.parse(
+          widget.clinic.schedule!.workingDays[weekDay - 1].endTime
+              .split(":")[0],
+        ),
+        minute: int.parse(
+          widget.clinic.schedule!.workingDays[weekDay - 1].endTime
+              .split(":")[1],
+        ),
+      );
+    } else {
+      startTime = const TimeOfDay(hour: 8, minute: 0);
+      endTime = const TimeOfDay(hour: 17, minute: 0);
+    }
 
     return Scaffold(
       appBar: AppBar(
