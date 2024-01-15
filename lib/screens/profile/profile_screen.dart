@@ -30,6 +30,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   File? _selectedImage;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -118,13 +119,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             context,
             () async {
               _selectedImage = await pickImage(ImageSource.gallery);
-              setState(() {});
+              setState(() {
+                _isLoading = true;
+              });
               await _updateProfileImage(context, user);
+              setState(() {
+                _isLoading = false;
+              });
             },
             () async {
               _selectedImage = await pickImage(ImageSource.camera);
-              setState(() {});
+              setState(() {
+                _isLoading = true;
+              });
               await _updateProfileImage(context, user);
+              setState(() {
+                _isLoading = false;
+              });
             },
           );
         },

@@ -214,7 +214,7 @@ Future<void> trySignUpWithEmail(String name, String lastname, String email,
       }
     } else {
       final room = result.data!['signUpVerificationCode']['room'];
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AuthCodeScreen(

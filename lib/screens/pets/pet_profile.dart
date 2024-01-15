@@ -41,6 +41,7 @@ class PetProfile extends StatefulWidget {
 class _PetProfileState extends State<PetProfile> {
   File? _selectedImage;
   bool _isLoading = false;
+  bool _isLoadingImage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,54 +54,61 @@ class _PetProfileState extends State<PetProfile> {
         .first;
     final appLocalizations = AppLocalizations.of(context)!;
 
-    return SkeletonScreen(
-      appBar: AppBar(title: Text(appLocalizations.petProfile)),
-      body: Column(
-        children: [
-          _buildImageButton(isTablet, pet, context),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 15.sp),
-              child: Text(appLocalizations.generalInformation,
-                  style: getSectionTitle(isTablet)),
+    return _isLoadingImage
+        ? const Scaffold(
+            body: Center(
+            child: CircularProgressIndicator(),
+          ))
+        : SkeletonScreen(
+            appBar: AppBar(title: Text(appLocalizations.petProfile)),
+            body: Column(
+              children: [
+                _buildImageButton(isTablet, pet, context),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 15.sp),
+                    child: Text(appLocalizations.generalInformation,
+                        style: getSectionTitle(isTablet)),
+                  ),
+                ),
+                FutureBuilder(
+                  future: getBreedName(pet, context),
+                  builder: (context, snapshot) {
+                    Map<String, String> editableFields = {
+                      appLocalizations.nameText: pet.name,
+                      appLocalizations.sex: pet.gender == 'M'
+                          ? appLocalizations.male
+                          : appLocalizations.female,
+                      appLocalizations.breed:
+                          snapshot.data ?? appLocalizations.add,
+                      appLocalizations.dateOfBirth: pet.dob != null
+                          ? DateFormat.yMMMMd(
+                                  Platform.localeName.startsWith('es')
+                                      ? 'es_US'
+                                      : 'en_US')
+                              .format(DateTime.parse(pet.dob!))
+                          : appLocalizations.add,
+                      appLocalizations.castrated:
+                          pet.castrated ? appLocalizations.yes : 'No',
+                      appLocalizations.observations:
+                          pet.observations ?? appLocalizations.add,
+                    };
+                    return SeparatedListView(
+                      isTablet: isTablet,
+                      itemCount: editableFields.length,
+                      separator: const Divider(),
+                      itemBuilder: (context, index) {
+                        final field = editableFields.entries.elementAt(index);
+                        return _buildEditableField(
+                            context, field, pet, appLocalizations);
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-          FutureBuilder(
-            future: getBreedName(pet, context),
-            builder: (context, snapshot) {
-              Map<String, String> editableFields = {
-                appLocalizations.nameText: pet.name,
-                appLocalizations.sex: pet.gender == 'M'
-                    ? appLocalizations.male
-                    : appLocalizations.female,
-                appLocalizations.breed: snapshot.data ?? appLocalizations.add,
-                appLocalizations.dateOfBirth: pet.dob != null
-                    ? DateFormat.yMMMMd(Platform.localeName.startsWith('es')
-                            ? 'es_US'
-                            : 'en_US')
-                        .format(DateTime.parse(pet.dob!))
-                    : appLocalizations.add,
-                appLocalizations.castrated:
-                    pet.castrated ? appLocalizations.yes : 'No',
-                appLocalizations.observations:
-                    pet.observations ?? appLocalizations.add,
-              };
-              return SeparatedListView(
-                isTablet: isTablet,
-                itemCount: editableFields.length,
-                separator: const Divider(),
-                itemBuilder: (context, index) {
-                  final field = editableFields.entries.elementAt(index);
-                  return _buildEditableField(
-                      context, field, pet, appLocalizations);
-                },
-              );
-            },
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   ListTile _buildEditableField(
@@ -163,13 +171,23 @@ class _PetProfileState extends State<PetProfile> {
             context,
             () async {
               _selectedImage = await pickImage(ImageSource.gallery);
-              setState(() {});
+              setState(() {
+                _isLoadingImage = true;
+              });
               await _updatePetImage(context, pet);
+              setState(() {
+                _isLoadingImage = false;
+              });
             },
             () async {
               _selectedImage = await pickImage(ImageSource.camera);
-              setState(() {});
+              setState(() {
+                _isLoadingImage = true;
+              });
               await _updatePetImage(context, pet);
+              setState(() {
+                _isLoadingImage = false;
+              });
             },
           );
         },
