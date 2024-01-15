@@ -36,8 +36,10 @@ class ScheduleAppointmentScreen extends StatefulWidget {
 }
 
 class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
-  String? selectedDate = DateTime.now().toIso8601String();
-  int weekDay = DateTime.now().weekday;
+  String? selectedDate = DateTime.now().weekday != 7
+      ? DateTime.now().toIso8601String()
+      : DateTime.now().add(const Duration(days: 1)).toIso8601String();
+  int weekDay = DateTime.now().weekday != 7 ? DateTime.now().weekday : 1;
   TimeOfDay? selectedTime;
   List<String?> selectedServices = [];
   PetModel? selectedPet;
@@ -470,7 +472,9 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
         children: [
           CustomCalendar(
             minDate: DateTime.now(),
-            initialDate: DateTime.now(),
+            initialDate: DateTime.now().weekday != 7
+                ? DateTime.now()
+                : DateTime.now().add(const Duration(days: 1)),
             isTablet: isTablet,
             onChanged: (date) async {
               if (date is DateRangePickerSelectionChangedArgs) {
