@@ -52,7 +52,10 @@ class ClinicProfile extends StatelessWidget {
 
             List<EmployeeModel>? employees = [];
             if (snapshot.data![1].data != null) {
-              employees = EmployeeList.fromJson(snapshot.data![1].data!).list;
+              employees = EmployeeList.fromJson(snapshot.data![1].data!)
+                  .list
+                  .where((element) => element.status != false)
+                  .toList();
             }
 
             List<CommentModel>? comments = [];

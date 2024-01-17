@@ -43,7 +43,7 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
     if (result.hasException) {
       await tryLoginWithGoogle(context);
     } else {
-      final accessToken = result.data!['googleLogin']['access_token'];
+      final accessToken = result.data!['googleRegister']['access_token'];
       final user = await getUserProfile(accessToken);
       PetList pets = await getPets(context, accessToken);
       FavoriteClinicList favorites = await getFavorites(context, accessToken);
@@ -59,6 +59,7 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
         context,
       );
     } else {
+      print(e.toString());
       await _showServerErrorDialog(context);
     }
   }
