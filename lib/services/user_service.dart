@@ -6,6 +6,7 @@ import 'package:vetplus/services/graphql_client.dart';
 
 class UserService {
   static Future<QueryResult> loginWithGoogle() async {
+    await GoogleSignIn().signOut();
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
