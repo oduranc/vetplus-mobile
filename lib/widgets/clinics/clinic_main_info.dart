@@ -35,9 +35,12 @@ class _ClinicMainInfoState extends State<ClinicMainInfo> {
           ' ⭐ ${widget.clinic.clinicRating} • ${widget.clinic.clinicSummaryScore!.totalUsers} ${AppLocalizations.of(context)!.ratings}',
           style: getClinicDetailsTextStyle(widget.isTablet),
         ),
-        Text(
-          widget.clinic.address,
-          style: getClinicDetailsTextStyle(widget.isTablet),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            widget.clinic.address,
+            style: getClinicDetailsTextStyle(widget.isTablet),
+          ),
         ),
         if (widget.clinic.schedule != null)
           GestureDetector(

@@ -80,6 +80,9 @@ class ClinicProfile extends StatelessWidget {
       List<EmployeeModel> employees,
       List<CommentModel> comments,
       String clinicId) {
+    final googleMapsRegex = RegExp(r'@([0-9.-]+),([0-9.-]+)');
+    print(clinic.googleMapsUrl);
+    print(clinic.services);
     return [
       ClinicMainInfo(isTablet: isTablet, clinic: clinic),
       if (employees.isNotEmpty)
@@ -89,7 +92,8 @@ class ClinicProfile extends StatelessWidget {
           isTablet: isTablet,
           services: clinic.services,
         ),
-      if (clinic.googleMapsUrl != null)
+      if (clinic.googleMapsUrl != null &&
+          googleMapsRegex.hasMatch(clinic.googleMapsUrl!))
         ClinicMapInfo(
           isTablet: isTablet,
           mapsUrl: clinic.googleMapsUrl,
