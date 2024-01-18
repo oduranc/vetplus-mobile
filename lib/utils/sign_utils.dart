@@ -33,6 +33,7 @@ Future<void> tryLoginWithGoogle(BuildContext context) async {
     FavoriteClinicList favorites = await getFavorites(context, token);
     await navigateToHome(context, user, token, pets, favorites);
   } catch (e) {
+    print(e.toString());
     await _showServerErrorDialog(context);
   }
 }
@@ -50,6 +51,7 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
       await navigateToHome(context, user, accessToken, pets, favorites);
     }
   } catch (e) {
+    print(e.toString());
     if (e.toString() == 'Null check operator used on a null value') {
       _showCustomDialog(
         AppLocalizations.of(context)!.canceledAction,
@@ -59,7 +61,6 @@ Future<void> trySignUpWithGoogle(BuildContext context) async {
         context,
       );
     } else {
-      print(e.toString());
       await _showServerErrorDialog(context);
     }
   }

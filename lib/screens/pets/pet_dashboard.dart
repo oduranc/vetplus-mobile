@@ -313,7 +313,7 @@ class _PetDashboardState extends State<PetDashboard> {
               .toList();
         }
         if (finishedAppointments.isNotEmpty) {
-          appointments.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+          finishedAppointments.sort((a, b) => b.startAt.compareTo(a.startAt));
           latestAppointment = finishedAppointments.last;
         }
         return SizedBox(

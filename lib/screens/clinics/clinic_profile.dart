@@ -116,6 +116,7 @@ class ClinicProfile extends StatelessWidget {
       List<Widget> sectionsToShow,
       UserModel? user,
       List<EmployeeModel>? employees) {
+    print('IMAGEN: ${clinic.image}');
     return Column(
       children: [
         Expanded(
