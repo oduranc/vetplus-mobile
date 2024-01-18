@@ -817,5 +817,13 @@
   "clinicSchedule": "Horario:",
   "@clinicSchedule": {
     "description": "Schedule"
+  },
+  "clinicOwner": "Dueño de clínica",
+  "@clinicOwner": {
+    "description": "clinicOwner"
+  },
+  "admin": "Administrador",
+  "@admin": {
+    "description": "admin"
   }
 }

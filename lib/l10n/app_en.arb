@@ -196,5 +196,7 @@
   "latestAppointment": "Latest appointment",
   "changePasswordSuccess": "Password was modified successfully.",
   "changePasswordFailure": "Password could not be modified. Try again later.",
-  "clinicSchedule": "Schedule:"
+  "clinicSchedule": "Schedule:",
+  "clinicOwner": "Clinic owner",
+  "admin": "Admin"
 }

@@ -21,6 +21,22 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final isTablet = Responsive.isTablet(context);
 
+    String role;
+
+    switch (user.role) {
+      case 'PET_OWNER':
+        role = AppLocalizations.of(context)!.petOwner;
+        break;
+      case 'VETERINARIAN':
+        role = AppLocalizations.of(context)!.veterinarian;
+        break;
+      case 'CLINIC_OWNER':
+        role = AppLocalizations.of(context)!.clinicOwner;
+        break;
+      default:
+        role = AppLocalizations.of(context)!.admin;
+    }
+
     return Padding(
       padding: EdgeInsets.only(
           right: isTablet ? 37 : 24.sp, top: isTablet ? 8 : 16.sp),
@@ -73,9 +89,7 @@ class Header extends StatelessWidget {
                   ),
                   SizedBox(height: isTablet ? 4 : 4.sp),
                   Text(
-                    user.role == 'PET_OWNER'
-                        ? AppLocalizations.of(context)!.petOwner
-                        : AppLocalizations.of(context)!.veterinarian,
+                    role,
                     style: getSnackBarBodyStyle(isTablet),
                   ),
                 ],
